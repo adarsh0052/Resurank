@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langchain
+langchain-ollama
+langchain-chroma
+langchain-core
+chromadb
+pandas
+openpyxl
+PyPDF2
+requests
+gdown
+python-multipart
