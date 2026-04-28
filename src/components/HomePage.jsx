@@ -10,7 +10,7 @@ function HomePage() {
         {/* Left: Main Video */}
         <div className="home-left">
           <video className="home-video" autoPlay muted loop>
-            <source src="/WhatsApp Video 2025-04-19 at 16.12.54_585a36ea.mp4" type="video/mp4" />
+            <source src="src\assets\WhatsApp Video 2025-04-19 at 16.12.54_585a36ea.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -66,7 +66,7 @@ function HomePage() {
 
         <div className="why-right">
           <video className="why-video" autoPlay muted loop>
-            <source src="/WhatsApp Video 2025-04-19 at 15.29.15.mp4" type="video/mp4" />
+            <source src="src\assets\WhatsApp Video 2025-04-19 at 15.29.15.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -78,15 +78,15 @@ function HomePage() {
         <h2 className="section-title">Sample Resumes</h2>
         <div className="resume-grid">
           <div className="resume-card">
-            <img src="/sample resume 1.jpg" alt="Sample Resume 1" />
+            <img src="src\assets\sample resume 1.jpg" alt="Sample Resume 1" />
             <p>Software Engineer</p>
           </div>
           <div className="resume-card">
-            <img src="/sample resume 2.jpg" alt="Sample Resume 2" />
+            <img src="src\assets\sample resume 2.jpg" alt="Sample Resume 2" />
             <p>Marketing Specialist</p>
           </div>
           <div className="resume-card">
-            <img src="/sample resume 3.jpg" alt="Sample Resume 3" />
+            <img src="src\assets\sample resume 3.jpg" alt="Sample Resume 3" />
             <p>Data Analyst</p>
           </div>
           </div>
