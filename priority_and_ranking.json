@@ -1,0 +1,179 @@
+{
+    "job_categories": {
+      "Technology": {
+        "roles": [
+          {
+            "title": "Software Engineer",
+            "resume_scoring": {
+              "relevant_projects": 30,
+              "technical_experience": 30,
+              "problem_solving": 20,
+              "education": 10,
+              "certifications": 5,
+              "soft_skills": 5
+            }
+          },
+          {
+            "title": "Full Stack Developer",
+            "resume_scoring": {
+              "relevant_projects": 35,
+              "technical_experience": 30,
+              "problem_solving": 15,
+              "education": 10,
+              "certifications": 5,
+              "soft_skills": 5
+            }
+          },
+          {
+            "title": "DevOps Engineer",
+            "resume_scoring": {
+              "infrastructure_experience": 35,
+              "automation_projects": 30,
+              "problem_solving": 20,
+              "education": 5,
+              "certifications": 5
+            }
+          }
+        ]
+      },
+      "Cybersecurity": {
+        "roles": [
+          {
+            "title": "Cybersecurity Analyst",
+            "resume_scoring": {
+              "security_projects": 30,
+              "technical_experience": 30,
+              "threat_analysis": 20,
+              "education": 10,
+              "certifications": 5,
+              "soft_skills": 5
+            }
+          },
+          {
+            "title": "Ethical Hacker",
+            "resume_scoring": {
+              "penetration_testing": 40,
+              "security_projects": 25,
+              "problem_solving": 15,
+              "education": 10,
+              "certifications": 10
+            }
+          }
+        ]
+      },
+      "AI & Data Science": {
+        "roles": [
+          {
+            "title": "Data Scientist",
+            "resume_scoring": {
+              "data_analysis_projects": 40,
+              "technical_experience": 30,
+              "problem_solving": 15,
+              "education": 10,
+              "certifications": 5
+            }
+          },
+          {
+            "title": "AI Engineer",
+            "resume_scoring": {
+              "ml_projects": 40,
+              "technical_experience": 30,
+              "problem_solving": 15,
+              "education": 10,
+              "certifications": 5
+            }
+          }
+        ]
+      },
+      "Business & Management": {
+        "roles": [
+          {
+            "title": "Project Manager",
+            "resume_scoring": {
+              "leadership_experience": 40,
+              "strategic_planning": 30,
+              "project_management": 20,
+              "education": 5,
+              "certifications": 5
+            }
+          },
+          {
+            "title": "Business Analyst",
+            "resume_scoring": {
+              "analytical_projects": 35,
+              "market_research": 30,
+              "problem_solving": 20,
+              "education": 10,
+              "certifications": 5
+            }
+          }
+        ]
+      },
+      "Healthcare": {
+        "roles": [
+          {
+            "title": "Registered Nurse",
+            "resume_scoring": {
+              "clinical_experience": 50,
+              "patient_care": 30,
+              "certifications": 10,
+              "education": 10
+            }
+          },
+          {
+            "title": "Medical Researcher",
+            "resume_scoring": {
+              "research_experience": 40,
+              "publications": 30,
+              "grants_funding": 20,
+              "education": 10
+            }
+          }
+        ]
+      },
+      "Finance": {
+        "roles": [
+          {
+            "title": "Financial Analyst",
+            "resume_scoring": {
+              "financial_modelling": 40,
+              "market_research": 30,
+              "certifications": 15,
+              "education": 15
+            }
+          },
+          {
+            "title": "Investment Banker",
+            "resume_scoring": {
+              "deal_experience": 50,
+              "market_analysis": 30,
+              "networking": 10,
+              "education": 10
+            }
+          }
+        ]
+      },
+      "Education": {
+        "roles": [
+          {
+            "title": "Teacher",
+            "resume_scoring": {
+              "teaching_experience": 50,
+              "certifications": 20,
+              "education": 20,
+              "student_engagement": 10
+            }
+          },
+          {
+            "title": "Professor",
+            "resume_scoring": {
+              "academic_publications": 40,
+              "teaching_experience": 30,
+              "research_experience": 20,
+              "education": 10
+            }
+          }
+        ]
+      }
+    }
+  }
