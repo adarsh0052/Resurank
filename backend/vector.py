@@ -332,36 +332,39 @@ def calculate_resume_score(resume_text, job_category, job_role):
         return 0, {}
 
 
-# Process resumes
-def process_resumes(job_category, job_role):
+# Replace your current process_resumes with this:
+def process_resumes(df_to_use, map_to_use, job_category, job_role):
     documents = []
     ids = []
+    print(f"DEBUG: Starting to process {len(df_to_use)} resumes...")
 
-    for i, row in df.iterrows():
+    for i, row in df_to_use.iterrows():
+        # Using the local variables passed into the function instead of global 'df'
+        name = row[map_to_use['name']]
+        print(f"DEBUG: [{i + 1}/{len(df_to_use)}] Extracting text for: {name}")
         try:
-            resume_path = row[column_map["resume"]]
-            print(f"Processing resume for {row[column_map['name']]}...")
+            resume_path = row[map_to_use["resume"]]
+            print(f"Processing resume for {name}...")
             resume_text = extract_text_from_pdf(resume_path)
+            
             if not resume_text:
-                print(
-                    f"Warning: Could not extract text from resume for {row[column_map['name']]}"
-                )
+                print(f"Warning: Could not extract text for {name}")
 
             score, scores_by_criterion = calculate_resume_score(
                 resume_text, job_category, job_role
             )
 
             page_content = (
-                f"Name: {row[column_map['name']]}\n"
-                f"Contact: {row[column_map['contact']]}\n"
+                f"Name: {name}\n"
+                f"Contact: {row[map_to_use['contact']]}\n"
                 f"Resume Text: {resume_text[:500]}..."
             )
 
             document = Document(
                 page_content=page_content,
                 metadata={
-                    "name": row[column_map["name"]],
-                    "contact": row[column_map["contact"]],
+                    "name": name,
+                    "contact": row[map_to_use["contact"]],
                     "resume_path": resume_path,
                     "job_category": job_category,
                     "job_role": job_role,
@@ -378,6 +381,31 @@ def process_resumes(job_category, job_role):
             continue
 
     return documents, ids
+
+
+# Replace your current setup_vector_store with this:
+def setup_vector_store(df_to_use, map_to_use, job_category, job_role):
+    sanitized_category = re.sub(r"[^a-zA-Z0-9_-]", "_", job_category)
+    sanitized_role = re.sub(r"[^a-zA-Z0-9_-]", "_", job_role)
+    persist_dir = f"{db_location}{sanitized_category}_{sanitized_role}"
+
+    vector_store = Chroma(
+        collection_name=f"resume_rankings_{sanitized_category}_{sanitized_role}",
+        persist_directory=persist_dir,
+        embedding_function=embeddings,
+    )
+
+    existing_data = vector_store.get()
+    if not existing_data["ids"]:
+        print(f"--- Indexing resumes for {job_role} ---")
+        # Pass the arguments correctly here
+        documents, ids = process_resumes(df_to_use, map_to_use, job_category, job_role)
+        if documents:
+            vector_store.add_documents(documents=documents, ids=ids)
+    else:
+        print(f"--- Loading existing index for {job_role} ---")
+
+    return vector_store
 
 
 # Setup Chroma vector store

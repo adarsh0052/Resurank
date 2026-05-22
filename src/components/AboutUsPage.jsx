@@ -112,39 +112,6 @@ function AboutUsPage() {
             </div>
           </section>
         </div>
-
-        {/* Company Journey Section */}
-        {/* <section className="about-section journey-section">
-          <div className="section-icon">🗺️</div>
-          <div className="section-content">
-            <h2>Our Journey</h2>
-            <div className="journey-timeline">
-              <div className="timeline-item">
-                <div className="timeline-marker">2023</div>
-                <div className="timeline-content">
-                  <h3>The Beginning</h3>
-                  <p>ResuRank started as a prototype built to help a local recruiting agency. Our initial algorithm could match key skills to job requirements.</p>
-                </div>
-              </div>
-              
-              <div className="timeline-item">
-                <div className="timeline-marker">2024</div>
-                <div className="timeline-content">
-                  <h3>Growth & Recognition</h3>
-                  <p>Expanded our capabilities with advanced NLP features and secured our first enterprise clients. Named "Top HR Tech Startup" by Industry Today.</p>
-                </div>
-              </div>
-              
-              <div className="timeline-item">
-                <div className="timeline-marker">2025</div>
-                <div className="timeline-content">
-                  <h3>Present Day</h3>
-                  <p>Now serving over 500 companies worldwide with continuous platform improvements and a growing team dedicated to recruitment innovation.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> */}
       </div>
       
       <div className="cta-section">

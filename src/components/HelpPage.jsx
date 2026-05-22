@@ -66,45 +66,9 @@ function HelpPage() {
             </div>
           </section>
 
-          <section className="help-section">
-            <h2>🎓 Video Tutorials</h2>
-            <div className="tutorials-list">
-              <div className="tutorial-item">
-                <span className="tutorial-icon">▶️</span>
-                <span className="tutorial-title">Getting Started with ResuRank</span>
-                <span className="tutorial-duration">3:45</span>
-              </div>
-              <div className="tutorial-item">
-                <span className="tutorial-icon">▶️</span>
-                <span className="tutorial-title">Advanced Filtering Techniques</span>
-                <span className="tutorial-duration">5:12</span>
-              </div>
-              <div className="tutorial-item">
-                <span className="tutorial-icon">▶️</span>
-                <span className="tutorial-title">Creating Custom Hiring Templates</span>
-                <span className="tutorial-duration">4:30</span>
-              </div>
-            </div>
-          </section>
+        
 
-          <section className="help-section">
-            <h2>📩 Contact Support</h2>
-            <p>
-              Still stuck? Our support team is ready to help you succeed with ResuRank.
-            </p>
-            <div className="support-options">
-              <div className="support-option">
-                <h3>Email Support</h3>
-                <p>Reach out anytime at <a href="mailto:support@resurank.com">support@resurank.com</a></p>
-                <p className="support-note">We usually respond within 24 hours</p>
-              </div>
-              <div className="support-option">
-                <h3>Live Chat</h3>
-                <p>Available Monday-Friday, 9am-5pm EST</p>
-                <button className="chat-button">Start Chat</button>
-              </div>
-            </div>
-          </section>
+         
         </div>
 
         <div className="help-image-section">

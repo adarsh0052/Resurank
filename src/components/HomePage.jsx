@@ -72,77 +72,8 @@ function HomePage() {
         </div>
       </div>
 
-            {/* NEW SECTION: Sample Resumes */}
-        <div className="sample-resumes-section">
-        <div className="container">
-        <h2 className="section-title">Sample Resumes</h2>
-        <div className="resume-grid">
-          <div className="resume-card">
-            <img src="src\assets\sample resume 1.jpg" alt="Sample Resume 1" />
-            <p>Software Engineer</p>
-          </div>
-          <div className="resume-card">
-            <img src="src\assets\sample resume 2.jpg" alt="Sample Resume 2" />
-            <p>Marketing Specialist</p>
-          </div>
-          <div className="resume-card">
-            <img src="src\assets\sample resume 3.jpg" alt="Sample Resume 3" />
-            <p>Data Analyst</p>
-          </div>
-          </div>
-        </div>
-      </div>
+           
 
-      {/* NEW SECTION: Testimonials */}
-      <div className="testimonials-section">
-  <div className="container">
-    <h2 className="section-title">What Our Users Say</h2>
-    <div className="testimonial-grid">
-      <div className="testimonial-card">
-        <div className="rating-container">
-          <div className="rating">
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-          </div>
-          <span className="rating-text">5.0</span>
-        </div>
-        <p className="testimonial-text">"ResuRank saved me hours of screening. I found the perfect candidate in minutes!"</p>
-        <span className="testimonial-author">— Priya, HR Manager</span>
-      </div>
-      <div className="testimonial-card">
-        <div className="rating-container">
-          <div className="rating">
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star half-filled">★</span>
-          </div>
-          <span className="rating-text">4.5</span>
-        </div>
-        <p className="testimonial-text">"The accuracy of this tool is insane. It understands what we're looking for!"</p>
-        <span className="testimonial-author">— Arjun, Tech Recruiter</span>
-      </div>
-      <div className="testimonial-card">
-        <div className="rating-container">
-          <div className="rating">
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-            <span className="star filled">★</span>
-          </div>
-          <span className="rating-text">5.0</span>
-        </div>
-        <p className="testimonial-text">"Love the resume filters. I just set my criteria and get results instantly."</p>
-        <span className="testimonial-author">— Sarah, Startup Founder</span>
-      </div>
-    </div>
-  </div>
-</div>
 
     </div>
   );
