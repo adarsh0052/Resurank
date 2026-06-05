@@ -33,8 +33,10 @@ temp_resumes.xlsx
 
 # Vector DB / ChromaDB
 chrome_langchain_db*/
+temp_downloads/
+uploads/
 
-# Resume test files (if not needed in repo)
-resume1.pdf
-resume2.pdf
-resume3.pdf
+# Resume test files
+resume*.pdf
+*.xlsx
+*.xls

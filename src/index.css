@@ -1,7 +1,187 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+
+/* ----------------------------------------------------------------------
+   THEME OVERRIDES & CORE RESETS
+---------------------------------------------------------------------- */
+@theme {
+  --color-zinc-50: #FAFAFA;
+  --color-zinc-900: #18181B;
+  --color-zinc-950: #09090B;
+}
 
 body {
-  @apply bg-[#f9fafb];
+  @apply bg-[#FAFAFA] text-[#09090B] antialiased;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: #09090B;
+  color: #FFFFFF;
+}
+
+/* ----------------------------------------------------------------------
+   3D SPATIAL LAYOUT UTILITIES
+---------------------------------------------------------------------- */
+.spatial-parent {
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+.spatial-child {
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.spatial-hovered {
+  transition: transform 0.1s linear;
+}
+
+/* Depth Layers */
+.layer-1 { transform: translateZ(20px); }
+.layer-2 { transform: translateZ(60px); }
+.layer-3 { transform: translateZ(100px); }
+
+/* Specular Reflection Effect */
+.specular-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle 150px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255, 255, 255, 0.3), transparent 80%);
+  pointer-events: none;
+  z-index: 10;
+  mix-blend-mode: overlay;
+}
+
+/* ----------------------------------------------------------------------
+   GLASSMORPHISM & SURFACES
+---------------------------------------------------------------------- */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+.glass-card-hover {
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card-hover:hover {
+  background: rgba(255, 255, 255, 0.85);
+  transform: translateY(-4px);
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+/* ----------------------------------------------------------------------
+   PREMIUM CUSTOM CURSOR
+---------------------------------------------------------------------- */
+@media (min-width: 1024px) {
+  html, body, a, button, select, input, textarea, label {
+    cursor: none !important;
+  }
+}
+
+.custom-cursor-dot {
+  width: 6px;
+  height: 6px;
+  background-color: #09090B;
+  position: fixed;
+  pointer-events: none;
+  z-index: 9999;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.15s cubic-bezier(0.16, 1, 0.3, 1), height 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s;
+}
+
+.custom-cursor-ring {
+  width: 24px;
+  height: 24px;
+  border: 1px solid rgba(9, 9, 11, 0.15);
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s;
+}
+
+/* Map these to your CustomCursor.jsx active states */
+.custom-cursor-hover .custom-cursor-dot {
+  width: 4px;
+  height: 4px;
+  background-color: #10B981; /* Emerald accent */
+}
+
+.custom-cursor-hover .custom-cursor-ring {
+  width: 40px;
+  height: 40px;
+  background-color: rgba(16, 185, 129, 0.05);
+  border-color: rgba(16, 185, 129, 0.2);
+}
+
+/* ----------------------------------------------------------------------
+   ANIMATIONS & MOTION
+---------------------------------------------------------------------- */
+@keyframes subtle-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+  animation: subtle-float 6s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 0.6; transform: scale(1.05); }
+}
+
+.animate-glow {
+  animation: pulse-glow 8s ease-in-out infinite;
+}
+
+@keyframes spin-slow {
+  100% { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 20s linear infinite;
+}
+
+/* Smooth Reveal on Scroll (Used by IntersectionObserver logic) */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-on-scroll.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ----------------------------------------------------------------------
+   PREMIUM SCROLLBAR (Arc Browser Style)
+---------------------------------------------------------------------- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4D4D8; /* Zinc 300 */
+  border-radius: 10px;
+  border: 2px solid #FAFAFA; /* Matches body bg to create floating effect */
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #A1A1AA; /* Zinc 400 */
 }

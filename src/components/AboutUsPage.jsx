@@ -1,124 +1,101 @@
 import React from "react";
-import "./style.css";
 
 function AboutUsPage() {
   return (
-    <div className="about-page-wrapper">
-      {/* About ResuRank Hero Section at Top */}
-      <div className="about-hero">
-        <h1 className="about-title">About ResuRank</h1>
-        <p className="about-intro">
-          ResuRank is a powerful AI-driven resume screening platform built to simplify and accelerate the hiring process.
-          We're on a mission to empower recruiters with intelligent tools that cut through the noise and surface the most relevant candidates — fast.
-        </p>
-      </div>
-
-      {/* Video and Approach Section Side by Side */}
-      <div className="top-section-container">
-        <div className="video-container">
-          <video className="about-video"  autoPlay muted loop>
-            <source src="src\assets\WhatsApp Video 2025-04-19 at 15.30.01.mp4" type="video/mp4" />
-            Your browser does not support the video tag.
-          </video>
-        </div>
-        
-        <div className="approach-content">
-          <h2>Our Approach</h2>
-          <p>
-            At ResuRank, we believe that recruitment should be about connecting the right talent with the right opportunities. 
-            Our platform combines natural language processing, machine learning, and industry expertise to create a holistic 
-            evaluation system that goes beyond traditional keyword matching.
-          </p>
-          <p>
-            We developed our technology in collaboration with HR professionals, hiring managers, and industry experts to ensure 
-            it meets real-world recruitment needs. Our approach balances technological innovation with human expertise, 
-            creating a solution that enhances rather than replaces the human element in hiring.
-          </p>
-          <p>
-            We're committed to continuous improvement and regularly refine our algorithms based on new research and client feedback 
-            to ensure the highest accuracy and fairness in candidate evaluation.
-          </p>
-        </div>
-      </div>
-
-      <div className="about-content">
-        {/* 2x2 Grid for Story, Values, Mission and Vision */}
-        <div className="grid-container">
-          {/* Company Story Section */}
-          <section className="about-section story-section">
-            <div className="section-icon">📖</div>
-            <div className="section-content">
-              <h2>Our Story</h2>
-              <p>
-                ResuRank was founded in 2023 by a team of HR professionals and AI engineers who experienced firsthand the challenges of modern recruitment. 
-                After witnessing countless qualified candidates overlooked due to inefficient resume screening processes, we set out to create a solution.
-              </p>
-              <p>
-                What began as a small project to help streamline recruitment has evolved into a comprehensive platform serving businesses of all sizes. 
-                Today, we're proud to have helped thousands of companies make better hiring decisions through intelligent automation.
-              </p>
-            </div>
-          </section>
-
-          {/* Company Values Section */}
-          <section className="about-section values-section">
-            <div className="section-icon">💎</div>
-            <div className="section-content">
-              <h2>Our Values</h2>
-              <p>
-                <strong>Innovation:</strong> We constantly push boundaries to develop cutting-edge solutions that redefine recruitment.
-              </p>
-              <p>
-                <strong>Fairness:</strong> We're committed to reducing bias in hiring through objective, skills-based candidate evaluation.
-              </p>
-              <p>
-                <strong>Efficiency:</strong> We believe in working smarter, not harder—saving our clients time and resources through intelligent automation.
-              </p>
-              <p>
-                <strong>Transparency:</strong> We maintain open communication with our clients and provide explainable AI decisions.
-              </p>
-            </div>
-          </section>
-
-          {/* Mission Section */}
-          <section className="about-section mission-section">
-            <div className="section-icon">🚀</div>
-            <div className="section-content">
-              <h2>Our Mission</h2>
-              <p>
-                Our mission is to make hiring smarter, faster, and fairer. We believe great candidates shouldn't be lost in the stack,
-                and recruiters shouldn't spend hours manually sorting resumes.
-              </p>
-              <p>
-                By harnessing the power of artificial intelligence, we're transforming how companies identify talent, 
-                reducing bias in the hiring process, and helping organizations build diverse, high-performing teams.
-              </p>
-            </div>
-          </section>
-
-          {/* Vision Section */}
-          <section className="about-section vision-section">
-            <div className="section-icon">🎯</div>
-            <div className="section-content">
-              <h2>Our Vision</h2>
-              <p>
-                We envision a world where technology and talent connect effortlessly. ResuRank aims to be the go-to platform
-                for automated candidate evaluation — saving time and improving decision quality across all industries.
-              </p>
-              <p>
-                In the future we see, recruiters focus on meaningful candidate interactions while our AI handles the heavy lifting 
-                of resume analysis, skills matching, and preliminary assessments.
-              </p>
-            </div>
-          </section>
-        </div>
-      </div>
+    <div className="bg-white min-h-screen text-slate-900 font-sans selection:bg-slate-950 selection:text-white">
       
-      <div className="cta-section">
-        <h2>Ready to Transform Your Hiring Process?</h2>
-        <p>Join thousands of companies using ResuRank to find their ideal candidates faster.</p>
-        <button className="cta-button">Request a Demo</button>
-      </div>
+      {/* Editorial Header */}
+      <section className="py-20 border-b border-slate-900/[0.06] bg-slate-50/20">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          <div className="max-w-3xl space-y-6">
+            <span className="inline-block text-[11px] font-bold tracking-widest text-slate-400 uppercase font-mono">
+              Customers & Engineering // Mission
+            </span>
+            <h1 className="text-4xl sm:text-5xl lg:text-[60px] font-extrabold tracking-tighter text-slate-950 leading-[1.05]">
+              Built for engineering recruiters.
+            </h1>
+            <p className="text-slate-550 text-base sm:text-lg leading-relaxed max-w-2xl">
+              We design software tools that help companies bypass superficial keyword matches and evaluate talent using local semantic models.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* Grid of Values & Principles */}
+      <section className="py-24 border-b border-slate-900/[0.06]">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          
+          <div className="editorial-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2">
+              
+              <div className="editorial-cell p-8 sm:p-12 space-y-4 bg-white">
+                <span className="font-mono text-[10px] text-slate-400 font-bold block uppercase">ENGINEERING PRINCIPLE 01</span>
+                <h3 className="text-xl font-bold text-slate-950 tracking-tight">Local Vector Security</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Candidate resume files contain sensitive personal identifiable information (PII). In order to protect your candidate pool, we process embeddings entirely on local models, ensuring that data is never sent to third-party endpoints.
+                </p>
+              </div>
+
+              <div className="editorial-cell p-8 sm:p-12 space-y-4 bg-slate-50/35">
+                <span className="font-mono text-[10px] text-slate-400 font-bold block uppercase">ENGINEERING PRINCIPLE 02</span>
+                <h3 className="text-xl font-bold text-slate-950 tracking-tight">Mathematical Score Criteria</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Candidate profiles are evaluated against multidimensional vectors across weighted role criteria. Our scoring logic utilizes cosine similarity parameters, yielding precise grades rather than simple pattern matching.
+                </p>
+              </div>
+
+              <div className="editorial-cell p-8 sm:p-12 space-y-4 bg-slate-50/35">
+                <span className="font-mono text-[10px] text-slate-400 font-bold block uppercase">ENGINEERING PRINCIPLE 03</span>
+                <h3 className="text-xl font-bold text-slate-950 tracking-tight">Semantic Indexing Focus</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  Standard search systems miss qualified talent due to spellings or synonyms. By mapping candidates to conceptual spaces, we can match "ML Engineer" to "Deep Learning Specialist" or identify relevant projects automatically.
+                </p>
+              </div>
+
+              <div className="editorial-cell p-8 sm:p-12 space-y-4 bg-white">
+                <span className="font-mono text-[10px] text-slate-400 font-bold block uppercase">ENGINEERING PRINCIPLE 04</span>
+                <h3 className="text-xl font-bold text-slate-950 tracking-tight">Enterprise Scaling Logs</h3>
+                <p className="text-slate-500 text-xs leading-relaxed">
+                  ResuRank scales candidate evaluations to support large pipelines. Spreadsheet queues process in parallel background tasks, feeding structured candidate indices to local models for quick recruiters dashboard lookups.
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      {/* Corporate Info Footer details */}
+      <section className="py-24 bg-white">
+        <div className="mx-auto max-w-7xl px-6 sm:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-12 font-mono text-[11px] text-slate-550">
+            
+            <div className="space-y-2">
+              <span className="font-bold text-slate-950 uppercase block">System Architecture</span>
+              <p className="text-slate-400 leading-relaxed font-sans text-xs">
+                Built on Python FastAPI backend and React Vite frontend. Uses LangChain packages for local vector lookup flows and Ollama container servers.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <span className="font-bold text-slate-950 uppercase block">Compliance & Security</span>
+              <p className="text-slate-400 leading-relaxed font-sans text-xs">
+                Files are downloaded temporarily into isolated server nodes and auto-expire in 10 minutes. Custom cursor scripts run on secure local variables.
+              </p>
+            </div>
+
+            <div className="space-y-2">
+              <span className="font-bold text-slate-950 uppercase block">Technical Support</span>
+              <p className="text-slate-400 leading-relaxed font-sans text-xs">
+                Recruiters can contact technical support for spreadsheet layout mapping problems or Ollama inference optimization.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
     </div>
   );
 }
