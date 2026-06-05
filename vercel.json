@@ -1,42 +1,24 @@
 {
-  "version": 2,
-  "builds": [
+  "rewrites": [
     {
-      "src": "api.py",
-      "use": "@vercel/python"
+      "source": "/upload-resumes/",
+      "destination": "/api/index.py"
     },
     {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    }
-  ],
-  "routes": [
-    {
-      "src": "/upload-resumes/",
-      "dest": "api.py"
+      "source": "/job-categories/",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/job-categories/",
-      "dest": "api.py"
+      "source": "/job-roles/:category",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/job-roles/(.*)",
-      "dest": "api.py"
+      "source": "/api/:path*",
+      "destination": "/api/index.py"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "api.py"
-    },
-    {
-      "src": "/assets/(.*)",
-      "dest": "/assets/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/((?!api|upload-resumes|job-categories|job-roles|assets|favicon.ico|logo.png|vite.svg).*)",
+      "destination": "/index.html"
     }
   ]
 }
