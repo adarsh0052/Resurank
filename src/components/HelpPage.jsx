@@ -41,7 +41,7 @@ export default function HelpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] font-sans selection:bg-zinc-900 selection:text-white relative overflow-hidden pb-32">
+    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] font-sans selection:bg-zinc-200 selection:text-zinc-900 relative overflow-hidden pb-32">
       
       {/* ----------------------------------------------------------------------
           INJECTED CUSTOM STYLES
@@ -131,7 +131,7 @@ export default function HelpPage() {
           </div>
 
           {/* Premium Support Card */}
-          <div className="bg-zinc-950 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-2xl">
+          <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-2xl">
             {/* Ambient inner glow */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 blur-3xl rounded-full pointer-events-none" />
             
@@ -143,11 +143,11 @@ export default function HelpPage() {
             </p>
 
             <div className="space-y-4 mb-8 relative z-10">
-              <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                 <span className="text-[10px] font-mono text-zinc-500 uppercase">Endpoint</span>
-                <span className="text-[11px] font-mono text-zinc-200">support@resurank.com</span>
+                <span className="text-[11px] font-mono text-zinc-250">support@resurank.com</span>
               </div>
-              <div className="flex justify-between items-center border-b border-zinc-800 pb-3">
+              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
                 <span className="text-[10px] font-mono text-zinc-500 uppercase">Latency</span>
                 <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-2">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
@@ -158,7 +158,7 @@ export default function HelpPage() {
 
             <Link 
               to="/resume-screener-bot" 
-              className="group relative w-full flex items-center justify-center h-12 bg-white text-zinc-950 rounded-xl text-xs font-semibold tracking-wide hover:scale-[1.02] transition-transform z-10"
+              className="group relative w-full flex items-center justify-center h-12 bg-white text-slate-850 hover:text-slate-950 rounded-xl text-xs font-semibold tracking-wide hover:scale-[1.02] transition-all z-10"
             >
               Open Terminal Workspace
             </Link>
@@ -192,7 +192,7 @@ export default function HelpPage() {
                 <div key={idx} className="relative">
                   {/* Node */}
                   <div className="absolute -left-[31px] sm:-left-[39px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-zinc-200 flex items-center justify-center z-10">
-                    <div className="w-1.5 h-1.5 rounded-full bg-zinc-900" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
                   </div>
                   
                   <div className="glass-panel glass-card-hover rounded-2xl p-6 relative">

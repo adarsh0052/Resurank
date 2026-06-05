@@ -201,7 +201,7 @@ export default function ResumeScreenerBot() {
     : [];
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white overflow-hidden relative">
+    <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans selection:bg-zinc-200 selection:text-zinc-900 overflow-hidden relative">
       
       {/* ----------------------------------------------------------------------
           INJECTED CUSTOM STYLES
@@ -224,29 +224,28 @@ export default function ResumeScreenerBot() {
         
         .input-luxury:focus {
           background: #ffffff;
-          border-color: #09090B;
-          box-shadow: 0 0 0 4px rgba(9, 9, 11, 0.05), inset 0 2px 4px rgba(0, 0, 0, 0.01);
+          border-color: #3b82f6;
+          box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05), inset 0 2px 4px rgba(0, 0, 0, 0.01);
           outline: none;
         }
 
         .cta-button {
           position: relative;
-          overflow: hidden;
-          background: #09090B;
-          color: white;
+          border: 1px solid transparent;
+          background-clip: padding-box, border-box;
+          background-origin: border-box;
+          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
+          color: #1e293b;
+          font-weight: 600;
+          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
           transition: all 0.3s ease;
         }
         
-        .cta-button::after {
-          content: '';
-          position: absolute;
-          top: 0; left: -100%;
-          width: 50%; height: 100%;
-          background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
-          transform: skewX(-20deg);
-          transition: left 0.5s ease;
+        .cta-button:hover:not(:disabled) {
+          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
+          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
+          transform: translateY(-1px);
         }
-        .cta-button:hover:not(:disabled)::after { left: 200%; }
         .cta-button:active:not(:disabled) { transform: scale(0.98); }
 
         /* Premium Scrollbar for Workspace */
@@ -265,22 +264,22 @@ export default function ResumeScreenerBot() {
       <div className="absolute top-[-10%] right-[-5%] w-[600px] h-[600px] bg-emerald-100/40 blur-[120px] rounded-full pointer-events-none -z-10" />
       
       {/* Dynamic Header System Status */}
-      <header className="sticky top-0 z-50 flex items-center justify-between px-6 py-4 bg-white/80 backdrop-blur-md border-b border-zinc-200/60 shadow-sm">
-        <div className="flex items-center gap-4">
-          <div className="w-8 h-8 rounded-xl bg-zinc-950 flex items-center justify-center text-white">
+      <header className="sticky top-0 z-50 flex items-center justify-between px-3 sm:px-6 py-3 sm:py-4 bg-white/80 backdrop-blur-md border-b border-zinc-200/60 shadow-sm">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="w-8 h-8 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-650 flex items-center justify-center text-white shadow-md">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
           </div>
           <div>
-            <h1 className="text-[13px] font-semibold tracking-tight leading-none text-zinc-900">ResuRank Console</h1>
-            <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest leading-none">Session // Local Node</span>
+            <h1 className="text-[11px] sm:text-[13px] font-semibold tracking-tight leading-none text-zinc-900">ResuRank Console</h1>
+            <span className="hidden sm:inline text-[9px] font-mono text-zinc-400 uppercase tracking-widest leading-none mt-1">Session // Local Node</span>
           </div>
         </div>
 
-        <div className="flex bg-zinc-100/50 p-1 rounded-full border border-zinc-200/50">
+        <div className="flex bg-zinc-100/50 p-0.5 rounded-full border border-zinc-200/50">
           <button
             onClick={() => setActiveTab("upload")}
-            className={`px-6 py-2 rounded-full text-[12px] font-semibold transition-all duration-300 ${
-              activeTab === "upload" ? "bg-white text-zinc-950 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-900"
+            className={`px-3 sm:px-6 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-[12px] font-semibold transition-all duration-300 ${
+              activeTab === "upload" ? "bg-white text-zinc-900 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-950"
             }`}
           >
             Pipeline Configuration
@@ -288,16 +287,16 @@ export default function ResumeScreenerBot() {
           <button
             onClick={() => results && setActiveTab("dashboard")}
             disabled={!results}
-            className={`px-6 py-2 rounded-full text-[12px] font-semibold transition-all duration-300 ${
-              !results ? "opacity-40 cursor-not-allowed text-zinc-400" : 
-              activeTab === "dashboard" ? "bg-white text-zinc-950 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-900"
+            className={`px-3 sm:px-6 py-1.5 sm:py-2 rounded-full text-[10px] sm:text-[12px] font-semibold transition-all duration-300 ${
+              !results ? "opacity-30 cursor-not-allowed text-zinc-400" : 
+              activeTab === "dashboard" ? "bg-white text-zinc-900 shadow-sm border border-zinc-200/50" : "text-zinc-500 hover:text-zinc-950"
             }`}
           >
             Intelligence Dashboard
           </button>
         </div>
 
-        <div className="flex items-center gap-3 px-4 py-2 bg-zinc-50 border border-zinc-200 rounded-full">
+        <div className="hidden md:flex items-center gap-3 px-4 py-2 bg-zinc-50 border border-zinc-200 rounded-full">
           <span className="relative flex h-2 w-2">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
@@ -366,7 +365,7 @@ export default function ResumeScreenerBot() {
                   <form onSubmit={triggerUpload} className="space-y-8 h-full flex flex-col justify-between">
                     
                     <div className="space-y-6">
-                      <div className="grid grid-cols-2 gap-6">
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
                         <div className="space-y-2">
                           <label className="block text-[10px] font-mono font-semibold text-zinc-500 uppercase tracking-widest">
                             Category Node //
@@ -480,10 +479,10 @@ export default function ResumeScreenerBot() {
             TAB 2: DASHBOARD
         ---------------------------------------------------------------------- */}
         {activeTab === "dashboard" && results && (
-          <div className="w-full h-[calc(100vh-140px)] min-h-[600px] flex flex-col lg:flex-row gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
+          <div className="w-full lg:h-[calc(100vh-160px)] flex flex-col lg:flex-row gap-6 animate-in fade-in slide-in-from-bottom-8 duration-700">
             
             {/* Left: Ranked Data Matrix */}
-            <div className="lg:w-2/3 flex flex-col glass-panel rounded-3xl overflow-hidden shadow-xl border-zinc-200/80 bg-white/40">
+            <div className="w-full lg:w-2/3 h-[550px] lg:h-full flex flex-col glass-panel rounded-3xl overflow-hidden shadow-xl border-zinc-200/80 bg-white/40">
               
               {/* Premium Header/Stats Bar */}
               <div className="flex flex-col sm:flex-row items-center justify-between p-6 border-b border-zinc-200/60 bg-white/60">
@@ -534,7 +533,7 @@ export default function ResumeScreenerBot() {
                           onClick={() => setExpandedCandidate(isExpanded ? null : idx)}
                         >
                           <div className="flex items-center gap-4">
-                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-mono text-xs font-bold border transition-colors ${isExpanded ? 'bg-zinc-900 text-white border-zinc-900' : 'bg-zinc-50 text-zinc-600 border-zinc-200'}`}>
+                            <div className={`w-10 h-10 rounded-xl flex items-center justify-center font-mono text-xs font-bold border transition-all ${isExpanded ? 'bg-gradient-to-tr from-blue-600 to-indigo-650 text-white border-transparent' : 'bg-zinc-50 text-zinc-600 border-zinc-200'}`}>
                               {String(idx + 1).padStart(2, '0')}
                             </div>
                             <div>
@@ -581,7 +580,7 @@ export default function ResumeScreenerBot() {
                                       </div>
                                       <div className="h-1.5 w-full bg-zinc-200/80 rounded-full overflow-hidden">
                                         <div 
-                                          className="h-full bg-zinc-900 rounded-full" 
+                                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full" 
                                           style={{ width: `${Math.min(100, Math.max(0, typeof itemScore === 'number' ? itemScore : 0))}%` }}
                                         />
                                       </div>
@@ -608,7 +607,7 @@ export default function ResumeScreenerBot() {
             </div>
 
             {/* Right: Dialogue / Terminal Assistant */}
-            <div className="lg:w-1/3 flex flex-col glass-panel rounded-3xl overflow-hidden shadow-xl border-zinc-200/80 bg-white/80 relative">
+            <div className="w-full lg:w-1/3 h-[550px] lg:h-full flex flex-col glass-panel rounded-3xl overflow-hidden shadow-xl border-zinc-200/80 bg-white/80 relative">
               
               {/* Header */}
               <div className="p-5 border-b border-zinc-200/60 bg-zinc-50/50 flex items-center justify-between">
@@ -633,7 +632,7 @@ export default function ResumeScreenerBot() {
                     <div className={`p-4 rounded-2xl max-w-[90%] text-[13px] leading-relaxed shadow-sm ${
                       msg.sender === "bot" 
                         ? "bg-white border border-zinc-200 text-zinc-700 rounded-tl-sm" 
-                        : "bg-zinc-900 text-white rounded-tr-sm"
+                        : "bg-slate-900 text-white rounded-tr-sm"
                     }`}>
                       {msg.text}
                     </div>
@@ -667,7 +666,7 @@ export default function ResumeScreenerBot() {
                   <button
                     type="submit"
                     disabled={isAsking || !userQuestion.trim()}
-                    className="absolute right-2 w-9 h-9 flex items-center justify-center bg-zinc-900 hover:bg-zinc-800 text-white rounded-lg disabled:opacity-50 transition-colors"
+                    className="absolute right-2 w-9 h-9 flex items-center justify-center bg-gradient-to-tr from-blue-600 to-indigo-650 hover:opacity-95 hover:scale-105 text-white rounded-lg disabled:opacity-50 transition-all"
                   >
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
                   </button>

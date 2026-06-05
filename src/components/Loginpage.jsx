@@ -46,7 +46,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white relative overflow-hidden">
+    <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans selection:bg-zinc-200 selection:text-zinc-900 relative overflow-hidden">
       
       {/* ----------------------------------------------------------------------
           INJECTED CUSTOM STYLES
@@ -69,34 +69,27 @@ export default function LoginPage() {
         
         .input-luxury:focus {
           background: #ffffff;
-          border-color: #09090B; /* zinc-950 */
-          box-shadow: 0 0 0 4px rgba(9, 9, 11, 0.05), inset 0 2px 4px rgba(0, 0, 0, 0.01);
+          border-color: #3b82f6; /* slate focus */
+          box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05), inset 0 2px 4px rgba(0, 0, 0, 0.01);
           outline: none;
         }
 
         .cta-button {
           position: relative;
-          overflow: hidden;
-          background: #09090B;
-          color: white;
-          box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.15);
+          border: 1px solid transparent;
+          background-clip: padding-box, border-box;
+          background-origin: border-box;
+          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
+          color: #1e293b;
+          font-weight: 600;
+          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
           transition: all 0.3s ease;
         }
         
-        .cta-button::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 50%;
-          height: 100%;
-          background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
-          transform: skewX(-20deg);
-          transition: left 0.5s ease;
-        }
-
-        .cta-button:hover:not(:disabled)::after {
-          left: 200%;
+        .cta-button:hover:not(:disabled) {
+          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
+          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
+          transform: translateY(-1px);
         }
 
         .cta-button:active:not(:disabled) {

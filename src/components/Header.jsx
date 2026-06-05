@@ -45,27 +45,19 @@ export default function Header() {
 
         .cta-button {
           position: relative;
-          overflow: hidden;
-          background: #09090B;
-          color: white;
-          box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.1);
-          transition: all 0.3s ease;
+          border: 1px solid transparent;
+          background-clip: padding-box, border-box;
+          background-origin: border-box;
+          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
+          color: #1e293b;
+          font-weight: 600;
+          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
+          transition: transform 0.2s, box-shadow 0.2s;
         }
         
-        .cta-button::after {
-          content: '';
-          position: absolute;
-          top: 0;
-          left: -100%;
-          width: 50%;
-          height: 100%;
-          background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.1) 50%, rgba(255,255,255,0) 100%);
-          transform: skewX(-20deg);
-          transition: left 0.5s ease;
-        }
-
-        .cta-button:hover::after {
-          left: 200%;
+        .cta-button:hover {
+          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
+          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
         }
 
         .mobile-menu-glass {
@@ -76,15 +68,15 @@ export default function Header() {
       `}} />
 
       {/* Floating Spatial Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2 sm:pt-4' : 'pt-4 sm:pt-6'} px-4 sm:px-6 pointer-events-none`}>
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2' : 'pt-4'} px-4 sm:px-6 pointer-events-none`}>
         
         <div className={`pointer-events-auto w-full max-w-[1200px] flex items-center justify-between rounded-full transition-all duration-500 px-4 sm:px-6 nav-glass ${scrolled ? 'h-14 sm:h-16 nav-glass-scrolled' : 'h-16 sm:h-[72px]'}`}>
           
           {/* Brand Logo */}
           <Link to="/" className="flex items-center gap-3 group">
             {/* Minimalist Vector Node Logo */}
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-zinc-950 text-white shadow-md transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[15deg]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-zinc-800 to-transparent opacity-50 rounded-xl" />
+            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-650 text-white shadow-md transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[15deg]">
+              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-850 to-transparent opacity-50 rounded-xl" />
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="relative z-10">
                 <circle cx="12" cy="12" r="10" />
                 <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
@@ -92,7 +84,7 @@ export default function Header() {
               </svg>
             </div>
             <div className="flex items-center gap-1.5">
-              <span className="text-[15px] font-semibold tracking-tight text-zinc-950">
+              <span className="text-[15px] font-semibold tracking-tight text-zinc-900">
                 ResuRank
               </span>
               <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-mono font-medium tracking-widest text-zinc-500 uppercase">

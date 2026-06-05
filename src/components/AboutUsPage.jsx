@@ -2,7 +2,7 @@ import React from "react";
 
 function AboutUsPage() {
   return (
-    <div className="bg-white min-h-screen text-slate-900 font-sans selection:bg-slate-950 selection:text-white">
+    <div className="bg-white min-h-screen text-slate-900 font-sans selection:bg-zinc-200 selection:text-zinc-900">
       
       {/* Editorial Header */}
       <section className="py-20 border-b border-slate-900/[0.06] bg-slate-50/20">

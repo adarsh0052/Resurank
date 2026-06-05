@@ -88,7 +88,7 @@ export default function HomePage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] font-sans selection:bg-[#09090B] selection:text-white overflow-hidden">
+    <div className="min-h-screen bg-[#FAFAFA] text-[#0f172a] font-sans selection:bg-zinc-200 selection:text-zinc-900 overflow-hidden">
       
       {/* ----------------------------------------------------------------------
           INJECTED CUSTOM STYLES FOR PREMIUM SPATIAL FEEL
@@ -110,7 +110,7 @@ export default function HomePage() {
         .layer-3 { transform: translateZ(100px); }
         
         .text-gradient {
-          background: linear-gradient(180deg, #09090B 0%, #52525B 100%);
+          background: linear-gradient(180deg, #0f172a 0%, #475569 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
         }
@@ -132,7 +132,7 @@ export default function HomePage() {
           width: 16px;
           height: 16px;
           border-radius: 50%;
-          background: #09090B;
+          background: #1e293b;
           cursor: pointer;
           border: 2px solid #FAFAFA;
           box-shadow: 0 2px 6px rgba(0,0,0,0.2);
@@ -164,8 +164,7 @@ export default function HomePage() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
-              <Link to="/signup" className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-zinc-950 px-8 font-medium text-white shadow-[0_8px_30px_rgb(0,0,0,0.12)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                <span className="absolute w-0 h-0 transition-all duration-500 ease-out bg-white rounded-full group-hover:w-56 group-hover:h-56 opacity-10"></span>
+              <Link to="/signup" className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full border-gradient px-8 font-semibold text-slate-800 shadow-[0_8px_30px_rgba(99,102,241,0.05)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
                 <span className="relative text-sm tracking-wide">Initialize Workspace</span>
               </Link>
               <a href="#engine" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors inline-flex items-center gap-2">
@@ -218,7 +217,7 @@ export default function HomePage() {
                       <p className="text-xs text-zinc-500 font-medium">Lead ML Architect</p>
                     </div>
                     {/* The Match Badge (Top Layer) */}
-                    <div className="layer-3 bg-zinc-950 text-white text-[10px] font-mono font-bold px-3 py-1.5 rounded-lg shadow-xl shadow-zinc-900/20">
+                    <div className="layer-3 bg-gradient-to-tr from-blue-600 to-indigo-650 text-white text-[10px] font-mono font-bold px-3 py-1.5 rounded-lg shadow-xl shadow-indigo-900/20">
                       98% MATCH
                     </div>
                   </div>
@@ -329,9 +328,9 @@ export default function HomePage() {
       {/* ----------------------------------------------------------------------
           3. INTERACTIVE PRODUCT JOURNEY
       ---------------------------------------------------------------------- */}
-      <section id="engine" className="py-32 bg-[#09090B] text-zinc-400 relative overflow-hidden">
+      <section id="engine" className="py-32 bg-[#0f172a] text-slate-400 relative overflow-hidden">
         {/* Subtle grid line overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff0a_1px,transparent_1px),linear-gradient(to_bottom,#ffffff0a_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
 
         <div className="max-w-[1440px] mx-auto px-6 sm:px-12 relative z-10">
           
@@ -339,7 +338,7 @@ export default function HomePage() {
             <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4">
               Inspect the processing pipeline.
             </h2>
-            <p className="text-lg max-w-xl">
+            <p className="text-lg max-w-xl text-slate-400">
               Interact with the simulation below to understand how candidate profiles are dynamically evaluated without relying on cloud APIs.
             </p>
           </div>
@@ -375,11 +374,11 @@ export default function HomePage() {
             </div>
 
             {/* Right: Interactive Sandbox Display */}
-            <div className="lg:col-span-8 bg-zinc-900 border border-zinc-800 rounded-[2rem] p-8 sm:p-12 min-h-[500px] flex flex-col relative shadow-2xl shadow-black/50">
+            <div className="lg:col-span-8 bg-slate-900 border border-slate-800/80 rounded-[2rem] p-8 sm:p-12 min-h-[500px] flex flex-col relative shadow-2xl shadow-slate-950/40">
               
-              <div className="flex justify-between items-center mb-12 border-b border-zinc-800 pb-6">
-                <span className="text-[11px] font-mono text-zinc-500">TERMINAL // SANDBOX_ENV</span>
-                <span className="text-[11px] font-mono px-2 py-1 bg-zinc-800 rounded text-zinc-300">ACTIVE</span>
+              <div className="flex justify-between items-center mb-12 border-b border-slate-800/80 pb-6">
+                <span className="text-[11px] font-mono text-slate-500">TERMINAL // SANDBOX_ENV</span>
+                <span className="text-[11px] font-mono px-2 py-1 bg-slate-800 rounded text-slate-350">ACTIVE</span>
               </div>
 
               <div className="flex-grow flex flex-col justify-center">
@@ -387,24 +386,24 @@ export default function HomePage() {
                 {/* Step 1: Intake */}
                 {activeEngineStep === 0 && (
                   <div className="text-center space-y-6">
-                    <div className="w-32 h-32 mx-auto rounded-2xl border border-dashed border-zinc-700 bg-zinc-800/20 flex items-center justify-center mb-8">
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#52525B" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+                    <div className="w-32 h-32 mx-auto rounded-2xl border border-dashed border-slate-700 bg-slate-800/20 flex items-center justify-center mb-8">
+                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
                     </div>
-                    <div className="font-mono text-sm text-zinc-300">Drop engineering_candidates.zip here</div>
-                    <div className="text-xs text-zinc-600">Local processing guarantees privacy. Files never leave your machine.</div>
+                    <div className="font-mono text-sm text-slate-300">Drop engineering_candidates.zip here</div>
+                    <div className="text-xs text-slate-500">Local processing guarantees privacy. Files never leave your machine.</div>
                   </div>
                 )}
 
                 {/* Step 2: Extraction */}
                 {activeEngineStep === 1 && (
                   <div className="space-y-4 font-mono text-sm">
-                    <div className="text-zinc-500 mb-6">// Parsing: candidate_schen.pdf</div>
-                    <div className="bg-zinc-950 p-4 rounded-lg border border-zinc-800/80 space-y-2 text-zinc-300">
-                      <div className="flex gap-4"><span className="text-zinc-500">1</span><span><span className="text-emerald-400">const</span> candidate = {'{'}</span></div>
-                      <div className="flex gap-4"><span className="text-zinc-500">2</span><span className="pl-4">name: <span className="text-rose-300">"Sarah Chen"</span>,</span></div>
-                      <div className="flex gap-4"><span className="text-zinc-500">3</span><span className="pl-4">skills: [<span className="text-rose-300">"PyTorch"</span>, <span className="text-rose-300">"Distributed Systems"</span>],</span></div>
-                      <div className="flex gap-4"><span className="text-zinc-500">4</span><span className="pl-4">vector_embedding: <span className="text-amber-300">[0.042, -0.912, 0.551, ...]</span></span></div>
-                      <div className="flex gap-4"><span className="text-zinc-500">5</span><span>{'}'}</span></div>
+                    <div className="text-slate-500 mb-6">// Parsing: candidate_schen.pdf</div>
+                    <div className="bg-slate-950 p-4 rounded-lg border border-slate-800/80 space-y-2 text-slate-300">
+                      <div className="flex gap-4"><span className="text-slate-500">1</span><span><span className="text-emerald-400">const</span> candidate = {'{'}</span></div>
+                      <div className="flex gap-4"><span className="text-slate-500">2</span><span className="pl-4">name: <span className="text-rose-300">"Sarah Chen"</span>,</span></div>
+                      <div className="flex gap-4"><span className="text-slate-500">3</span><span className="pl-4">skills: [<span className="text-rose-300">"PyTorch"</span>, <span className="text-rose-300">"Distributed Systems"</span>],</span></div>
+                      <div className="flex gap-4"><span className="text-slate-500">4</span><span className="pl-4">vector_embedding: <span className="text-amber-300">[0.042, -0.912, 0.551, ...]</span></span></div>
+                      <div className="flex gap-4"><span className="text-slate-500">5</span><span>{'}'}</span></div>
                     </div>
                   </div>
                 )}
@@ -445,27 +444,27 @@ export default function HomePage() {
                 {/* Step 4: Decision Matrix */}
                 {activeEngineStep === 3 && (
                   <div className="space-y-4">
-                    <div className="text-xs font-mono text-zinc-500 mb-4 pb-2 border-b border-zinc-800">RANKED RESULTS // BASELINE_ENGINEER_ROLE</div>
+                    <div className="text-xs font-mono text-slate-550 mb-4 pb-2 border-b border-slate-800/80">RANKED RESULTS // BASELINE_ENGINEER_ROLE</div>
                     
-                    <div className="bg-zinc-800/30 border border-emerald-500/20 rounded-xl p-5 flex justify-between items-center transition-all hover:bg-zinc-800/50 relative overflow-hidden">
+                    <div className="bg-slate-800/30 border border-emerald-500/20 rounded-xl p-5 flex justify-between items-center transition-all hover:bg-slate-800/50 relative overflow-hidden">
                       <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500" />
                       <div>
                         <div className="text-white font-medium mb-1">Sarah Chen</div>
-                        <div className="text-xs text-zinc-400">Lead ML Architect</div>
+                        <div className="text-xs text-slate-400">Lead ML Architect</div>
                       </div>
                       <div className="text-right">
                         <div className="text-emerald-400 font-mono text-sm">{calculateDynamicScore()}% Match</div>
-                        <div className="text-[10px] text-zinc-500 mt-1">Based on custom weights</div>
+                        <div className="text-[10px] text-slate-500 mt-1">Based on custom weights</div>
                       </div>
                     </div>
 
-                    <div className="bg-zinc-900 border border-zinc-800 rounded-xl p-5 flex justify-between items-center opacity-60">
+                    <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-5 flex justify-between items-center opacity-60">
                       <div>
                         <div className="text-white font-medium mb-1">Marcus Aurelius</div>
-                        <div className="text-xs text-zinc-500">Product Director</div>
+                        <div className="text-xs text-slate-500">Product Director</div>
                       </div>
                       <div className="text-right">
-                        <div className="text-zinc-300 font-mono text-sm">74% Match</div>
+                        <div className="text-slate-300 font-mono text-sm">74% Match</div>
                       </div>
                     </div>
                   </div>
@@ -495,7 +494,7 @@ export default function HomePage() {
             {/* Card 1 */}
             <div className="reveal-on-scroll bg-zinc-50 rounded-3xl p-10 border border-zinc-100 hover:shadow-xl transition-shadow duration-500">
               <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mb-8">
-                <div className="w-4 h-4 rounded-full bg-zinc-900" />
+                <div className="w-4 h-4 rounded-full bg-slate-700" />
               </div>
               <h3 className="text-lg font-medium text-zinc-900 mb-3">Local Vector Space</h3>
               <p className="text-sm text-zinc-500 leading-relaxed">
@@ -506,7 +505,7 @@ export default function HomePage() {
             {/* Card 2 */}
             <div className="reveal-on-scroll bg-zinc-50 rounded-3xl p-10 border border-zinc-100 hover:shadow-xl transition-shadow duration-500" style={{ transitionDelay: '100ms' }}>
               <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mb-8">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#09090B" strokeWidth="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
               </div>
               <h3 className="text-lg font-medium text-zinc-900 mb-3">Dynamic Trait Scoring</h3>
               <p className="text-sm text-zinc-500 leading-relaxed">
@@ -515,8 +514,8 @@ export default function HomePage() {
             </div>
 
             {/* Card 3 */}
-            <div className="reveal-on-scroll bg-zinc-950 rounded-3xl p-10 border border-zinc-800 shadow-2xl hover:shadow-3xl transition-shadow duration-500" style={{ transitionDelay: '200ms' }}>
-              <div className="w-12 h-12 bg-zinc-800 rounded-2xl border border-zinc-700 flex items-center justify-center mb-8 text-white font-mono text-xs">
+            <div className="reveal-on-scroll bg-gradient-to-b from-slate-900 to-indigo-950 rounded-3xl p-10 border border-slate-800/80 shadow-2xl hover:shadow-3xl transition-shadow duration-500" style={{ transitionDelay: '200ms' }}>
+              <div className="w-12 h-12 bg-slate-800 rounded-2xl border border-slate-700 flex items-center justify-center mb-8 text-white font-mono text-xs">
                 {'{ }'}
               </div>
               <h3 className="text-lg font-medium text-white mb-3">Conversational Query</h3>
@@ -540,7 +539,7 @@ export default function HomePage() {
           <p className="text-lg text-zinc-500 mb-10">
             Deploy the engine locally and parse your first 100 candidates in seconds.
           </p>
-          <Link to="/signup" className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full bg-zinc-950 px-10 font-medium text-white shadow-xl transition-transform hover:scale-[1.02]">
+          <Link to="/signup" className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full border-gradient px-10 font-semibold text-slate-800 shadow-xl transition-transform hover:scale-[1.02]">
              <span className="relative text-sm tracking-wide">Start Building</span>
           </Link>
         </div>

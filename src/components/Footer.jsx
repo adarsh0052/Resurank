@@ -20,7 +20,7 @@ export default function Footer() {
         .giant-text {
           font-size: clamp(6rem, 15vw, 20rem);
           line-height: 0.8;
-          background: linear-gradient(180deg, rgba(9,9,11,0.03) 0%, rgba(9,9,11,0.0) 100%);
+          background: linear-gradient(180deg, rgba(15,23,42,0.03) 0%, rgba(15,23,42,0.0) 100%);
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
           user-select: none;
@@ -43,8 +43,8 @@ export default function Footer() {
           <div className="lg:col-span-4 flex flex-col justify-between">
             <div>
               <Link to="/" className="flex items-center gap-3 group w-max">
-                <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-zinc-950 text-white shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[15deg]">
-                  <div className="absolute inset-0 bg-gradient-to-tr from-zinc-800 to-transparent opacity-50 rounded-xl" />
+                <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-650 text-white shadow-lg transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[15deg]">
+                  <div className="absolute inset-0 bg-gradient-to-tr from-indigo-850 to-transparent opacity-50 rounded-xl" />
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="relative z-10">
                     <circle cx="12" cy="12" r="10" />
                     <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
@@ -52,7 +52,7 @@ export default function Footer() {
                   </svg>
                 </div>
                 <div className="flex flex-col">
-                  <span className="text-[16px] font-semibold tracking-tight text-zinc-950 leading-none mb-1">
+                  <span className="text-[16px] font-semibold tracking-tight text-zinc-900 leading-none mb-1">
                     ResuRank
                   </span>
                   <span className="text-[10px] font-mono tracking-widest text-zinc-400 uppercase leading-none">
@@ -88,7 +88,7 @@ export default function Footer() {
               <ul className="space-y-4">
                 {["Workspace", "Vector Store", "LLM Integration", "Security"].map((item) => (
                   <li key={item}>
-                    <Link to="/tools" className="group flex items-center text-[13px] font-medium text-zinc-600 hover:text-zinc-950 transition-colors">
+                    <Link to="/tools" className="group flex items-center text-[13px] font-medium text-zinc-600 hover:text-zinc-900 transition-colors">
                       {item}
                       <svg className="w-3 h-3 ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </Link>
@@ -105,7 +105,7 @@ export default function Footer() {
               <ul className="space-y-4">
                 {["Customers", "Documentation", "Help Center", "Privacy Policy"].map((item) => (
                   <li key={item}>
-                    <Link to="/about" className="group flex items-center text-[13px] font-medium text-zinc-600 hover:text-zinc-950 transition-colors">
+                    <Link to="/about" className="group flex items-center text-[13px] font-medium text-zinc-600 hover:text-zinc-900 transition-colors">
                       {item}
                       <svg className="w-3 h-3 ml-2 opacity-0 -translate-x-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </Link>

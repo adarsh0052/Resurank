@@ -43,7 +43,7 @@ export default function GetStartedPage() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center relative overflow-hidden font-sans selection:bg-zinc-900 selection:text-white">
+    <div className="min-h-screen bg-[#FAFAFA] flex flex-col items-center justify-center relative overflow-hidden font-sans selection:bg-zinc-200 selection:text-zinc-900">
       
       {/* ----------------------------------------------------------------------
           INJECTED CUSTOM STYLES
@@ -83,8 +83,8 @@ export default function GetStartedPage() {
       <div className="relative z-10 flex flex-col items-center">
         
         {/* Brand Node Icon */}
-        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-zinc-950 text-white shadow-2xl mb-12">
-          <div className="absolute inset-0 bg-gradient-to-tr from-zinc-800 to-transparent opacity-50 rounded-2xl" />
+        <div className="relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-tr from-blue-600 to-indigo-650 text-white shadow-2xl mb-12">
+          <div className="absolute inset-0 bg-gradient-to-tr from-indigo-800 to-transparent opacity-50 rounded-2xl" />
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="relative z-10">
             <circle cx="12" cy="12" r="10" />
             <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
@@ -117,7 +117,7 @@ export default function GetStartedPage() {
           {/* Progress Bar */}
           <div className="w-full h-1 bg-zinc-100 rounded-full overflow-hidden">
             <div 
-              className="h-full bg-zinc-900 transition-all duration-300 ease-out rounded-full"
+              className="h-full bg-gradient-to-r from-blue-500 to-indigo-600 transition-all duration-300 ease-out rounded-full"
               style={{ width: `${progress}%` }}
             />
           </div>

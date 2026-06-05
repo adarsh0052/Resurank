@@ -5,12 +5,12 @@
 ---------------------------------------------------------------------- */
 @theme {
   --color-zinc-50: #FAFAFA;
-  --color-zinc-900: #18181B;
-  --color-zinc-950: #09090B;
+  --color-zinc-900: #1e293b;
+  --color-zinc-950: #0b132a;
 }
 
 body {
-  @apply bg-[#FAFAFA] text-[#09090B] antialiased;
+  @apply bg-[#FAFAFA] text-[#0f172a] antialiased;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
@@ -19,7 +19,7 @@ body {
 }
 
 ::selection {
-  background-color: #09090B;
+  background-color: #1e293b;
   color: #FFFFFF;
 }
 
@@ -66,6 +66,46 @@ body {
   box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
+/* Premium Editorial Border Collapse Grid */
+.editorial-grid {
+  display: grid;
+  gap: 0;
+  border-top: 1px solid rgba(15, 23, 42, 0.08);
+  border-left: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+.editorial-cell {
+  border-right: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+}
+
+/* Border Gradient Button Utility */
+.border-gradient {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box, border-box;
+  background-origin: border-box;
+  background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.border-gradient:hover {
+  background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
+}
+
+.border-gradient-dark {
+  position: relative;
+  border: 1px solid transparent;
+  background-clip: padding-box, border-box;
+  background-origin: border-box;
+  background-image: linear-gradient(to right, #0f172a, #0f172a), linear-gradient(to right, #3b82f6, #6366f1);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.border-gradient-dark:hover {
+  background-image: linear-gradient(to right, #1e293b, #1e293b), linear-gradient(to right, #6366f1, #3b82f6);
+}
+
 .glass-card-hover {
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
@@ -88,7 +128,7 @@ body {
 .custom-cursor-dot {
   width: 6px;
   height: 6px;
-  background-color: #09090B;
+  background-color: #1e293b;
   position: fixed;
   pointer-events: none;
   z-index: 9999;
@@ -100,7 +140,7 @@ body {
 .custom-cursor-ring {
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(9, 9, 11, 0.15);
+  border: 1px solid rgba(30, 41, 59, 0.15);
   position: fixed;
   pointer-events: none;
   z-index: 9998;

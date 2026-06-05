@@ -46,22 +46,21 @@ export default function ToolsPage() {
 
         .cta-button {
           position: relative;
-          overflow: hidden;
-          background: #09090B;
-          color: white;
+          border: 1px solid transparent;
+          background-clip: padding-box, border-box;
+          background-origin: border-box;
+          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
+          color: #1e293b;
+          font-weight: 600;
+          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
           transition: all 0.3s ease;
         }
         
-        .cta-button::after {
-          content: '';
-          position: absolute;
-          top: 0; left: -100%;
-          width: 50%; height: 100%;
-          background: linear-gradient(to right, rgba(255,255,255,0) 0%, rgba(255,255,255,0.15) 50%, rgba(255,255,255,0) 100%);
-          transform: skewX(-20deg);
-          transition: left 0.5s ease;
+        .cta-button:hover {
+          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
+          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
+          transform: translateY(-1px);
         }
-        .cta-button:hover::after { left: 200%; }
         .cta-button:active { transform: scale(0.98); }
 
         .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
@@ -81,7 +80,7 @@ export default function ToolsPage() {
           width: 12px;
           height: 12px;
           border-radius: 50%;
-          background: #09090B;
+          background: #1e293b;
           cursor: pointer;
           border: 2px solid #FAFAFA;
           box-shadow: 0 2px 4px rgba(0,0,0,0.2);
@@ -170,7 +169,7 @@ export default function ToolsPage() {
             </div>
 
             {/* Simulated UI: Code Environment */}
-            <div className="bg-zinc-950 rounded-2xl p-6 shadow-2xl relative z-10 font-mono text-[10px] leading-relaxed overflow-hidden">
+            <div className="bg-slate-950 rounded-2xl p-6 shadow-2xl relative z-10 font-mono text-[10px] leading-relaxed overflow-hidden">
               <div className="flex gap-1.5 mb-4 border-b border-zinc-800 pb-3">
                 <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
                 <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
@@ -208,7 +207,7 @@ export default function ToolsPage() {
                 <span className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-widest block mb-1">Operator</span>
                 <p className="text-xs text-zinc-700 leading-relaxed">"Who has built distributed GPU orchestration pipelines?"</p>
               </div>
-              <div className="bg-zinc-950 rounded-2xl rounded-tl-sm p-4 w-[85%] shadow-xl">
+              <div className="bg-slate-900 rounded-2xl rounded-tl-sm p-4 w-[85%] shadow-xl">
                 <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-1">System</span>
                 <p className="text-xs text-zinc-300 leading-relaxed">"Sarah Chen has 4+ years of scale experience writing CUDA and PyTorch workload packages."</p>
               </div>
@@ -259,7 +258,7 @@ export default function ToolsPage() {
       ---------------------------------------------------------------------- */}
       <section className="py-32 px-6 relative z-10 text-center reveal-on-scroll">
         <div className="max-w-2xl mx-auto space-y-8 glass-panel rounded-[3rem] p-12 shadow-2xl">
-          <div className="w-16 h-16 mx-auto bg-zinc-950 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg">
+          <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-blue-600 to-indigo-650 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
           </div>
           <h2 className="text-3xl sm:text-4xl font-semibold text-zinc-900 tracking-tight">

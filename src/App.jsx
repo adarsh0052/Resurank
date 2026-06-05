@@ -51,7 +51,7 @@ function AppLayout() {
   const isStandalone = standaloneRoutes.includes(location.pathname);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] font-sans selection:bg-zinc-900 selection:text-white flex flex-col relative">
+    <div className="min-h-screen bg-[#FAFAFA] text-[#0f172a] font-sans selection:bg-zinc-200 selection:text-zinc-900 flex flex-col relative">
       
       {/* ----------------------------------------------------------------------
           GLOBAL PREMIUM STYLES
@@ -59,7 +59,7 @@ function AppLayout() {
       <style dangerouslySetInnerHTML={{ __html: `
         html, body {
           background-color: #FAFAFA;
-          color: #09090B;
+          color: #0f172a;
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
           scroll-behavior: smooth;
@@ -95,7 +95,7 @@ function AppLayout() {
       {!isStandalone && <Header />}
       
       {/* Dynamic Route Viewport */}
-      <main className="flex-grow flex flex-col w-full">
+      <main className={!isStandalone ? "pt-24 sm:pt-28 flex-grow flex flex-col w-full" : "flex-grow flex flex-col w-full"}>
         <Routes>
           <Route path="/" element={<HomePage />} /> 
           <Route path="/login" element={<LoginPage />} />
