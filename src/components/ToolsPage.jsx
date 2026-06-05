@@ -2,283 +2,369 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 
 export default function ToolsPage() {
-  
-  // Scroll reveal effect
+  const sliders = [
+    { label: "Technical Execution", val: 85 },
+    { label: "Systems Architecture", val: 92 },
+    { label: "Academic Baseline", val: 40 },
+  ];
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
+          if (entry.isIntersecting) entry.target.classList.add("is-visible");
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
+
     const elements = document.querySelectorAll(".reveal-on-scroll");
-    elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      elements.forEach((element) => observer.unobserve(element));
+    };
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans selection:bg-zinc-900 selection:text-white relative overflow-hidden">
-      
-      {/* ----------------------------------------------------------------------
-          INJECTED CUSTOM STYLES
-      ---------------------------------------------------------------------- */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .glass-panel {
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(32px);
-          -webkit-backdrop-filter: blur(32px);
-          border: 1px solid rgba(255, 255, 255, 0.9);
-          box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
+    <div
+      className="relative min-h-screen overflow-hidden bg-[#F6F1E8] pb-28 text-[#0B0B09] selection:bg-[#FF5A1F]/20"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      <div className="tools-grid" aria-hidden="true" />
+      <div className="tools-glow" aria-hidden="true" />
 
-        .glass-card-hover {
-          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .glass-card-hover:hover {
-          background: rgba(255, 255, 255, 0.85);
-          transform: translateY(-4px);
-          box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-
-        .cta-button {
-          position: relative;
-          border: 1px solid transparent;
-          background-clip: padding-box, border-box;
-          background-origin: border-box;
-          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
-          color: #1e293b;
-          font-weight: 600;
-          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
-          transition: all 0.3s ease;
-        }
-        
-        .cta-button:hover {
-          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
-          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
-          transform: translateY(-1px);
-        }
-        .cta-button:active { transform: scale(0.98); }
-
-        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-
-        .weight-slider {
-          -webkit-appearance: none;
-          width: 100%;
-          height: 2px;
-          background: #E4E4E7;
-          border-radius: 2px;
-          outline: none;
-        }
-        .weight-slider::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 12px;
-          height: 12px;
-          border-radius: 50%;
-          background: #1e293b;
-          cursor: pointer;
-          border: 2px solid #FAFAFA;
-          box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-        }
-      `}} />
-
-      {/* Abstract Background Topology */}
-      <div className="absolute top-0 left-0 right-0 h-[800px] bg-[linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)] bg-[size:48px_48px] opacity-[0.25] pointer-events-none -z-10" />
-      <div className="absolute top-[10%] left-[50%] -translate-x-1/2 w-[800px] h-[800px] bg-emerald-100/30 blur-[120px] rounded-full pointer-events-none -z-10" />
-
-      {/* ----------------------------------------------------------------------
-          HERO SECTION (Narrative Driven)
-      ---------------------------------------------------------------------- */}
-      <section className="pt-40 pb-24 relative z-10 px-6 sm:px-12">
-        <div className="max-w-[1200px] mx-auto text-center reveal-on-scroll">
-          <div className="inline-flex items-center gap-3 px-4 py-2 rounded-full border border-zinc-200 bg-white/60 backdrop-blur-md shadow-sm mb-8">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-500"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-            <span className="text-[11px] font-mono font-bold tracking-[0.2em] text-zinc-500 uppercase">
-              Platform Architecture
+      <section className="relative z-10 mx-auto max-w-[1200px] px-6 pb-16 pt-40 text-center sm:px-12">
+        <div className="reveal-on-scroll mx-auto max-w-4xl">
+          <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#E1D7C8] bg-white/70 px-2 py-1.5 shadow-sm backdrop-blur">
+            <span className="rounded-full bg-[#FF5A1F] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white">
+              Tools
+            </span>
+            <span className="pr-2 text-xs font-bold text-[#6F675E]">
+              Platform architecture
             </span>
           </div>
-          
-          <h1 className="text-5xl sm:text-6xl lg:text-[5.5rem] font-semibold tracking-tighter text-zinc-900 leading-[1.05] mb-8">
-            Designed for speed. <br className="hidden sm:block" />
-            <span className="text-zinc-400">Optimized for fit.</span>
+
+          <h1 className="text-5xl font-black leading-[1.02] tracking-tight text-[#090907] sm:text-6xl lg:text-[5.3rem]">
+            Designed for speed.
+            <br />
+            <span className="text-[#B8AFA1]">Optimized for fit.</span>
           </h1>
-          
-          <p className="text-lg sm:text-xl text-zinc-500 font-light leading-relaxed max-w-2xl mx-auto">
-            ResuRank bypasses brittle keyword filters. We run local vector engines to grade bulk datasets, dynamically adjust criteria logic, and query deep candidate structures securely.
+
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#6F675E]">
+            ResuRank bypasses brittle keyword filters. We run local vector
+            engines to grade bulk datasets, dynamically adjust criteria logic,
+            and query deep candidate structures securely.
           </p>
         </div>
       </section>
 
-      {/* ----------------------------------------------------------------------
-          ASYMMETRIC CAPABILITIES GRID
-      ---------------------------------------------------------------------- */}
-      <section className="py-12 px-6 sm:px-12 relative z-10">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-8">
+      <main className="relative z-10 mx-auto max-w-[1200px] px-6 sm:px-12">
+        <section className="grid grid-cols-1 gap-6 md:grid-cols-12">
+          <div className="reveal-on-scroll light-panel light-card-hover relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:col-span-7 lg:p-10">
+            <div className="absolute -right-24 -top-24 h-56 w-56 rounded-full bg-[#FF5A1F]/10 blur-3xl" />
 
-          {/* BLOCK 1: Dynamic Weighting (Col-span-7) */}
-          <div className="md:col-span-7 glass-panel glass-card-hover rounded-[2.5rem] p-10 sm:p-12 flex flex-col justify-between overflow-hidden relative reveal-on-scroll">
-            <div className="absolute -top-32 -right-32 w-64 h-64 bg-zinc-200/50 blur-[60px] rounded-full pointer-events-none" />
-            
-            <div className="mb-16 relative z-10">
-              <span className="font-mono text-[10px] text-zinc-400 font-bold block uppercase tracking-widest mb-4">
+            <div className="relative z-10 mb-12">
+              <span className="mb-4 block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]">
                 01 // Evaluation Engine
               </span>
-              <h3 className="text-3xl font-semibold text-zinc-900 tracking-tight mb-4">
+              <h3 className="mb-4 text-3xl font-black tracking-tight text-[#0B0B09]">
                 Dynamic Matrix Weighting
               </h3>
-              <p className="text-sm text-zinc-500 leading-relaxed max-w-md">
-                Slide logic parameters to instantly recalculate the vector distance of your entire candidate database. Prioritize architecture over academics in milliseconds.
+              <p className="max-w-md text-sm leading-7 text-[#6F675E]">
+                Slide logic parameters to instantly recalculate the vector
+                distance of your entire candidate database. Prioritize
+                architecture over academics in milliseconds.
               </p>
             </div>
 
-            {/* Simulated UI: Sliders */}
-            <div className="bg-white/80 border border-zinc-200/60 rounded-2xl p-6 shadow-sm relative z-10 space-y-6">
-              {[
-                { label: "Technical Execution", val: 85 },
-                { label: "Systems Architecture", val: 92 },
-                { label: "Academic Baseline", val: 40 }
-              ].map((item, i) => (
-                <div key={i} className="space-y-3">
-                  <div className="flex justify-between text-xs font-mono font-medium">
-                    <span className="text-zinc-500 uppercase tracking-wider">{item.label}</span>
-                    <span className="text-zinc-900">{item.val}%</span>
+            <div className="relative z-10 space-y-6 rounded-[24px] border border-[#E5DCCF] bg-white/80 p-6 shadow-sm">
+              {sliders.map((item) => (
+                <div key={item.label} className="space-y-3">
+                  <div className="flex justify-between text-xs font-bold">
+                    <span className="font-mono uppercase tracking-wider text-[#6F675E]">
+                      {item.label}
+                    </span>
+                    <span className="font-mono text-[#0B0B09]">
+                      {item.val}%
+                    </span>
                   </div>
-                  <input type="range" min="0" max="100" defaultValue={item.val} className="weight-slider pointer-events-none" />
+                  <input
+                    type="range"
+                    min="0"
+                    max="100"
+                    defaultValue={item.val}
+                    className="weight-slider pointer-events-none"
+                  />
                 </div>
               ))}
             </div>
           </div>
 
-          {/* BLOCK 2: Local Vector Store (Col-span-5) */}
-          <div className="md:col-span-5 glass-panel glass-card-hover rounded-[2.5rem] p-10 sm:p-12 flex flex-col justify-between overflow-hidden relative reveal-on-scroll" style={{ transitionDelay: '100ms' }}>
-            <div className="mb-16 relative z-10">
-              <span className="font-mono text-[10px] text-zinc-400 font-bold block uppercase tracking-widest mb-4">
+          <div className="reveal-on-scroll light-panel light-card-hover relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:col-span-5 lg:p-10">
+            <div className="relative z-10 mb-12">
+              <span className="mb-4 block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]">
                 02 // Storage Layer
               </span>
-              <h3 className="text-3xl font-semibold text-zinc-900 tracking-tight mb-4">
+              <h3 className="mb-4 text-3xl font-black tracking-tight text-[#0B0B09]">
                 Local Indexing
               </h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                We embed text structures locally. No APIs. No cloud leaks. Absolute privacy via ChromaDB.
+              <p className="text-sm leading-7 text-[#6F675E]">
+                We embed text structures locally. No APIs. No cloud leaks.
+                Absolute privacy via ChromaDB.
               </p>
             </div>
 
-            {/* Simulated UI: Code Environment */}
-            <div className="bg-slate-950 rounded-2xl p-6 shadow-2xl relative z-10 font-mono text-[10px] leading-relaxed overflow-hidden">
-              <div className="flex gap-1.5 mb-4 border-b border-zinc-800 pb-3">
-                <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
-                <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
-                <div className="w-2.5 h-2.5 rounded-full bg-zinc-800" />
+            <div className="relative z-10 overflow-hidden rounded-[24px] bg-[#0B0B09] p-6 font-mono text-[10px] leading-relaxed shadow-[0_30px_80px_rgba(11,11,9,0.24)]">
+              <div className="mb-4 flex gap-1.5 border-b border-white/[0.08] pb-3">
+                <div className="h-2.5 w-2.5 rounded-full bg-white/18" />
+                <div className="h-2.5 w-2.5 rounded-full bg-white/18" />
+                <div className="h-2.5 w-2.5 rounded-full bg-[#FF5A1F]" />
               </div>
-              <div className="text-zinc-400 space-y-1.5">
-                <p><span className="text-emerald-400">import</span> chroma_db</p>
-                <p className="pt-2"># Map to semantic dimensions</p>
+              <div className="space-y-1.5 text-white/62">
+                <p>
+                  <span className="text-[#FF8B5F]">import</span> chroma_db
+                </p>
+                <p className="pt-2 text-white/32"># Map semantic dimensions</p>
                 <p>nodes = model.embed(resume_chunks)</p>
                 <p>chroma_db.insert(</p>
                 <p className="pl-4">vectors=nodes,</p>
-                <p className="pl-4">privacy_lock=<span className="text-amber-300">True</span></p>
+                <p className="pl-4">
+                  privacy_lock=<span className="text-[#FF8B5F]">True</span>
+                </p>
                 <p>)</p>
               </div>
             </div>
           </div>
 
-          {/* BLOCK 3: Llama Q&A (Col-span-6) */}
-          <div className="md:col-span-6 glass-panel glass-card-hover rounded-[2.5rem] p-10 sm:p-12 flex flex-col justify-between overflow-hidden relative reveal-on-scroll">
-            <div className="mb-16 relative z-10">
-              <span className="font-mono text-[10px] text-zinc-400 font-bold block uppercase tracking-widest mb-4">
+          <div className="reveal-on-scroll light-panel light-card-hover relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:col-span-6 lg:p-10">
+            <div className="relative z-10 mb-12">
+              <span className="mb-4 block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]">
                 03 // Llama Inference
               </span>
-              <h3 className="text-3xl font-semibold text-zinc-900 tracking-tight mb-4">
+              <h3 className="mb-4 text-3xl font-black tracking-tight text-[#0B0B09]">
                 Conversational Search
               </h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                Query your parsed pool using natural language. The integrated Llama 3.2 model extracts contexts standard search completely misses.
+              <p className="text-sm leading-7 text-[#6F675E]">
+                Query your parsed pool using natural language. The integrated
+                Llama 3.2 model extracts contexts standard search completely
+                misses.
               </p>
             </div>
 
-            {/* Simulated UI: Chat bubbles */}
-            <div className="space-y-4 relative z-10">
-              <div className="bg-white border border-zinc-200/80 rounded-2xl rounded-tr-sm p-4 w-[85%] shadow-sm ml-auto">
-                <span className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-widest block mb-1">Operator</span>
-                <p className="text-xs text-zinc-700 leading-relaxed">"Who has built distributed GPU orchestration pipelines?"</p>
+            <div className="relative z-10 space-y-4">
+              <div className="ml-auto w-[85%] rounded-2xl rounded-tr-sm border border-[#E5DCCF] bg-white p-4 shadow-sm">
+                <span className="mb-1 block font-mono text-[9px] font-black uppercase tracking-widest text-[#A99F91]">
+                  Operator
+                </span>
+                <p className="text-xs leading-6 text-[#6F675E]">
+                  "Who has built distributed GPU orchestration pipelines?"
+                </p>
               </div>
-              <div className="bg-slate-900 rounded-2xl rounded-tl-sm p-4 w-[85%] shadow-xl">
-                <span className="text-[9px] font-mono font-bold text-zinc-500 uppercase tracking-widest block mb-1">System</span>
-                <p className="text-xs text-zinc-300 leading-relaxed">"Sarah Chen has 4+ years of scale experience writing CUDA and PyTorch workload packages."</p>
+
+              <div className="w-[85%] rounded-2xl rounded-tl-sm bg-[#0B0B09] p-4 shadow-xl">
+                <span className="mb-1 block font-mono text-[9px] font-black uppercase tracking-widest text-white/32">
+                  System
+                </span>
+                <p className="text-xs leading-6 text-white/62">
+                  "Sarah Chen has 4+ years of scale experience writing CUDA and
+                  PyTorch workload packages."
+                </p>
               </div>
             </div>
           </div>
 
-          {/* BLOCK 4: Security (Col-span-6) */}
-          <div className="md:col-span-6 glass-panel glass-card-hover rounded-[2.5rem] p-10 sm:p-12 flex flex-col justify-between overflow-hidden relative reveal-on-scroll" style={{ transitionDelay: '100ms' }}>
-            <div className="mb-16 relative z-10">
-              <span className="font-mono text-[10px] text-emerald-500 font-bold block uppercase tracking-widest mb-4">
+          <div className="reveal-on-scroll light-panel light-card-hover relative overflow-hidden rounded-[28px] p-6 sm:p-8 md:col-span-6 lg:p-10">
+            <div className="relative z-10 mb-12">
+              <span className="mb-4 block font-mono text-[10px] font-black uppercase tracking-widest text-[#FF5A1F]">
                 04 // Protocol
               </span>
-              <h3 className="text-3xl font-semibold text-zinc-900 tracking-tight mb-4">
+              <h3 className="mb-4 text-3xl font-black tracking-tight text-[#0B0B09]">
                 Zero-Trust Security
               </h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                Candidate PII never leaves your machine. Temporary files are ingested, vectorized into mathematical hashes, and purged automatically after 10 minutes.
+              <p className="text-sm leading-7 text-[#6F675E]">
+                Candidate PII never leaves your machine. Temporary files are
+                ingested, vectorized into mathematical hashes, and purged
+                automatically after 10 minutes.
               </p>
             </div>
 
-            {/* Simulated UI: Security Terminal */}
-            <div className="bg-white/80 border border-zinc-200/60 rounded-2xl p-6 shadow-sm relative z-10 font-mono text-[10px]">
-              <div className="space-y-4 text-zinc-500">
-                <div className="flex items-center justify-between border-b border-zinc-200/80 pb-3">
-                  <span className="uppercase tracking-widest">Network Extrapolation</span>
-                  <span className="px-2 py-1 bg-zinc-100 rounded text-zinc-900 font-semibold">ISOLATED / NONE</span>
+            <div className="relative z-10 rounded-[24px] border border-[#E5DCCF] bg-white/80 p-6 font-mono text-[10px] shadow-sm">
+              <div className="space-y-4 text-[#6F675E]">
+                <div className="flex items-center justify-between gap-4 border-b border-[#E8DFD2] pb-3">
+                  <span className="uppercase tracking-widest">
+                    Network Extrapolation
+                  </span>
+                  <span className="rounded bg-[#F0E8DC] px-2 py-1 font-black text-[#0B0B09]">
+                    ISOLATED / NONE
+                  </span>
                 </div>
-                <div className="flex items-center justify-between border-b border-zinc-200/80 pb-3">
-                  <span className="uppercase tracking-widest">File Ingestion Cache</span>
-                  <span className="px-2 py-1 bg-zinc-100 rounded text-zinc-900 font-semibold">10 MINUTE EXPIRY</span>
+
+                <div className="flex items-center justify-between gap-4 border-b border-[#E8DFD2] pb-3">
+                  <span className="uppercase tracking-widest">
+                    File Ingestion Cache
+                  </span>
+                  <span className="rounded bg-[#F0E8DC] px-2 py-1 font-black text-[#0B0B09]">
+                    10 MINUTE EXPIRY
+                  </span>
                 </div>
-                <div className="flex items-center justify-between">
-                  <span className="uppercase tracking-widest">System Status</span>
-                  <div className="flex items-center gap-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                    <span className="text-emerald-600 font-bold">SECURE_NODE</span>
-                  </div>
+
+                <div className="flex items-center justify-between gap-4">
+                  <span className="uppercase tracking-widest">
+                    System Status
+                  </span>
+                  <span className="flex items-center gap-2 font-black text-[#FF5A1F]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#FF5A1F]" />
+                    SECURE_NODE
+                  </span>
                 </div>
               </div>
             </div>
           </div>
+        </section>
 
-        </div>
-      </section>
+        <section className="reveal-on-scroll pt-16 text-center">
+          <div className="relative mx-auto max-w-2xl overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0B0B09] p-8 text-white shadow-[0_30px_80px_rgba(11,11,9,0.24)] sm:p-12">
+            <div className="absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[#FF5A1F]/30 blur-3xl" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_bottom,rgba(255,90,31,0.25),transparent_70%)]" />
 
-      {/* ----------------------------------------------------------------------
-          FINAL CTA SECTION
-      ---------------------------------------------------------------------- */}
-      <section className="py-32 px-6 relative z-10 text-center reveal-on-scroll">
-        <div className="max-w-2xl mx-auto space-y-8 glass-panel rounded-[3rem] p-12 shadow-2xl">
-          <div className="w-16 h-16 mx-auto bg-gradient-to-tr from-blue-600 to-indigo-650 rounded-2xl flex items-center justify-center text-white mb-6 shadow-lg">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+            <div className="relative z-10">
+              <div className="mx-auto mb-7 grid h-16 w-16 place-items-center rounded-2xl bg-[#FF5A1F] text-white shadow-lg">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2v20" />
+                  <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                </svg>
+              </div>
+
+              <h2 className="text-3xl font-black tracking-tight sm:text-4xl">
+                Ready to initialize the engine?
+              </h2>
+
+              <p className="mx-auto mt-4 max-w-md text-sm leading-7 text-white/62">
+                Launch your secure local workspace and evaluate your first batch
+                of resumes in seconds.
+              </p>
+
+              <div className="pt-8">
+                <Link
+                  to="/resume-screener-bot"
+                  className="inline-flex h-12 items-center justify-center gap-2 rounded-2xl bg-white px-8 text-xs font-black text-[#0B0B09] transition hover:bg-[#F6F1E8] active:scale-[0.98]"
+                >
+                  Launch Console Terminal
+                  <svg
+                    className="h-4 w-4"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M5 12h14" />
+                    <path d="m12 5 7 7-7 7" />
+                  </svg>
+                </Link>
+              </div>
+            </div>
           </div>
-          <h2 className="text-3xl sm:text-4xl font-semibold text-zinc-900 tracking-tight">
-            Ready to initialize the engine?
-          </h2>
-          <p className="text-zinc-500 text-sm">
-            Launch your secure local workspace and evaluate your first batch of resumes in seconds.
-          </p>
-          <div className="pt-4">
-            <Link
-              to="/resume-screener-bot"
-              className="cta-button inline-flex items-center justify-center px-10 py-4 text-[13px] font-semibold tracking-wide rounded-full shadow-xl"
-            >
-              Launch Console Terminal
-              <svg className="ml-2 w-4 h-4 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .tools-grid {
+          position: absolute;
+          inset: 0 0 auto 0;
+          height: 640px;
+          pointer-events: none;
+          background-image:
+            linear-gradient(to right, rgba(211, 116, 42, 0.12) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(211, 116, 42, 0.1) 1px, transparent 1px);
+          background-size: 54px 54px;
+          mask-image: linear-gradient(to bottom, black, transparent 76%);
+          -webkit-mask-image: linear-gradient(to bottom, black, transparent 76%);
+        }
+
+        .tools-glow {
+          position: absolute;
+          top: 160px;
+          right: -180px;
+          width: 620px;
+          height: 620px;
+          pointer-events: none;
+          border-radius: 999px;
+          background: radial-gradient(circle, rgba(255, 90, 31, 0.16), transparent 66%);
+          filter: blur(32px);
+        }
+
+        .light-panel {
+          background: rgba(255, 255, 255, 0.62);
+          border: 1px solid rgba(229, 220, 207, 0.9);
+          box-shadow:
+            0 28px 70px rgba(55, 38, 20, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+        }
+
+        .light-card-hover {
+          transition:
+            transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+            background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .light-card-hover:hover {
+          transform: translateY(-3px);
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow:
+            0 24px 58px rgba(55, 38, 20, 0.09),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .reveal-on-scroll {
+          opacity: 0;
+          transform: translateY(24px);
+          transition:
+            opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .weight-slider {
+          -webkit-appearance: none;
+          width: 100%;
+          height: 3px;
+          border-radius: 999px;
+          background: #E5DCCF;
+          outline: none;
+        }
+
+        .weight-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          appearance: none;
+          width: 14px;
+          height: 14px;
+          border-radius: 999px;
+          background: #FF5A1F;
+          border: 3px solid #FFFFFF;
+          box-shadow: 0 4px 10px rgba(55, 38, 20, 0.18);
+        }
+      `}</style>
     </div>
   );
 }

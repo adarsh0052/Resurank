@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Header from "./Header";
 import Footer from "./Footer";
@@ -11,21 +11,22 @@ export default function SignupPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const navigate = useNavigate();
 
-  // Scroll reveal effect
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
+          if (entry.isIntersecting) entry.target.classList.add("is-visible");
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
+
     const elements = document.querySelectorAll(".reveal-on-scroll");
-    elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      elements.forEach((element) => observer.unobserve(element));
+    };
   }, []);
 
   const handleSubmit = (e) => {
@@ -38,176 +39,113 @@ export default function SignupPage() {
 
     setIsSubmitting(true);
 
-    // Simulated local database generation delay for premium feel
     setTimeout(() => {
       localStorage.setItem("resurank-user", JSON.stringify({ name, email }));
       localStorage.setItem("resurank-logged-in", "true");
       localStorage.setItem("authToken", "resurank-auth-token-123");
-      
-      // Redirect to workspace
+
       navigate("/resume-screener-bot");
     }, 1500);
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-[#FAFAFA] text-zinc-900 font-sans selection:bg-zinc-200 selection:text-zinc-900 relative overflow-hidden">
-      
-      {/* ----------------------------------------------------------------------
-          INJECTED CUSTOM STYLES
-      ---------------------------------------------------------------------- */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .glass-panel {
-          background: rgba(255, 255, 255, 0.7);
-          backdrop-filter: blur(32px);
-          -webkit-backdrop-filter: blur(32px);
-          border: 1px solid rgba(255, 255, 255, 0.9);
-          box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-
-        .input-luxury {
-          background: rgba(255, 255, 255, 0.5);
-          border: 1px solid rgba(228, 228, 231, 0.8);
-          box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02);
-          transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        
-        .input-luxury:focus {
-          background: #ffffff;
-          border-color: #3b82f6;
-          box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.05), inset 0 2px 4px rgba(0, 0, 0, 0.01);
-          outline: none;
-        }
-
-        .cta-button {
-          position: relative;
-          border: 1px solid transparent;
-          background-clip: padding-box, border-box;
-          background-origin: border-box;
-          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
-          color: #1e293b;
-          font-weight: 600;
-          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
-          transition: all 0.3s ease;
-        }
-        
-        .cta-button:hover:not(:disabled) {
-          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
-          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
-          transform: translateY(-1px);
-        }
-
-        .cta-button:active:not(:disabled) {
-          transform: scale(0.98);
-        }
-
-        .reveal-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-
-        .node-network {
-          position: relative;
-          width: 100%;
-          height: 100%;
-        }
-        .node-dot {
-          position: absolute;
-          border-radius: 50%;
-          background: #1e293b;
-          box-shadow: 0 0 0 4px rgba(30, 41, 59, 0.1);
-        }
-        .node-line {
-          position: absolute;
-          background: linear-gradient(90deg, rgba(30,41,59,0.15), transparent);
-          height: 1px;
-          transform-origin: left center;
-        }
-      `}} />
-
-      {/* Abstract Background Topology */}
-      <div className="absolute top-0 left-0 right-0 h-[600px] bg-[linear-gradient(to_right,#e4e4e7_1px,transparent_1px),linear-gradient(to_bottom,#e4e4e7_1px,transparent_1px)] bg-[size:40px_40px] opacity-[0.3] pointer-events-none -z-10" />
-      <div className="absolute top-1/2 right-[10%] -translate-y-1/2 w-[700px] h-[700px] bg-emerald-100/30 blur-[140px] rounded-full pointer-events-none -z-10" />
+    <div
+      className="relative flex min-h-screen flex-col overflow-hidden bg-[#F6F1E8] text-[#0B0B09] selection:bg-[#FF5A1F]/20"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      <div className="signup-grid" aria-hidden="true" />
+      <div className="signup-glow" aria-hidden="true" />
 
       <Header />
-      
-      <main className="flex-grow flex items-center justify-center pt-32 pb-24 px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        <div className="reveal-on-scroll w-full max-w-[1100px] grid grid-cols-1 lg:grid-cols-12 glass-panel rounded-[2.5rem] overflow-hidden shadow-2xl">
-          
-          {/* LEFT COLUMN: Visual Narrative & Architecture Node */}
-          <div className="lg:col-span-5 relative p-10 sm:p-14 flex flex-col justify-between bg-zinc-50/50 border-b lg:border-b-0 lg:border-r border-zinc-200/60 overflow-hidden">
-            
-            {/* Ambient Background for Left Col */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-zinc-200/40 blur-[60px] rounded-full" />
-            
+
+      <main className="relative z-10 flex flex-grow items-center justify-center px-4 pb-24 pt-32 sm:px-6 lg:px-8">
+        <div className="reveal-on-scroll light-panel grid w-full max-w-[1100px] grid-cols-1 overflow-hidden rounded-[28px] lg:grid-cols-12">
+          <div className="relative overflow-hidden border-b border-[#E5DCCF] bg-white/34 p-8 sm:p-12 lg:col-span-5 lg:border-b-0 lg:border-r">
+            <div className="absolute -right-20 -top-20 h-56 w-56 rounded-full bg-[#FF5A1F]/12 blur-3xl" />
+
             <div className="relative z-10">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-zinc-200 bg-white/60 backdrop-blur-sm shadow-sm w-max mb-8">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-500"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
-                <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-zinc-500 uppercase">
-                  Engine Initialization
+              <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-[#E1D7C8] bg-white/70 px-2 py-1.5 shadow-sm backdrop-blur">
+                <span className="rounded-full bg-[#FF5A1F] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white">
+                  Signup
+                </span>
+                <span className="pr-2 text-xs font-bold text-[#6F675E]">
+                  Engine initialization
                 </span>
               </div>
-              
-              <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 leading-[1.1] mb-4">
-                Deploy your <br/> workspace.
+
+              <h2 className="mb-4 text-4xl font-black leading-[1.05] tracking-tight text-[#090907]">
+                Deploy your
+                <br />
+                <span className="text-[#B8AFA1]">workspace.</span>
               </h2>
-              <p className="text-sm text-zinc-500 leading-relaxed max-w-sm">
-                Create a local index instance to parse, map, and rank candidate profiles using embedded semantic evaluation models.
+
+              <p className="max-w-sm text-sm leading-7 text-[#6F675E]">
+                Create a local index instance to parse, map, and rank candidate
+                profiles using embedded semantic evaluation models.
               </p>
             </div>
 
-            {/* Abstract Graphic: Node Network */}
-            <div className="relative z-10 mt-12 flex-grow min-h-[160px] max-h-[200px] w-full">
+            <div className="relative z-10 mt-12 min-h-[180px]">
               <div className="node-network">
-                {/* Main Hub */}
-                <div className="absolute top-1/2 left-4 w-12 h-12 bg-white rounded-xl shadow-md border border-zinc-200 flex items-center justify-center z-20 -translate-y-1/2">
-                  <div className="w-4 h-4 rounded-full bg-emerald-500 animate-pulse" />
+                <div className="absolute left-4 top-1/2 z-20 grid h-12 w-12 -translate-y-1/2 place-items-center rounded-2xl border border-[#E5DCCF] bg-white shadow-md">
+                  <div className="h-4 w-4 rounded-full bg-[#FF5A1F]" />
                 </div>
-                
-                {/* Connecting Lines */}
-                <div className="node-line top-[30%] left-10 w-32 rotate-[-20deg]" />
-                <div className="node-line top-[50%] left-16 w-40 rotate-[5deg]" />
-                <div className="node-line top-[70%] left-10 w-24 rotate-[25deg]" />
 
-                {/* Satellite Nodes */}
-                <div className="node-dot w-2 h-2 top-[18%] left-[150px]" />
-                <div className="node-dot w-3 h-3 top-[54%] left-[210px] bg-zinc-400" />
-                <div className="node-dot w-2 h-2 top-[82%] left-[90px]" />
+                <div className="node-line left-10 top-[30%] w-32 rotate-[-20deg]" />
+                <div className="node-line left-16 top-[50%] w-40 rotate-[5deg]" />
+                <div className="node-line left-10 top-[70%] w-24 rotate-[25deg]" />
 
-                {/* Processing Data Packets */}
-                <div className="absolute top-[30%] left-10 w-1.5 h-1.5 bg-emerald-400 rounded-full shadow-[0_0_8px_#10B981] animate-[slide_3s_ease-in-out_infinite]" style={{ transformOrigin: '0 0', transform: 'rotate(-20deg)' }} />
+                <div className="node-dot left-[150px] top-[18%] h-2 w-2" />
+                <div className="node-dot left-[210px] top-[54%] h-3 w-3 bg-[#B8AFA1]" />
+                <div className="node-dot left-[90px] top-[82%] h-2 w-2" />
               </div>
             </div>
-            
+
             <div className="relative z-10 mt-8 space-y-3 font-mono text-[10px]">
-              <div className="flex items-center justify-between border-b border-zinc-200/60 pb-2">
-                <span className="text-zinc-400 uppercase tracking-widest">Storage</span>
-                <span className="text-zinc-900 font-semibold">Local ChromaDB</span>
+              <div className="flex items-center justify-between border-b border-[#E8DFD2] pb-3">
+                <span className="uppercase tracking-widest text-[#A99F91]">
+                  Storage
+                </span>
+                <span className="font-black text-[#0B0B09]">
+                  Local ChromaDB
+                </span>
               </div>
-              <div className="flex items-center justify-between border-b border-zinc-200/60 pb-2">
-                <span className="text-zinc-400 uppercase tracking-widest">Inference</span>
-                <span className="text-zinc-900 font-semibold">Ollama Llama 3.2</span>
+
+              <div className="flex items-center justify-between border-b border-[#E8DFD2] pb-3">
+                <span className="uppercase tracking-widest text-[#A99F91]">
+                  Inference
+                </span>
+                <span className="font-black text-[#0B0B09]">
+                  Ollama Llama 3.2
+                </span>
               </div>
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Minimalist Signup Form */}
-          <div className="lg:col-span-7 p-10 sm:p-14 flex items-center bg-white">
-            <div className="w-full max-w-md mx-auto">
-              
+          <div className="bg-white/72 p-8 sm:p-12 lg:col-span-7">
+            <div className="mx-auto w-full max-w-md">
               <div className="mb-10">
-                <h1 className="text-2xl font-semibold text-zinc-900 tracking-tight mb-2">Create Account</h1>
-                <p className="text-sm text-zinc-500">Configure your administrator profile to begin sorting.</p>
+                <h1 className="mb-2 text-3xl font-black tracking-tight text-[#090907]">
+                  Create Account
+                </h1>
+                <p className="text-sm leading-7 text-[#6F675E]">
+                  Configure your administrator profile to begin sorting.
+                </p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-5">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                  <div className="space-y-2 col-span-1 sm:col-span-2">
-                    <label htmlFor="name" className="block text-[10px] font-mono font-semibold text-zinc-400 uppercase tracking-widest">
+                <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+                  <div className="space-y-2 sm:col-span-2">
+                    <label
+                      htmlFor="name"
+                      className="block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]"
+                    >
                       Full Name //
                     </label>
                     <input
                       type="text"
                       id="name"
-                      className="input-luxury w-full rounded-xl px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400"
+                      className="input-resurank w-full rounded-2xl px-4 py-3 text-sm text-[#0B0B09] placeholder:text-[#A99F91]"
                       placeholder="Jane Doe"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -216,14 +154,17 @@ export default function SignupPage() {
                     />
                   </div>
 
-                  <div className="space-y-2 col-span-1 sm:col-span-2">
-                    <label htmlFor="email" className="block text-[10px] font-mono font-semibold text-zinc-400 uppercase tracking-widest">
+                  <div className="space-y-2 sm:col-span-2">
+                    <label
+                      htmlFor="email"
+                      className="block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]"
+                    >
                       Email Address //
                     </label>
                     <input
                       type="email"
                       id="email"
-                      className="input-luxury w-full rounded-xl px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400"
+                      className="input-resurank w-full rounded-2xl px-4 py-3 text-sm text-[#0B0B09] placeholder:text-[#A99F91]"
                       placeholder="name@company.com"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -233,13 +174,16 @@ export default function SignupPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="password" className="block text-[10px] font-mono font-semibold text-zinc-400 uppercase tracking-widest">
+                    <label
+                      htmlFor="password"
+                      className="block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]"
+                    >
                       Password //
                     </label>
                     <input
                       type="password"
                       id="password"
-                      className="input-luxury w-full rounded-xl px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 font-mono tracking-widest"
+                      className="input-resurank w-full rounded-2xl px-4 py-3 font-mono text-sm tracking-widest text-[#0B0B09] placeholder:text-[#A99F91]"
                       placeholder="••••••••"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
@@ -249,13 +193,16 @@ export default function SignupPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label htmlFor="confirmPassword" className="block text-[10px] font-mono font-semibold text-zinc-400 uppercase tracking-widest">
+                    <label
+                      htmlFor="confirmPassword"
+                      className="block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]"
+                    >
                       Verify //
                     </label>
                     <input
                       type="password"
                       id="confirmPassword"
-                      className="input-luxury w-full rounded-xl px-4 py-3 text-sm text-zinc-900 placeholder-zinc-400 font-mono tracking-widest"
+                      className="input-resurank w-full rounded-2xl px-4 py-3 font-mono text-sm tracking-widest text-[#0B0B09] placeholder:text-[#A99F91]"
                       placeholder="••••••••"
                       value={confirmPassword}
                       onChange={(e) => setConfirmPassword(e.target.value)}
@@ -269,11 +216,30 @@ export default function SignupPage() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="cta-button w-full flex items-center justify-center rounded-xl py-4 text-[13px] font-semibold tracking-wide disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="flex h-12 w-full items-center justify-center rounded-2xl bg-[#0B0B09] text-xs font-black text-white transition hover:bg-[#FF5A1F] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-70"
                   >
                     {isSubmitting ? (
                       <span className="flex items-center gap-2">
-                        <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
+                        <svg
+                          className="h-4 w-4 animate-spin"
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                        >
+                          <circle
+                            className="opacity-25"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            strokeWidth="4"
+                          />
+                          <path
+                            className="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                          />
+                        </svg>
                         Mounting Workspace...
                       </span>
                     ) : (
@@ -283,20 +249,112 @@ export default function SignupPage() {
                 </div>
               </form>
 
-              <div className="mt-8 pt-6 border-t border-zinc-100 text-center text-[13px]">
-                <span className="text-zinc-500">Existing terminal node? </span>
-                <Link to="/login" className="font-semibold text-zinc-900 hover:text-emerald-600 transition-colors">
+              <div className="mt-8 border-t border-[#E8DFD2] pt-6 text-center text-[13px]">
+                <span className="text-[#6F675E]">Existing terminal node? </span>
+                <Link
+                  to="/login"
+                  className="font-black text-[#0B0B09] transition hover:text-[#FF5A1F]"
+                >
                   Authenticate
                 </Link>
               </div>
-
             </div>
           </div>
-
         </div>
       </main>
-      
+
       <Footer />
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .signup-grid {
+          position: absolute;
+          inset: 0 0 auto 0;
+          height: 640px;
+          pointer-events: none;
+          background-image:
+            linear-gradient(to right, rgba(211, 116, 42, 0.12) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(211, 116, 42, 0.1) 1px, transparent 1px);
+          background-size: 54px 54px;
+          mask-image: linear-gradient(to bottom, black, transparent 76%);
+          -webkit-mask-image: linear-gradient(to bottom, black, transparent 76%);
+        }
+
+        .signup-glow {
+          position: absolute;
+          top: 160px;
+          right: -180px;
+          width: 620px;
+          height: 620px;
+          pointer-events: none;
+          border-radius: 999px;
+          background: radial-gradient(circle, rgba(255, 90, 31, 0.16), transparent 66%);
+          filter: blur(32px);
+        }
+
+        .light-panel {
+          background: rgba(255, 255, 255, 0.62);
+          border: 1px solid rgba(229, 220, 207, 0.9);
+          box-shadow:
+            0 28px 70px rgba(55, 38, 20, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+        }
+
+        .input-resurank {
+          background: rgba(255, 255, 255, 0.72);
+          border: 1px solid rgba(229, 220, 207, 0.95);
+          box-shadow: inset 0 1px 2px rgba(55, 38, 20, 0.03);
+          transition:
+            background 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .input-resurank:focus {
+          background: #ffffff;
+          border-color: #FF5A1F;
+          box-shadow:
+            0 0 0 4px rgba(255, 90, 31, 0.1),
+            inset 0 1px 2px rgba(55, 38, 20, 0.02);
+          outline: none;
+        }
+
+        .reveal-on-scroll {
+          opacity: 0;
+          transform: translateY(24px);
+          transition:
+            opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .node-network {
+          position: relative;
+          width: 100%;
+          height: 100%;
+        }
+
+        .node-dot {
+          position: absolute;
+          border-radius: 999px;
+          background: #0B0B09;
+          box-shadow: 0 0 0 4px rgba(11, 11, 9, 0.08);
+        }
+
+        .node-line {
+          position: absolute;
+          height: 1px;
+          transform-origin: left center;
+          background: linear-gradient(90deg, rgba(255, 90, 31, 0.32), transparent);
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,128 +1,139 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 export default function HelpPage() {
   const [activeFaq, setActiveFaq] = useState(null);
 
-  // Scroll reveal effect
+  const faqs = [
+    {
+      q: "Can I upload multiple resumes at once?",
+      a: "Yes. ResuRank supports bulk candidate uploads through standard spreadsheets, then parses and scores each profile through the same structured ranking workflow.",
+    },
+    {
+      q: "Is candidate data secure?",
+      a: "Candidate data is processed in your local workspace. Resumes are converted into searchable context for ranking without requiring external cloud review.",
+    },
+    {
+      q: "How accurate is the evaluation engine?",
+      a: "The engine combines semantic matching, weighted criteria, and explainable scoring so hiring teams can review why a candidate ranked highly before making a decision.",
+    },
+  ];
+
+  const directory = [
+    "System Configuration",
+    "Engine Capabilities",
+    "Vector Architecture",
+    "Security Protocols",
+  ];
+
+  const pipelineSteps = [
+    {
+      title: "Authenticate Session",
+      desc: "Launch your secure workspace and prepare the screening environment.",
+    },
+    {
+      title: "Prepare Data Structures",
+      desc: "Format your spreadsheet with candidate names, roles, and resume document links.",
+    },
+    {
+      title: "Execute Upload",
+      desc: "Drop the file into the active workspace so the engine can clean, parse, and index documents.",
+    },
+    {
+      title: "Query & Rank",
+      desc: "Ask questions, adjust scoring priorities, or review the generated candidate matrix.",
+    },
+  ];
+
+  const capabilities = [
+    {
+      title: "Parallel Extraction",
+      desc: "Parse semantic detail from PDF and DOCX payloads asynchronously.",
+    },
+    {
+      title: "Dynamic Scoring",
+      desc: "Adjust priority sliders and recalculate candidate fit instantly.",
+    },
+    {
+      title: "Candidate Matrices",
+      desc: "Review standardized shortlists with evidence attached to every rank.",
+    },
+    {
+      title: "AI Dialogue",
+      desc: "Chat with indexed resume context to find exact experience signals.",
+    },
+  ];
+
+  const toggleFaq = (index) => {
+    setActiveFaq((current) => (current === index ? null : index));
+  };
+
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
+          if (entry.isIntersecting) entry.target.classList.add("is-visible");
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
+
     const elements = document.querySelectorAll(".reveal-on-scroll");
-    elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      elements.forEach((element) => observer.unobserve(element));
+    };
   }, []);
 
-  const faqs = [
-    {
-      q: "Can I upload multiple resumes at once?",
-      a: "Yes. ResuRank supports uploading bulk candidate lists via standard Excel spreadsheets for parallel background parsing and scoring across your local environment."
-    },
-    {
-      q: "Is candidate data secure?",
-      a: "Absolutely. The system relies on local embeddings and runs vector queries directly on your hardware. Files never touch external cloud APIs and are purged instantly after indexing."
-    },
-    {
-      q: "How accurate is the evaluation engine?",
-      a: "Our semantic scoring matches manual human keyword validation methods with a verified 94.8% alignment across standard technical and engineering criteria."
-    }
-  ];
-
-  const toggleFaq = (index) => {
-    setActiveFaq(activeFaq === index ? null : index);
-  };
-
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#09090B] font-sans selection:bg-zinc-200 selection:text-zinc-900 relative overflow-hidden pb-32">
-      
-      {/* ----------------------------------------------------------------------
-          INJECTED CUSTOM STYLES
-      ---------------------------------------------------------------------- */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .glass-panel {
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border: 1px solid rgba(255, 255, 255, 0.8);
-          box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
+    <div
+      className="relative min-h-screen overflow-hidden bg-[#F6F1E8] pb-32 text-[#0B0B09] selection:bg-[#FF5A1F]/20"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+      <div className="help-grid" aria-hidden="true" />
+      <div className="help-glow" aria-hidden="true" />
 
-        .glass-card-hover {
-          transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .glass-card-hover:hover {
-          background: rgba(255, 255, 255, 0.9);
-          transform: translateY(-4px);
-          box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-
-        .reveal-on-scroll { opacity: 0; transform: translateY(20px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
-
-        .faq-content {
-          display: grid;
-          grid-template-rows: 0fr;
-          transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .faq-content.open {
-          grid-template-rows: 1fr;
-        }
-        .faq-inner {
-          overflow: hidden;
-        }
-      `}} />
-
-      {/* Abstract Background Topology */}
-      <div className="absolute top-0 left-0 right-0 h-[600px] bg-gradient-to-b from-zinc-200/40 to-transparent pointer-events-none -z-10" />
-      <div className="absolute top-[-20%] right-[-10%] w-[800px] h-[800px] bg-emerald-100/30 blur-[120px] rounded-full pointer-events-none -z-10" />
-
-      {/* ----------------------------------------------------------------------
-          HERO SECTION
-      ---------------------------------------------------------------------- */}
-      <div className="max-w-[1200px] mx-auto px-6 sm:px-12 pt-40 pb-20">
-        <div className="reveal-on-scroll space-y-6 max-w-2xl">
-          <div className="inline-flex items-center gap-3 px-3 py-1.5 rounded-full border border-zinc-200 bg-white/50 backdrop-blur-md shadow-sm w-max">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-zinc-500"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
-            <span className="text-[10px] font-mono font-bold tracking-[0.2em] text-zinc-500 uppercase">
-              Knowledge Base
+      <section className="mx-auto max-w-[1200px] px-6 pb-18 pt-40 sm:px-12">
+        <div className="reveal-on-scroll max-w-3xl">
+          <div className="mb-7 inline-flex items-center gap-2 rounded-full border border-[#E1D7C8] bg-white/70 px-2 py-1.5 shadow-sm backdrop-blur">
+            <span className="rounded-full bg-[#FF5A1F] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white">
+              Help
+            </span>
+            <span className="pr-2 text-xs font-bold text-[#6F675E]">
+              Knowledge base and workspace setup
             </span>
           </div>
-          <h1 className="text-5xl sm:text-6xl font-semibold tracking-tight text-zinc-900 leading-[1.1]">
-            System architecture <br/>
-            <span className="text-zinc-400">& documentation.</span>
+
+          <h1 className="text-5xl font-black leading-[1.02] tracking-tight text-[#090907] sm:text-6xl lg:text-[5.3rem]">
+            System support
+            <br />
+            <span className="text-[#B8AFA1]">for hiring workflows.</span>
           </h1>
-          <p className="text-lg text-zinc-500 leading-relaxed font-light">
-            Reference instructions on configuring your local workspace, mapping vector search parameters, and deploying the AI evaluation engine.
+
+          <p className="mt-7 max-w-2xl text-lg leading-8 text-[#6F675E]">
+            Reference instructions for configuring your local workspace,
+            mapping ranking criteria, and running the ResuRank evaluation engine
+            with confidence.
           </p>
         </div>
-      </div>
+      </section>
 
-      {/* ----------------------------------------------------------------------
-          MAIN LAYOUT (Spatial Asymmetric Grid)
-      ---------------------------------------------------------------------- */}
-      <div className="max-w-[1200px] mx-auto px-6 sm:px-12 grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-        
-        {/* LEFT COLUMN: Sticky Navigation & Support Node */}
-        <div className="lg:col-span-4 lg:sticky lg:top-32 space-y-8 reveal-on-scroll">
-          
-          {/* Quick Nav Panel */}
-          <div className="glass-panel rounded-3xl p-6 sm:p-8">
-            <h3 className="text-[11px] font-mono font-semibold tracking-widest text-zinc-400 uppercase mb-6">
+      <main className="mx-auto grid max-w-[1200px] grid-cols-1 items-start gap-10 px-6 sm:px-12 lg:grid-cols-12 lg:gap-16">
+        <aside className="reveal-on-scroll space-y-5 lg:sticky lg:top-28 lg:col-span-4">
+          <div className="light-panel rounded-[28px] p-6 sm:p-8">
+            <h3 className="mb-6 font-mono text-[11px] font-black uppercase tracking-widest text-[#9A9083]">
               Directory
             </h3>
-            <ul className="space-y-4">
-              {["System Configuration", "Engine Capabilities", "Vector Architecture", "Security Protocols"].map((item, i) => (
-                <li key={i}>
-                  <a href="#" className="group flex items-center text-[13px] font-medium text-zinc-600 hover:text-zinc-900 transition-colors">
-                    <span className="w-1.5 h-1.5 rounded-full bg-zinc-200 mr-3 group-hover:bg-zinc-900 transition-colors" />
+
+            <ul className="space-y-2">
+              {directory.map((item) => (
+                <li key={item}>
+                  <a
+                    href="#configuration"
+                    className="group flex items-center rounded-2xl px-3 py-3 text-sm font-bold text-[#6F675E] transition hover:bg-white hover:text-[#0B0B09]"
+                  >
+                    <span className="mr-3 h-1.5 w-1.5 rounded-full bg-[#D8CDBE] transition group-hover:bg-[#FF5A1F]" />
                     {item}
                   </a>
                 </li>
@@ -130,134 +141,212 @@ export default function HelpPage() {
             </ul>
           </div>
 
-          {/* Premium Support Card */}
-          <div className="bg-slate-900 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-2xl">
-            {/* Ambient inner glow */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/20 blur-3xl rounded-full pointer-events-none" />
-            
-            <h3 className="text-[11px] font-mono font-semibold tracking-widest text-zinc-400 uppercase mb-4 relative z-10">
-              Direct Support
-            </h3>
-            <p className="text-sm text-zinc-300 leading-relaxed mb-8 relative z-10">
-              Need to escalate a pipeline layout mismatch or document indexing failure? Connect with our systems team.
-            </p>
+          <div className="relative overflow-hidden rounded-[28px] border border-white/[0.08] bg-[#0B0B09] p-6 text-white shadow-[0_30px_80px_rgba(11,11,9,0.24)] sm:p-8">
+            <div className="absolute -right-16 -top-20 h-48 w-48 rounded-full bg-[#FF5A1F]/30 blur-3xl" />
+            <div className="absolute inset-x-0 bottom-0 h-24 bg-[radial-gradient(ellipse_at_bottom,rgba(255,90,31,0.25),transparent_70%)]" />
 
-            <div className="space-y-4 mb-8 relative z-10">
-              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-                <span className="text-[10px] font-mono text-zinc-500 uppercase">Endpoint</span>
-                <span className="text-[11px] font-mono text-zinc-250">support@resurank.com</span>
+            <div className="relative z-10">
+              <h3 className="mb-4 font-mono text-[11px] font-black uppercase tracking-widest text-white/38">
+                Direct Support
+              </h3>
+
+              <p className="mb-8 text-sm leading-7 text-white/62">
+                Need to escalate a pipeline mismatch or indexing failure?
+                Connect with the systems team and keep your screening flow
+                moving.
+              </p>
+
+              <div className="mb-8 space-y-4">
+                <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+                  <span className="font-mono text-[10px] uppercase text-white/32">
+                    Endpoint
+                  </span>
+                  <span className="font-mono text-[11px] text-white/78">
+                    support@resurank.com
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between border-b border-white/[0.08] pb-3">
+                  <span className="font-mono text-[10px] uppercase text-white/32">
+                    Latency
+                  </span>
+                  <span className="flex items-center gap-2 font-mono text-[11px] text-[#FF8B5F]">
+                    <span className="h-1.5 w-1.5 rounded-full bg-[#FF5A1F]" />
+                    &lt; 2 Hours
+                  </span>
+                </div>
               </div>
-              <div className="flex justify-between items-center border-b border-slate-800 pb-3">
-                <span className="text-[10px] font-mono text-zinc-500 uppercase">Latency</span>
-                <span className="text-[11px] font-mono text-emerald-400 flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                  &lt; 2 Hours
-                </span>
-              </div>
+
+              <Link
+                to="/resume-screener-bot"
+                className="flex h-12 w-full items-center justify-center rounded-2xl bg-white text-xs font-black text-[#0B0B09] transition hover:bg-[#F6F1E8] active:scale-[0.98]"
+              >
+                Open Workspace
+              </Link>
             </div>
-
-            <Link 
-              to="/resume-screener-bot" 
-              className="group relative w-full flex items-center justify-center h-12 bg-white text-slate-850 hover:text-slate-950 rounded-xl text-xs font-semibold tracking-wide hover:scale-[1.02] transition-all z-10"
-            >
-              Open Terminal Workspace
-            </Link>
           </div>
-        </div>
+        </aside>
 
-        {/* RIGHT COLUMN: Content Stream */}
-        <div className="lg:col-span-8 space-y-16">
-          
-          {/* SECTION: Pipeline Configuration */}
-          <section className="reveal-on-scroll scroll-mt-32">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-10 h-10 rounded-2xl bg-white shadow-sm border border-zinc-100 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+        <div className="space-y-16 lg:col-span-8">
+          <section id="configuration" className="reveal-on-scroll scroll-mt-32">
+            <div className="mb-8 flex items-center gap-4">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[#E5DCCF] bg-white shadow-sm">
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M4 6h16" />
+                  <path d="M4 12h16" />
+                  <path d="M4 18h10" />
+                  <path d="M17 15l3 3-3 3" />
+                </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-zinc-900 tracking-tight">Pipeline Configuration</h2>
+              <h2 className="text-2xl font-black tracking-tight text-[#090907]">
+                Pipeline Configuration
+              </h2>
             </div>
-            
-            <p className="text-zinc-500 mb-10 leading-relaxed text-sm">
-              Prepare your candidate spreadsheet, map the vector criteria profile, and initialize the parsing sequence.
+
+            <p className="mb-10 max-w-2xl text-sm leading-7 text-[#6F675E]">
+              Prepare your candidate spreadsheet, map the ranking profile, and
+              initialize the parsing sequence from your workspace.
             </p>
 
-            {/* Premium Vertical Pipeline Timeline */}
-            <div className="relative pl-6 sm:pl-8 border-l-2 border-zinc-100 space-y-12">
-              {[
-                { title: "Authenticate Session", desc: "Initialize your secure local environment by launching the console." },
-                { title: "Prepare Data Structures", desc: "Format your CSV or Excel ledger with standard columns: Candidate Name and Resume Document URL." },
-                { title: "Execute Upload", desc: "Drop the file into the active workspace. The engine automatically downloads, cleans, and indexes the raw documents." },
-                { title: "Query & Rank", desc: "Interact directly with the localized candidate base via natural language or view the weighted matrix." }
-              ].map((step, idx) => (
-                <div key={idx} className="relative">
-                  {/* Node */}
-                  <div className="absolute -left-[31px] sm:-left-[39px] top-1 w-5 h-5 rounded-full bg-white border-[3px] border-zinc-200 flex items-center justify-center z-10">
-                    <div className="w-1.5 h-1.5 rounded-full bg-slate-700" />
+            <div className="relative space-y-7 border-l-2 border-[#E5DCCF] pl-7 sm:pl-9">
+              {pipelineSteps.map((step, index) => (
+                <div key={step.title} className="relative">
+                  <div className="absolute -left-[38px] top-6 grid h-6 w-6 place-items-center rounded-full border-[3px] border-[#E5DCCF] bg-[#F6F1E8] sm:-left-[46px]">
+                    <span className="h-2 w-2 rounded-full bg-[#FF5A1F]" />
                   </div>
-                  
-                  <div className="glass-panel glass-card-hover rounded-2xl p-6 relative">
-                    <span className="text-[10px] font-mono font-bold tracking-widest text-zinc-400 uppercase mb-2 block">
-                      Sequence 0{idx + 1}
+
+                  <div className="light-panel light-card-hover rounded-[24px] p-6">
+                    <span className="mb-2 block font-mono text-[10px] font-black uppercase tracking-widest text-[#A99F91]">
+                      Sequence 0{index + 1}
                     </span>
-                    <h3 className="text-lg font-medium text-zinc-900 mb-2">{step.title}</h3>
-                    <p className="text-sm text-zinc-500 leading-relaxed">{step.desc}</p>
+                    <h3 className="mb-2 text-lg font-black text-[#0B0B09]">
+                      {step.title}
+                    </h3>
+                    <p className="text-sm leading-7 text-[#6F675E]">
+                      {step.desc}
+                    </p>
                   </div>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* SECTION: Engine Capabilities */}
-          <section className="reveal-on-scroll pt-8">
-            <div className="flex items-center gap-4 mb-8">
-              <div className="w-10 h-10 rounded-2xl bg-white shadow-sm border border-zinc-100 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polygon points="12 2 22 8.5 22 15.5 12 22 2 15.5 2 8.5 12 2"/></svg>
+          <section className="reveal-on-scroll pt-4">
+            <div className="mb-8 flex items-center gap-4">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[#E5DCCF] bg-white shadow-sm">
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M12 2 21 7v10l-9 5-9-5V7l9-5Z" />
+                  <path d="M12 22V12" />
+                  <path d="m3.3 7 8.7 5 8.7-5" />
+                </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-zinc-900 tracking-tight">Engine Capabilities</h2>
+              <h2 className="text-2xl font-black tracking-tight text-[#090907]">
+                Engine Capabilities
+              </h2>
             </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              {[
-                { title: "Parallel Extraction", desc: "Parse text semantics from heavy PDF and DOCX payloads asynchronously." },
-                { title: "Dynamic Scoring", desc: "Adjust priority sliders to instantly recalculate vector distances." },
-                { title: "Editorial Layouts", desc: "Review standardized candidate matrices stripped of visual noise." },
-                { title: "Llama 3.2 Dialogue", desc: "Chat directly with the indexed files to extract specific historical context." }
-              ].map((feature, i) => (
-                <div key={i} className="glass-panel glass-card-hover rounded-2xl p-6">
-                  <h3 className="text-sm font-semibold text-zinc-900 mb-2">{feature.title}</h3>
-                  <p className="text-xs text-zinc-500 leading-relaxed">{feature.desc}</p>
+
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+              {capabilities.map((feature) => (
+                <div
+                  key={feature.title}
+                  className="light-panel light-card-hover rounded-[24px] p-6"
+                >
+                  <h3 className="mb-2 text-sm font-black text-[#0B0B09]">
+                    {feature.title}
+                  </h3>
+                  <p className="text-xs leading-6 text-[#6F675E]">
+                    {feature.desc}
+                  </p>
                 </div>
               ))}
             </div>
           </section>
 
-          {/* SECTION: FAQ Knowledge Base */}
-          <section className="reveal-on-scroll pt-8">
-             <div className="flex items-center gap-4 mb-8">
-              <div className="w-10 h-10 rounded-2xl bg-white shadow-sm border border-zinc-100 flex items-center justify-center">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+          <section className="reveal-on-scroll pt-4">
+            <div className="mb-8 flex items-center gap-4">
+              <div className="grid h-11 w-11 place-items-center rounded-2xl border border-[#E5DCCF] bg-white shadow-sm">
+                <svg
+                  width="21"
+                  height="21"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4z" />
+                  <path d="M9 9h6" />
+                  <path d="M9 13h4" />
+                </svg>
               </div>
-              <h2 className="text-2xl font-semibold text-zinc-900 tracking-tight">Frequently Asked Questions</h2>
+              <h2 className="text-2xl font-black tracking-tight text-[#090907]">
+                Frequently Asked Questions
+              </h2>
             </div>
 
             <div className="space-y-4">
-              {faqs.map((faq, idx) => {
-                const isOpen = activeFaq === idx;
+              {faqs.map((faq, index) => {
+                const isOpen = activeFaq === index;
+
                 return (
-                  <div 
-                    key={idx} 
-                    className={`glass-panel rounded-2xl transition-all duration-300 overflow-hidden cursor-pointer ${isOpen ? 'bg-white/90 shadow-md' : 'hover:bg-white/70'}`}
-                    onClick={() => toggleFaq(idx)}
+                  <div
+                    key={faq.q}
+                    className={`light-panel overflow-hidden rounded-[24px] transition-all duration-300 ${
+                      isOpen ? "bg-white shadow-md" : "hover:bg-white/82"
+                    }`}
                   >
-                    <div className="p-6 flex justify-between items-center">
-                      <span className="text-[14px] font-medium text-zinc-900 pr-8">{faq.q}</span>
-                      <div className="flex-shrink-0 w-8 h-8 rounded-full bg-zinc-100 flex items-center justify-center transition-transform duration-300" style={{ transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)' }}>
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 5v14M5 12h14"/></svg>
-                      </div>
-                    </div>
-                    <div className={`faq-content ${isOpen ? 'open' : ''}`}>
+                    <button
+                      type="button"
+                      onClick={() => toggleFaq(index)}
+                      className="flex w-full items-center justify-between gap-6 p-6 text-left"
+                      aria-expanded={isOpen}
+                    >
+                      <span className="text-sm font-black text-[#0B0B09]">
+                        {faq.q}
+                      </span>
+                      <span
+                        className="grid h-9 w-9 shrink-0 place-items-center rounded-full bg-[#F0E8DC] text-[#0B0B09] transition-transform duration-300"
+                        style={{
+                          transform: isOpen ? "rotate(45deg)" : "rotate(0deg)",
+                        }}
+                      >
+                        <svg
+                          width="15"
+                          height="15"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          strokeWidth="2.4"
+                          strokeLinecap="round"
+                        >
+                          <path d="M12 5v14" />
+                          <path d="M5 12h14" />
+                        </svg>
+                      </span>
+                    </button>
+
+                    <div className={`faq-content ${isOpen ? "open" : ""}`}>
                       <div className="faq-inner">
-                        <div className="px-6 pb-6 pt-0 text-sm text-zinc-500 leading-relaxed border-t border-zinc-100/50 mt-2 pt-4">
+                        <div className="mx-6 border-t border-[#E8DFD2] pb-6 pt-4 text-sm leading-7 text-[#6F675E]">
                           {faq.a}
                         </div>
                       </div>
@@ -267,9 +356,89 @@ export default function HelpPage() {
               })}
             </div>
           </section>
-
         </div>
-      </div>
+      </main>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .help-grid {
+          position: absolute;
+          inset: 0 0 auto 0;
+          height: 640px;
+          pointer-events: none;
+          background-image:
+            linear-gradient(to right, rgba(211, 116, 42, 0.12) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(211, 116, 42, 0.1) 1px, transparent 1px);
+          background-size: 54px 54px;
+          mask-image: linear-gradient(to bottom, black, transparent 76%);
+          -webkit-mask-image: linear-gradient(to bottom, black, transparent 76%);
+        }
+
+        .help-glow {
+          position: absolute;
+          top: 160px;
+          right: -180px;
+          width: 620px;
+          height: 620px;
+          pointer-events: none;
+          border-radius: 999px;
+          background: radial-gradient(circle, rgba(255, 90, 31, 0.16), transparent 66%);
+          filter: blur(32px);
+        }
+
+        .light-panel {
+          background: rgba(255, 255, 255, 0.62);
+          border: 1px solid rgba(229, 220, 207, 0.9);
+          box-shadow:
+            0 28px 70px rgba(55, 38, 20, 0.06),
+            inset 0 1px 0 rgba(255, 255, 255, 0.95);
+          backdrop-filter: blur(24px);
+          -webkit-backdrop-filter: blur(24px);
+        }
+
+        .light-card-hover {
+          transition:
+            transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+            background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+            box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .light-card-hover:hover {
+          transform: translateY(-3px);
+          background: rgba(255, 255, 255, 0.9);
+          box-shadow:
+            0 24px 58px rgba(55, 38, 20, 0.09),
+            inset 0 1px 0 rgba(255, 255, 255, 1);
+        }
+
+        .faq-content {
+          display: grid;
+          grid-template-rows: 0fr;
+          transition: grid-template-rows 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .faq-content.open {
+          grid-template-rows: 1fr;
+        }
+
+        .faq-inner {
+          overflow: hidden;
+        }
+
+        .reveal-on-scroll {
+          opacity: 0;
+          transform: translateY(24px);
+          transition:
+            opacity 0.78s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.78s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      `}</style>
     </div>
   );
 }

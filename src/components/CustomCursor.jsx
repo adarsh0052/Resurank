@@ -7,8 +7,8 @@ function CustomCursor() {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const handleMouseMove = (e) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+    const handleMouseMove = (event) => {
+      setPosition({ x: event.clientX, y: event.clientY });
       setIsVisible(true);
     };
 
@@ -25,42 +25,45 @@ function CustomCursor() {
     };
   }, []);
 
-  // Handle trailing ring lag effect using requestAnimationFrame
   useEffect(() => {
-    let animFrame;
+    let animationFrame;
+
     const updateRing = () => {
       setRingPosition((prev) => {
         const dx = position.x - prev.x;
         const dy = position.y - prev.y;
-        const speed = 0.15; // trail delay speed parameter
+        const speed = 0.16;
+
         return {
           x: prev.x + dx * speed,
           y: prev.y + dy * speed,
         };
       });
-      animFrame = requestAnimationFrame(updateRing);
+
+      animationFrame = requestAnimationFrame(updateRing);
     };
-    animFrame = requestAnimationFrame(updateRing);
-    return () => cancelAnimationFrame(animFrame);
+
+    animationFrame = requestAnimationFrame(updateRing);
+
+    return () => cancelAnimationFrame(animationFrame);
   }, [position]);
 
-  // Handle hover effect on clickable elements
   useEffect(() => {
-    const handleMouseOver = (e) => {
-      const target = e.target;
-      if (
-        target.tagName === "A" ||
+    const isInteractiveElement = (target) =>
+      target instanceof Element &&
+      (target.tagName === "A" ||
         target.tagName === "BUTTON" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.getAttribute("role") === "button" ||
         target.tagName === "INPUT" ||
         target.tagName === "SELECT" ||
+        target.tagName === "TEXTAREA" ||
+        target.getAttribute("role") === "button" ||
         target.classList.contains("cursor-pointer") ||
-        target.tagName === "TEXTAREA"
-      ) {
-        setIsHovered(true);
-      }
+        target.closest("a") ||
+        target.closest("button") ||
+        target.closest("[role='button']"));
+
+    const handleMouseOver = (event) => {
+      setIsHovered(isInteractiveElement(event.target));
     };
 
     const handleMouseOut = () => {
@@ -79,32 +82,61 @@ function CustomCursor() {
   if (!isVisible) return null;
 
   return (
-    <div className="hidden lg:block">
-      {/* Central Dot */}
+    <div className="pointer-events-none fixed inset-0 z-[9999] hidden lg:block">
       <div
         className="custom-cursor-dot"
         style={{
           left: `${position.x}px`,
           top: `${position.y}px`,
-          width: "4px",
-          height: "4px",
-          borderRadius: "0px",
-          backgroundColor: "rgb(15, 23, 42)",
         }}
       />
-      {/* Trailing Ring (Square Frame) */}
+
       <div
         className="custom-cursor-ring"
         style={{
           left: `${ringPosition.x}px`,
           top: `${ringPosition.y}px`,
-          width: isHovered ? "20px" : "12px",
-          height: isHovered ? "20px" : "12px",
-          borderRadius: "0px",
-          borderColor: isHovered ? "rgba(15, 23, 42, 0.4)" : "rgba(15, 23, 42, 0.15)",
-          backgroundColor: isHovered ? "rgba(15, 23, 42, 0.03)" : "transparent",
+          width: isHovered ? "34px" : "18px",
+          height: isHovered ? "34px" : "18px",
+          borderColor: isHovered
+            ? "rgba(255, 90, 31, 0.72)"
+            : "rgba(255, 90, 31, 0.34)",
+          backgroundColor: isHovered
+            ? "rgba(255, 90, 31, 0.08)"
+            : "rgba(255, 90, 31, 0.02)",
         }}
       />
+
+      <style>{`
+        .custom-cursor-dot,
+        .custom-cursor-ring {
+          position: fixed;
+          pointer-events: none;
+          transform: translate(-50%, -50%);
+          will-change: left, top, width, height;
+        }
+
+        .custom-cursor-dot {
+          width: 5px;
+          height: 5px;
+          border-radius: 999px;
+          background: #ff5a1f;
+          box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.18),
+            0 0 18px rgba(255, 90, 31, 0.72);
+        }
+
+        .custom-cursor-ring {
+          border: 1px solid rgba(255, 90, 31, 0.34);
+          border-radius: 999px;
+          transition:
+            width 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+            height 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+            border-color 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+            background-color 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+          box-shadow: 0 0 28px rgba(255, 90, 31, 0.12);
+        }
+      `}</style>
     </div>
   );
 }

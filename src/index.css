@@ -4,13 +4,22 @@
    THEME OVERRIDES & CORE RESETS
 ---------------------------------------------------------------------- */
 @theme {
-  --color-zinc-50: #FAFAFA;
-  --color-zinc-900: #1e293b;
-  --color-zinc-950: #0b132a;
+  --color-zinc-50: #f6f1e8;
+  --color-zinc-900: #0b0b09;
+  --color-zinc-950: #050505;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  background-color: #f6f1e8;
+  overscroll-behavior-y: none;
 }
 
 body {
-  @apply bg-[#FAFAFA] text-[#0f172a] antialiased;
+  @apply bg-[#F6F1E8] text-[#0f172a] antialiased;
+  margin: 0;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
@@ -19,8 +28,8 @@ body {
 }
 
 ::selection {
-  background-color: #1e293b;
-  color: #FFFFFF;
+  background-color: rgba(255, 90, 31, 0.2);
+  color: #0b0b09;
 }
 
 /* ----------------------------------------------------------------------
@@ -40,12 +49,18 @@ body {
   transition: transform 0.1s linear;
 }
 
-/* Depth Layers */
-.layer-1 { transform: translateZ(20px); }
-.layer-2 { transform: translateZ(60px); }
-.layer-3 { transform: translateZ(100px); }
+.layer-1 {
+  transform: translateZ(20px);
+}
 
-/* Specular Reflection Effect */
+.layer-2 {
+  transform: translateZ(60px);
+}
+
+.layer-3 {
+  transform: translateZ(100px);
+}
+
 .specular-overlay {
   position: absolute;
   inset: 0;
@@ -62,35 +77,33 @@ body {
   background: rgba(255, 255, 255, 0.65);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.05), inset 0 1px 0 rgba(255, 255, 255, 1);
+  border: 1px solid rgba(229, 220, 207, 0.9);
+  box-shadow: 0 40px 80px -20px rgba(55, 38, 20, 0.07), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
-/* Premium Editorial Border Collapse Grid */
 .editorial-grid {
   display: grid;
   gap: 0;
-  border-top: 1px solid rgba(15, 23, 42, 0.08);
-  border-left: 1px solid rgba(15, 23, 42, 0.08);
+  border-top: 1px solid rgba(11, 11, 9, 0.08);
+  border-left: 1px solid rgba(11, 11, 9, 0.08);
 }
 
 .editorial-cell {
-  border-right: 1px solid rgba(15, 23, 42, 0.08);
-  border-bottom: 1px solid rgba(15, 23, 42, 0.08);
+  border-right: 1px solid rgba(11, 11, 9, 0.08);
+  border-bottom: 1px solid rgba(11, 11, 9, 0.08);
 }
 
-/* Border Gradient Button Utility */
 .border-gradient {
   position: relative;
   border: 1px solid transparent;
   background-clip: padding-box, border-box;
   background-origin: border-box;
-  background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
+  background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #ff5a1f, #0b0b09);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .border-gradient:hover {
-  background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
+  background-image: linear-gradient(to right, #fffaf3, #fffaf3), linear-gradient(to right, #ff6f39, #ff5a1f);
 }
 
 .border-gradient-dark {
@@ -98,12 +111,12 @@ body {
   border: 1px solid transparent;
   background-clip: padding-box, border-box;
   background-origin: border-box;
-  background-image: linear-gradient(to right, #0f172a, #0f172a), linear-gradient(to right, #3b82f6, #6366f1);
+  background-image: linear-gradient(to right, #0b0b09, #0b0b09), linear-gradient(to right, #ff5a1f, #ff8b5f);
   transition: transform 0.2s, box-shadow 0.2s;
 }
 
 .border-gradient-dark:hover {
-  background-image: linear-gradient(to right, #1e293b, #1e293b), linear-gradient(to right, #6366f1, #3b82f6);
+  background-image: linear-gradient(to right, #171714, #171714), linear-gradient(to right, #ff8b5f, #ff5a1f);
 }
 
 .glass-card-hover {
@@ -113,62 +126,79 @@ body {
 .glass-card-hover:hover {
   background: rgba(255, 255, 255, 0.85);
   transform: translateY(-4px);
-  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
+  box-shadow: 0 30px 60px -15px rgba(55, 38, 20, 0.1), inset 0 1px 0 rgba(255, 255, 255, 1);
 }
 
 /* ----------------------------------------------------------------------
    PREMIUM CUSTOM CURSOR
 ---------------------------------------------------------------------- */
 @media (min-width: 1024px) {
-  html, body, a, button, select, input, textarea, label {
+  html,
+  body,
+  a,
+  button,
+  select,
+  input,
+  textarea,
+  label {
     cursor: none !important;
   }
 }
 
 .custom-cursor-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #1e293b;
+  width: 5px;
+  height: 5px;
+  background-color: #ff5a1f;
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  border-radius: 50%;
+  border-radius: 999px;
   transform: translate(-50%, -50%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.18),
+    0 0 18px rgba(255, 90, 31, 0.72);
   transition: width 0.15s cubic-bezier(0.16, 1, 0.3, 1), height 0.15s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.15s;
 }
 
 .custom-cursor-ring {
   width: 24px;
   height: 24px;
-  border: 1px solid rgba(30, 41, 59, 0.15);
+  border: 1px solid rgba(255, 90, 31, 0.34);
   position: fixed;
   pointer-events: none;
   z-index: 9998;
-  border-radius: 50%;
+  border-radius: 999px;
   transform: translate(-50%, -50%);
+  background-color: rgba(255, 90, 31, 0.02);
+  box-shadow: 0 0 28px rgba(255, 90, 31, 0.12);
   transition: width 0.3s cubic-bezier(0.16, 1, 0.3, 1), height 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s, background-color 0.3s;
 }
 
-/* Map these to your CustomCursor.jsx active states */
 .custom-cursor-hover .custom-cursor-dot {
   width: 4px;
   height: 4px;
-  background-color: #10B981; /* Emerald accent */
+  background-color: #ff5a1f;
 }
 
 .custom-cursor-hover .custom-cursor-ring {
   width: 40px;
   height: 40px;
-  background-color: rgba(16, 185, 129, 0.05);
-  border-color: rgba(16, 185, 129, 0.2);
+  background-color: rgba(255, 90, 31, 0.08);
+  border-color: rgba(255, 90, 31, 0.72);
 }
 
 /* ----------------------------------------------------------------------
    ANIMATIONS & MOTION
 ---------------------------------------------------------------------- */
 @keyframes subtle-float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-10px); }
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
 }
 
 .animate-float {
@@ -176,8 +206,16 @@ body {
 }
 
 @keyframes pulse-glow {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50% { opacity: 0.6; transform: scale(1.05); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.6;
+    transform: scale(1.05);
+  }
 }
 
 .animate-glow {
@@ -185,14 +223,15 @@ body {
 }
 
 @keyframes spin-slow {
-  100% { transform: rotate(360deg); }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 .animate-spin-slow {
   animation: spin-slow 20s linear infinite;
 }
 
-/* Smooth Reveal on Scroll (Used by IntersectionObserver logic) */
 .reveal-on-scroll {
   opacity: 0;
   transform: translateY(30px);
@@ -205,7 +244,7 @@ body {
 }
 
 /* ----------------------------------------------------------------------
-   PREMIUM SCROLLBAR (Arc Browser Style)
+   PREMIUM SCROLLBAR
 ---------------------------------------------------------------------- */
 ::-webkit-scrollbar {
   width: 8px;
@@ -213,15 +252,15 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #f6f1e8;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4D4D8; /* Zinc 300 */
+  background: #d4cfc8;
   border-radius: 10px;
-  border: 2px solid #FAFAFA; /* Matches body bg to create floating effect */
+  border: 2px solid #f6f1e8;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #A1A1AA; /* Zinc 400 */
+  background: #b8afa1;
 }

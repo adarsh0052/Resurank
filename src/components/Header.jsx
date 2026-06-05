@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Header() {
@@ -7,187 +7,196 @@ export default function Header() {
   const location = useLocation();
 
   const navLinks = [
-    { name: "Platform", path: "/tools" },
+    { name: "Features", path: "/tools" },
     { name: "Workspace", path: "/resume-screener-bot" },
-    { name: "Customers", path: "/about" },
-    { name: "Help Center", path: "/help" },
+    { name: "About", path: "/about" },
+    { name: "Help", path: "/help" },
   ];
 
   const isActive = (path) => location.pathname === path;
 
-  // Handle scroll effect for dynamic island sizing/shadows
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 18);
+
+    handleScroll();
     window.addEventListener("scroll", handleScroll);
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    setIsOpen(false);
+  }, [location.pathname]);
+
   return (
     <>
-      {/* ----------------------------------------------------------------------
-          INJECTED CUSTOM STYLES FOR PREMIUM NAVIGATION
-      ---------------------------------------------------------------------- */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .nav-glass {
-          background: rgba(255, 255, 255, 0.65);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border: 1px solid rgba(255, 255, 255, 0.9);
-          box-shadow: 0 4px 24px -6px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-        
-        .nav-glass-scrolled {
-          background: rgba(255, 255, 255, 0.85);
-          box-shadow: 0 12px 32px -8px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-
-        .cta-button {
-          position: relative;
-          border: 1px solid transparent;
-          background-clip: padding-box, border-box;
-          background-origin: border-box;
-          background-image: linear-gradient(to right, #ffffff, #ffffff), linear-gradient(to right, #3b82f6, #6366f1);
-          color: #1e293b;
-          font-weight: 600;
-          box-shadow: 0 4px 12px 0 rgba(99, 102, 241, 0.05);
-          transition: transform 0.2s, box-shadow 0.2s;
-        }
-        
-        .cta-button:hover {
-          background-image: linear-gradient(to right, #f8fafc, #f8fafc), linear-gradient(to right, #6366f1, #3b82f6);
-          box-shadow: 0 4px 16px 0 rgba(99, 102, 241, 0.1);
-        }
-
-        .mobile-menu-glass {
-          background: rgba(255, 255, 255, 0.95);
-          backdrop-filter: blur(32px);
-          -webkit-backdrop-filter: blur(32px);
-        }
-      `}} />
-
-      {/* Floating Spatial Header */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 flex justify-center ${scrolled ? 'pt-2' : 'pt-4'} px-4 sm:px-6 pointer-events-none`}>
-        
-        <div className={`pointer-events-auto w-full max-w-[1200px] flex items-center justify-between rounded-full transition-all duration-500 px-4 sm:px-6 nav-glass ${scrolled ? 'h-14 sm:h-16 nav-glass-scrolled' : 'h-16 sm:h-[72px]'}`}>
-          
-          {/* Brand Logo */}
-          <Link to="/" className="flex items-center gap-3 group">
-            {/* Minimalist Vector Node Logo */}
-            <div className="relative flex h-8 w-8 items-center justify-center rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-650 text-white shadow-md transition-transform duration-500 group-hover:scale-105 group-hover:rotate-[15deg]">
-              <div className="absolute inset-0 bg-gradient-to-tr from-indigo-850 to-transparent opacity-50 rounded-xl" />
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="relative z-10">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
-                <path d="M2 12h20" />
-              </svg>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-[15px] font-semibold tracking-tight text-zinc-900">
-                ResuRank
-              </span>
-              <span className="rounded-md bg-zinc-100 px-1.5 py-0.5 text-[9px] font-mono font-medium tracking-widest text-zinc-500 uppercase">
-                Engine
-              </span>
-            </div>
-          </Link>
-
-          {/* Center Navigation (Desktop) */}
-          <nav className="hidden md:flex items-center gap-1 bg-zinc-100/50 p-1 rounded-full border border-zinc-200/50">
-            {navLinks.map((link) => {
-              const active = isActive(link.path);
-              return (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  className={`relative px-5 py-2 text-[13px] font-medium tracking-wide transition-all duration-300 rounded-full ${
-                    active 
-                      ? "text-zinc-950 bg-white shadow-sm ring-1 ring-zinc-200/50" 
-                      : "text-zinc-500 hover:text-zinc-950 hover:bg-zinc-200/30"
-                  }`}
-                >
-                  {link.name}
-                </Link>
-              );
-            })}
-          </nav>
-
-          {/* Right: Auth Actions (Desktop) */}
-          <div className="hidden md:flex items-center gap-3">
-            <Link 
-              to="/login" 
-              className="px-4 py-2 text-[13px] font-medium tracking-wide text-zinc-500 hover:text-zinc-950 transition-colors rounded-full hover:bg-zinc-100"
-            >
-              Sign in
-            </Link>
-            <Link
-              to="/signup"
-              className="cta-button inline-flex items-center justify-center rounded-full px-5 py-2 text-[13px] font-medium tracking-wide"
-            >
-              Initialize
-              <svg className="ml-2 w-3.5 h-3.5 text-zinc-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5"><path strokeLinecap="round" strokeLinejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
-            </Link>
-          </div>
-
-          {/* Mobile Menu Toggle */}
-          <button
-            onClick={() => setIsOpen(!isOpen)}
-            className="md:hidden relative h-10 w-10 flex items-center justify-center rounded-full bg-zinc-100/50 text-zinc-600 hover:bg-zinc-200/50 transition-colors"
-            aria-label="Toggle menu"
-          >
-            <div className="w-5 flex flex-col gap-1.5 items-end">
-              <span className={`h-[2px] bg-current rounded-full transition-all duration-300 ${isOpen ? 'w-5 rotate-45 translate-y-[8px]' : 'w-5'}`} />
-              <span className={`h-[2px] bg-current rounded-full transition-all duration-300 ${isOpen ? 'w-0 opacity-0' : 'w-4'}`} />
-              <span className={`h-[2px] bg-current rounded-full transition-all duration-300 ${isOpen ? 'w-5 -rotate-45 -translate-y-[8px]' : 'w-3'}`} />
-            </div>
-          </button>
-
-        </div>
-      </header>
-
-      {/* Mobile Menu Dropdown (Spatial Overlay) */}
-      <div 
-        className={`fixed inset-x-4 top-[88px] z-40 transition-all duration-500 md:hidden pointer-events-none ${
-          isOpen ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-4"
+      <header
+        className={`pointer-events-none fixed left-0 right-0 top-0 z-50 flex justify-center px-4 transition-all duration-500 ${
+          scrolled ? "pt-3" : "pt-5"
         }`}
       >
-        <div className={`pointer-events-auto rounded-[2rem] border border-zinc-200/80 shadow-2xl p-6 mobile-menu-glass ${isOpen ? "block" : "hidden"}`}>
-          <div className="flex flex-col gap-2">
+        <div
+          className={`nav-shell pointer-events-auto flex w-full max-w-[860px] items-center justify-between rounded-[18px] px-4 transition-all duration-500 sm:px-5 ${
+            scrolled ? "h-14 nav-shell-scrolled" : "h-16"
+          }`}
+        >
+          <Link to="/" className="group flex items-center gap-3">
+            <div className="grid h-8 w-8 place-items-center rounded-xl bg-white text-[#0A0908] shadow-[inset_0_-1px_0_rgba(0,0,0,0.08)]">
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.6"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M4 20 20 4" />
+                <path d="M7 5c5.5-2.2 10.7 1.5 10.3 7.1-.4 5.7-6.1 8.7-11.1 6" />
+                <path d="M5.7 14.7C3.9 9.4 6.5 4.8 12 3.5" />
+              </svg>
+            </div>
+            <span className="text-[15px] font-black tracking-tight text-white">
+              ResuRank
+            </span>
+          </Link>
+
+          <nav className="hidden items-center gap-1 md:flex">
             {navLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                onClick={() => setIsOpen(false)}
-                className={`px-4 py-3.5 rounded-2xl text-[15px] font-medium tracking-wide transition-colors ${
-                  isActive(link.path) 
-                    ? "bg-zinc-100 text-zinc-950" 
-                    : "text-zinc-500 hover:bg-zinc-50 hover:text-zinc-900"
+                className={`rounded-xl px-4 py-2 text-[12px] font-bold transition-all ${
+                  isActive(link.path)
+                    ? "bg-white text-[#0A0908]"
+                    : "text-white/72 hover:bg-white/[0.06] hover:text-white"
                 }`}
               >
                 {link.name}
               </Link>
             ))}
+          </nav>
+
+          <div className="hidden items-center gap-3 md:flex">
+            <Link
+              to="/login"
+              className="text-[12px] font-bold text-white/60 transition-colors hover:text-white"
+            >
+              Sign in
+            </Link>
+            <Link
+              to="/signup"
+              className="rounded-xl bg-[#FF5A1F] px-5 py-2.5 text-[12px] font-black text-white shadow-[0_8px_20px_rgba(255,90,31,0.34)] transition hover:bg-[#ff6f39] active:scale-95"
+            >
+              Get started
+            </Link>
           </div>
 
-          <div className="mt-6 pt-6 border-t border-zinc-100 flex flex-col gap-3">
+          <button
+            type="button"
+            onClick={() => setIsOpen((value) => !value)}
+            className="grid h-10 w-10 place-items-center rounded-xl border border-white/[0.08] text-white md:hidden"
+            aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+            aria-expanded={isOpen}
+          >
+            <div className="flex w-5 flex-col items-end gap-1.5">
+              <span
+                className={`h-[1.5px] rounded-full bg-white transition-all ${
+                  isOpen ? "w-5 translate-y-[4px] rotate-45" : "w-5"
+                }`}
+              />
+              <span
+                className={`h-[1.5px] rounded-full bg-white transition-all ${
+                  isOpen ? "w-5 -translate-y-[4px] -rotate-45" : "w-3"
+                }`}
+              />
+            </div>
+          </button>
+        </div>
+      </header>
+
+      <div
+        className={`fixed inset-0 z-40 bg-[#0A0908] px-6 pt-28 transition-all duration-300 md:hidden ${
+          isOpen
+            ? "opacity-100"
+            : "pointer-events-none translate-y-[-10px] opacity-0"
+        }`}
+      >
+        <div className="absolute inset-x-0 top-0 h-56 bg-[radial-gradient(ellipse_at_top,rgba(255,90,31,0.22),transparent_64%)]" />
+
+        <div className="relative mx-auto flex max-w-sm flex-col gap-3">
+          {navLinks.map((link) => (
+            <Link
+              key={link.path}
+              to={link.path}
+              onClick={() => setIsOpen(false)}
+              className={`rounded-2xl border px-5 py-4 text-lg font-black transition ${
+                isActive(link.path)
+                  ? "border-white bg-white text-[#0A0908]"
+                  : "border-white/[0.08] bg-white/[0.03] text-white"
+              }`}
+            >
+              {link.name}
+            </Link>
+          ))}
+
+          <div className="mt-5 grid grid-cols-2 gap-3">
             <Link
               to="/login"
               onClick={() => setIsOpen(false)}
-              className="flex items-center justify-center px-4 py-3.5 rounded-2xl text-[15px] font-medium tracking-wide text-zinc-600 hover:bg-zinc-50 transition-colors"
+              className="flex h-13 items-center justify-center rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-4 text-center text-sm font-black text-white"
             >
-              Sign in to Workspace
+              Sign in
             </Link>
             <Link
               to="/signup"
               onClick={() => setIsOpen(false)}
-              className="cta-button flex items-center justify-center px-4 py-4 rounded-2xl text-[15px] font-medium tracking-wide"
+              className="flex h-13 items-center justify-center rounded-2xl bg-[#FF5A1F] px-4 py-4 text-center text-sm font-black text-white"
             >
-              Initialize New Project
+              Get started
             </Link>
           </div>
         </div>
       </div>
+
+      <style>{`
+       .nav-shell {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.18),
+            rgba(255, 255, 255, 0.06) 42%,
+            rgba(10, 9, 8, 0.42)
+          ),
+          rgba(10, 9, 8, 0.58);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow:
+          0 24px 70px rgba(43, 31, 18, 0.18),
+          0 8px 24px rgba(255, 90, 31, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.18),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.18);
+        backdrop-filter: blur(26px) saturate(145%);
+        -webkit-backdrop-filter: blur(26px) saturate(145%);
+      }
+      
+      .nav-shell-scrolled {
+        background:
+          linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.16),
+            rgba(255, 255, 255, 0.05) 42%,
+            rgba(10, 9, 8, 0.5)
+          ),
+          rgba(10, 9, 8, 0.66);
+        border-color: rgba(255, 255, 255, 0.24);
+        box-shadow:
+          0 18px 54px rgba(43, 31, 18, 0.2),
+          0 8px 22px rgba(255, 90, 31, 0.08),
+          inset 0 1px 0 rgba(255, 255, 255, 0.16),
+          inset 0 -1px 0 rgba(0, 0, 0, 0.2);
+      }
+      `}</style>
     </>
   );
 }

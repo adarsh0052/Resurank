@@ -36,68 +36,43 @@ function ScrollToTop() {
 
 function AppLayout() {
   const location = useLocation();
-  
-  // Several redesigned components (Login, Signup, Profile, Workspace) 
-  // now incorporate their own specialized headers/footers for layout 
-  // storytelling purposes. We omit the global ones on these routes.
-  const standaloneRoutes = [
-    "/login", 
-    "/signup", 
-    "/resume-screener-bot", 
-    "/profile", 
-    "/get-started"
+
+  const routesWithOwnHeader = [
+    "/login",
+    "/signup",
+    "/resume-screener-bot",
+    "/profile",
+    "/get-started",
   ];
 
-  const isStandalone = standaloneRoutes.includes(location.pathname);
+  const routesWithoutFooter = [
+    "/login",
+    "/signup",
+    "/resume-screener-bot",
+    "/profile",
+    "/get-started",
+  ];
+
+  const hideHeader = routesWithOwnHeader.includes(location.pathname);
+  const hideFooter = routesWithoutFooter.includes(location.pathname);
+  const isHome = location.pathname === "/";
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#0f172a] font-sans selection:bg-zinc-200 selection:text-zinc-900 flex flex-col relative">
-      
-      {/* ----------------------------------------------------------------------
-          GLOBAL PREMIUM STYLES
-      ---------------------------------------------------------------------- */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        html, body {
-          background-color: #FAFAFA;
-          color: #0f172a;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          scroll-behavior: smooth;
-        }
-        
-        /* Base typography adjustments for an editorial feel */
-        h1, h2, h3, h4, h5, h6 {
-          letter-spacing: -0.02em;
-        }
-        
-        /* Premium custom scrollbar */
-        ::-webkit-scrollbar {
-          width: 8px;
-          height: 8px;
-        }
-        ::-webkit-scrollbar-track {
-          background: #FAFAFA; 
-        }
-        ::-webkit-scrollbar-thumb {
-          background: #D4D4D8; 
-          border-radius: 10px;
-          border: 2px solid #FAFAFA;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-          background: #A1A1AA; 
-        }
-      `}} />
-
+    <div className="relative flex min-h-screen flex-col bg-[#F6F1E8] font-sans text-[#0f172a] selection:bg-zinc-200 selection:text-zinc-900">
       <ScrollToTop />
       <CustomCursor />
-      
-      {/* Global Header */}
-      {!isStandalone && <Header />}
-      
-      {/* Dynamic Route Viewport */}
-      <main className={!isStandalone ? "pt-24 sm:pt-28 flex-grow flex flex-col w-full" : "flex-grow flex flex-col w-full"}>
+
+      {!hideHeader && <Header />}
+
+      <main
+        className={
+          !hideHeader && !isHome
+            ? "flex w-full flex-grow flex-col pt-24 sm:pt-28"
+            : "flex w-full flex-grow flex-col"
+        }
+      >
         <Routes>
-          <Route path="/" element={<HomePage />} /> 
+          <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/get-started" element={<GetStarted />} />
@@ -109,9 +84,7 @@ function AppLayout() {
         </Routes>
       </main>
 
-      {/* Global Footer */}
-      {!isStandalone && <Footer />}
-      
+      {!hideFooter && <Footer />}
     </div>
   );
 }

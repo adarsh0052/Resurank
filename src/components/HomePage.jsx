@@ -1,9 +1,6 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 
-// ----------------------------------------------------------------------
-// Premium Mock Data
-// ----------------------------------------------------------------------
 const mockCandidates = [
   {
     id: "c_101",
@@ -28,31 +25,43 @@ const mockCandidates = [
     match: 89,
     status: "Viable",
     traits: ["Go", "Terraform", "Cassandra"],
-  }
+  },
 ];
 
-// ----------------------------------------------------------------------
-// Main Component
-// ----------------------------------------------------------------------
 export default function HomePage() {
-  // --- 3D Hero Interaction State ---
   const heroRef = useRef(null);
   const [rotation, setRotation] = useState({ x: 0, y: 0 });
   const [isHovering, setIsHovering] = useState(false);
+  const [activeEngineStep, setActiveEngineStep] = useState(0);
+  const [weights, setWeights] = useState({
+    technical: 85,
+    experience: 90,
+    academic: 40,
+  });
 
-  const handleHeroMouseMove = (e) => {
+  const calculateDynamicScore = () => {
+    const raw =
+      0.98 * weights.technical +
+      0.95 * weights.experience +
+      0.6 * weights.academic;
+    const max = weights.technical + weights.experience + weights.academic;
+
+    return max > 0 ? ((raw / max) * 100).toFixed(0) : 0;
+  };
+
+  const handleHeroMouseMove = (event) => {
     if (!heroRef.current) return;
+
     const rect = heroRef.current.getBoundingClientRect();
     const centerX = rect.left + rect.width / 2;
     const centerY = rect.top + rect.height / 2;
-    const mouseX = e.clientX - centerX;
-    const mouseY = e.clientY - centerY;
+    const mouseX = event.clientX - centerX;
+    const mouseY = event.clientY - centerY;
 
-    // Dampen the rotation for an elegant, heavy feel
-    const rotateY = (mouseX / (rect.width / 2)) * 8; 
-    const rotateX = -(mouseY / (rect.height / 2)) * 8;
-
-    setRotation({ x: rotateX, y: rotateY });
+    setRotation({
+      x: -(mouseY / (rect.height / 2)) * 7,
+      y: (mouseX / (rect.width / 2)) * 7,
+    });
   };
 
   const handleHeroMouseLeave = () => {
@@ -60,491 +69,627 @@ export default function HomePage() {
     setRotation({ x: 0, y: 0 });
   };
 
-  // --- Sandbox Engine State ---
-  const [activeEngineStep, setActiveEngineStep] = useState(0);
-  const [weights, setWeights] = useState({ technical: 85, experience: 90, academic: 40 });
-
-  const calculateDynamicScore = () => {
-    const raw = (0.98 * weights.technical) + (0.95 * weights.experience) + (0.60 * weights.academic);
-    const max = weights.technical + weights.experience + weights.academic;
-    return max > 0 ? ((raw / max) * 100).toFixed(0) : 0;
-  };
-
-  // --- Global Scroll Reveal (Simulated Framer-Motion) ---
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("is-visible");
-          }
+          if (entry.isIntersecting) entry.target.classList.add("is-visible");
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.12 }
     );
+
     const elements = document.querySelectorAll(".reveal-on-scroll");
-    elements.forEach((el) => observer.observe(el));
-    return () => elements.forEach((el) => observer.unobserve(el));
+    elements.forEach((element) => observer.observe(element));
+
+    return () => {
+      elements.forEach((element) => observer.unobserve(element));
+    };
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-[#0f172a] font-sans selection:bg-zinc-200 selection:text-zinc-900 overflow-hidden">
-      
-      {/* ----------------------------------------------------------------------
-          INJECTED CUSTOM STYLES FOR PREMIUM SPATIAL FEEL
-      ---------------------------------------------------------------------- */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .glass-panel {
-          background: rgba(255, 255, 255, 0.6);
-          backdrop-filter: blur(24px);
-          -webkit-backdrop-filter: blur(24px);
-          border: 1px solid rgba(255, 255, 255, 0.8);
-          box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.08), inset 0 1px 0 rgba(255, 255, 255, 1);
-        }
-        .spatial-parent { perspective: 2000px; }
-        .spatial-child { transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
-        .spatial-hovered { transition: transform 0.1s linear; }
-        
-        .layer-1 { transform: translateZ(20px); }
-        .layer-2 { transform: translateZ(60px); }
-        .layer-3 { transform: translateZ(100px); }
-        
-        .text-gradient {
-          background: linear-gradient(180deg, #0f172a 0%, #475569 100%);
-          -webkit-background-clip: text;
-          -webkit-text-fill-color: transparent;
-        }
+    <div
+      className="min-h-screen overflow-hidden bg-[#F6F1E8] text-[#0B0B09]"
+      style={{ fontFamily: "'DM Sans', sans-serif" }}
+    >
+     
 
-        .reveal-on-scroll { opacity: 0; transform: translateY(30px); transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-        .reveal-on-scroll.is-visible { opacity: 1; transform: translateY(0); }
+      <section className="relative flex min-h-screen items-center overflow-hidden px-6 pb-20 pt-32">
+        <div className="warp-grid-container" aria-hidden="true">
+          <div className="warp-grid" />
+        </div>
 
-        .slider-luxury {
-          -webkit-appearance: none;
-          width: 100%;
-          height: 2px;
-          background: #E4E4E7;
-          border-radius: 2px;
-          outline: none;
-        }
-        .slider-luxury::-webkit-slider-thumb {
-          -webkit-appearance: none;
-          appearance: none;
-          width: 16px;
-          height: 16px;
-          border-radius: 50%;
-          background: #1e293b;
-          cursor: pointer;
-          border: 2px solid #FAFAFA;
-          box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-          transition: transform 0.1s;
-        }
-        .slider-luxury::-webkit-slider-thumb:hover { transform: scale(1.2); }
-      `}} />
-
-      {/* ----------------------------------------------------------------------
-          1. SPATIAL HERO SECTION
-      ---------------------------------------------------------------------- */}
-      <section className="relative min-h-[95vh] flex items-center justify-center pt-24 pb-20 overflow-visible">
-        {/* Abstract Ambient Glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] bg-gradient-to-tr from-zinc-200/40 via-zinc-100/20 to-transparent blur-[120px] rounded-full pointer-events-none -z-10" />
-
-        <div className="max-w-[1440px] w-full mx-auto px-6 sm:px-12 grid lg:grid-cols-2 gap-16 items-center">
-          
-          {/* Left: Editorial Narrative */}
-          <div className="reveal-on-scroll space-y-10 z-10">
-           
+        <div className="relative z-10 mx-auto grid w-full max-w-[1200px] items-center gap-14 lg:grid-cols-[0.95fr_1.05fr]">
+          <div className="reveal-on-scroll max-w-2xl">
             
-            <h1 className="text-[3.5rem] sm:text-[4.5rem] lg:text-[5.5rem] leading-[0.95] tracking-[-0.03em] font-semibold text-zinc-900">
-              AI understands <br/>
-              <span className="text-zinc-400">talent better.</span>
+
+            <h1 className="max-w-[680px] text-[3.9rem] font-black leading-[0.95] tracking-tight text-[#090907] sm:text-[5.2rem] lg:text-[6rem]">
+              Hire the right{" "}
+              <span className="text-[#B8AFA1]">talent faster.</span>
             </h1>
-            
-            <p className="text-lg sm:text-xl text-zinc-500 font-light leading-relaxed max-w-md">
-              Abandon manual screening. ResuRank maps raw resumes into local semantic vector spaces, surfacing your exact technical fit in milliseconds.
+
+            <p className="mt-7 max-w-xl text-lg leading-8 text-[#6F675E] sm:text-xl">
+              ResuRank turns resumes into structured hiring intelligence, ranks
+              each profile against your priorities, and helps teams move from
+              screening to shortlisting in seconds.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-5 items-start sm:items-center">
-              <Link to="/signup" className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full border-gradient px-8 font-semibold text-slate-800 shadow-[0_8px_30px_rgba(99,102,241,0.05)] transition-transform hover:scale-[1.02] active:scale-[0.98]">
-                <span className="relative text-sm tracking-wide">Initialize Workspace</span>
+            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
+              <Link
+                to="/signup"
+                className="inline-flex h-14 items-center justify-center rounded-2xl bg-[#0B0B09] px-8 text-sm font-bold text-white shadow-[0_14px_35px_rgba(0,0,0,0.18)] transition hover:bg-[#211D19] active:scale-95"
+              >
+                Start for free
               </Link>
-              <a href="#engine" className="text-sm font-medium text-zinc-500 hover:text-zinc-900 transition-colors inline-flex items-center gap-2">
-                Inspect architecture <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              <a
+                href="#platform"
+                className="inline-flex h-14 items-center justify-center rounded-2xl border border-[#DDD3C4] bg-white/60 px-8 text-sm font-bold text-[#0B0B09] transition hover:bg-white"
+              >
+                Explore platform
               </a>
             </div>
           </div>
 
-          {/* Right: Spatial 3D Interface */}
-          <div 
+          <div
             ref={heroRef}
-            onMouseMove={(e) => { setIsHovering(true); handleHeroMouseMove(e); }}
+            onMouseMove={(event) => {
+              setIsHovering(true);
+              handleHeroMouseMove(event);
+            }}
             onMouseLeave={handleHeroMouseLeave}
-            className="spatial-parent w-full h-[600px] flex items-center justify-center relative z-10"
+            className="spatial-parent reveal-on-scroll relative flex min-h-[560px] items-center justify-center"
           >
-            <div 
-              className={`spatial-child relative w-full max-w-[500px] aspect-[4/5] ${isHovering ? 'spatial-hovered' : ''}`}
-              style={{ transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)` }}
+            <div
+              className={`spatial-child relative w-full max-w-[520px] ${
+                isHovering ? "spatial-hovered" : ""
+              }`}
+              style={{
+                transform: `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`,
+              }}
             >
-              {/* Base Glass Panel */}
-              <div className="absolute inset-0 glass-panel rounded-[2rem] overflow-hidden">
-                {/* Subtle top glare */}
-                <div className="absolute top-0 left-0 right-0 h-1/2 bg-gradient-to-b from-white/40 to-transparent pointer-events-none" />
-              </div>
+              <div className="relative overflow-hidden rounded-[2rem] border border-[#E5DCCF] bg-white/80 p-5 shadow-[0_30px_90px_rgba(39,28,16,0.18)] backdrop-blur-xl">
+                <div
+                  className="specular-overlay rounded-[2rem]"
+                  style={{
+                    "--mouse-x": `${rotation.y * 5 + 50}%`,
+                    "--mouse-y": `${rotation.x * 5 + 50}%`,
+                  }}
+                />
 
-              {/* Top Meta Bar */}
-              <div className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center border-b border-zinc-200/50 layer-1">
-                <span className="text-[10px] font-mono text-zinc-400">VECTOR_STORE: LOCAL</span>
-                <div className="flex gap-1.5">
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-200" />
-                  <div className="w-2.5 h-2.5 rounded-full bg-zinc-200" />
+                <div className="layer-1 rounded-3xl border border-[#E8DFD2] bg-[#F7F1E8] p-5">
+                  <div className="mb-4 flex items-center justify-between">
+                    <span className="text-sm font-bold text-[#12110F]">
+                      Hiring criteria
+                    </span>
+                    <span className="rounded-full bg-[#111]/5 px-3 py-1 text-[11px] font-bold text-[#70675D]">
+                      Live profile
+                    </span>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="h-2 w-4/5 rounded-full bg-[#0B0B09]/20" />
+                    <div className="h-2 w-2/3 rounded-full bg-[#0B0B09]/10" />
+                    <div className="h-2 w-1/2 rounded-full bg-[#0B0B09]/10" />
+                  </div>
                 </div>
-              </div>
 
-              {/* Floating UI Elements */}
-              <div className="absolute inset-0 p-8 pt-24 flex flex-col gap-6 pointer-events-none">
-                
-                {/* Simulated Target Profile (Background Layer) */}
-                <div className="layer-1 bg-white/40 rounded-2xl p-5 border border-white/50 backdrop-blur-sm">
-                  <span className="text-[9px] uppercase tracking-widest text-zinc-400 font-bold mb-2 block">Target Profile</span>
-                  <div className="h-2 w-1/3 bg-zinc-200 rounded-full mb-3" />
-                  <div className="h-2 w-2/3 bg-zinc-100 rounded-full" />
-                </div>
-
-                {/* Primary Extracted Candidate (Mid Layer) */}
-                <div className="layer-2 bg-white rounded-2xl p-6 shadow-2xl shadow-zinc-900/5 border border-zinc-100">
-                  <div className="flex justify-between items-start mb-4">
+                <div className="layer-2 mt-4 rounded-3xl border border-[#E8DFD2] bg-[#FBF8F1] p-6 shadow-xl">
+                  <div className="mb-6 flex items-start justify-between">
                     <div>
-                      <h3 className="text-lg font-semibold text-zinc-900 leading-tight">Sarah Chen</h3>
-                      <p className="text-xs text-zinc-500 font-medium">Lead ML Architect</p>
+                      <h3 className="text-xl font-black text-[#0B0B09]">
+                        Sarah Chen
+                      </h3>
+                      <p className="mt-1 text-sm font-medium text-[#8C8378]">
+                        Lead ML Architect
+                      </p>
                     </div>
-                    {/* The Match Badge (Top Layer) */}
-                    <div className="layer-3 bg-gradient-to-tr from-blue-600 to-indigo-650 text-white text-[10px] font-mono font-bold px-3 py-1.5 rounded-lg shadow-xl shadow-indigo-900/20">
-                      98% MATCH
-                    </div>
-                  </div>
-
-                  <div className="space-y-3 pt-4 border-t border-zinc-100">
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-zinc-500">Vector Distance</span>
-                      <span className="font-mono text-emerald-500 font-medium">0.024 (Close)</span>
-                    </div>
-                    <div className="flex justify-between items-center text-xs">
-                      <span className="text-zinc-500">Key Overlap</span>
-                      <span className="font-mono text-zinc-900">Distributed, PyTorch</span>
+                    <div className="rounded-full bg-[#FF5A1F] px-3 py-1.5 text-xs font-black text-white">
+                      {calculateDynamicScore()}% Match
                     </div>
                   </div>
-                </div>
 
-                {/* Processing Indicator (Mid Layer) */}
-                <div className="layer-2 absolute bottom-8 left-8 right-8 bg-zinc-900/5 backdrop-blur-xl rounded-xl p-4 border border-white/20 flex items-center justify-between">
-                  <span className="text-[10px] font-mono text-zinc-500">Analyzing 1,492 nodes...</span>
-                  <div className="flex gap-1">
-                    <div className="w-1 h-3 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '0ms' }} />
-                    <div className="w-1 h-3 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '150ms' }} />
-                    <div className="w-1 h-3 bg-zinc-400 rounded-full animate-bounce" style={{ animationDelay: '300ms' }} />
-                  </div>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------------------------
-          2. TRANSFORMATION STORYTELLING (CURSOR-STYLE)
-      ---------------------------------------------------------------------- */}
-      <section className="py-32 bg-white relative">
-        <div className="max-w-[1440px] mx-auto px-6 sm:px-12">
-          
-          <div className="reveal-on-scroll max-w-2xl mb-24">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 mb-4">
-              From folder chaos to structural clarity.
-            </h2>
-            <p className="text-zinc-500 text-lg leading-relaxed">
-              Standard ATS platforms rely on brittle keyword filters. We convert raw unstructured PDFs into intelligent data models mapped against your exact engineering requirements.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-0 border border-zinc-200/60 rounded-[2rem] overflow-hidden bg-zinc-50/50">
-            
-            {/* The "Before" */}
-            <div className="reveal-on-scroll p-12 lg:p-16 lg:border-r border-zinc-200/60 relative">
-              <span className="absolute top-8 left-8 text-[10px] font-mono font-bold tracking-widest text-zinc-400 uppercase">Legacy System</span>
-              
-              <div className="mt-12 relative h-[300px] w-full perspective-1000">
-                {/* Messy visual of generic resumes */}
-                <div className="absolute top-10 left-4 w-64 h-40 bg-white border border-zinc-200 shadow-sm rounded-xl p-4 rotate-[-6deg] opacity-70">
-                  <div className="h-3 w-1/2 bg-zinc-100 mb-4" />
-                  <div className="space-y-2"><div className="h-2 w-full bg-zinc-50" /><div className="h-2 w-4/5 bg-zinc-50" /></div>
-                </div>
-                <div className="absolute top-20 left-12 w-64 h-40 bg-white border border-zinc-200 shadow-md rounded-xl p-4 rotate-[4deg] opacity-90 z-10">
-                  <div className="h-3 w-1/3 bg-zinc-100 mb-4" />
-                  <div className="space-y-2"><div className="h-2 w-full bg-zinc-50" /><div className="h-2 w-5/6 bg-zinc-50" /></div>
-                  <div className="mt-4 text-[10px] text-rose-500 font-mono">ERROR: Keyword 'ReactJS' not found.</div>
-                </div>
-                <div className="absolute top-4 left-24 w-64 h-40 bg-white border border-zinc-200 shadow-lg rounded-xl p-4 rotate-[1deg] z-20">
-                  <div className="h-3 w-2/3 bg-zinc-200 mb-4" />
-                  <div className="space-y-2"><div className="h-2 w-full bg-zinc-100" /><div className="h-2 w-3/4 bg-zinc-100" /></div>
-                  <div className="mt-4 text-[10px] text-rose-500 font-mono">Rejected: Format unrecognized.</div>
-                </div>
-              </div>
-            </div>
-
-            {/* The "After" */}
-            <div className="reveal-on-scroll p-12 lg:p-16 bg-white relative">
-              <span className="absolute top-8 left-8 text-[10px] font-mono font-bold tracking-widest text-emerald-500 uppercase">ResuRank System</span>
-              
-              <div className="mt-12 space-y-4">
-                {/* Structured Data Nodes */}
-                {[
-                  { trait: "Distributed Systems", score: 0.98, node: "v_node_77a" },
-                  { trait: "Machine Learning", score: 0.94, node: "v_node_42b" },
-                  { trait: "System Architecture", score: 0.89, node: "v_node_11x" }
-                ].map((item, i) => (
-                  <div key={i} className="flex items-center justify-between p-4 rounded-xl border border-zinc-100 bg-zinc-50/50 hover:bg-zinc-50 transition-colors">
-                    <div className="flex items-center gap-4">
-                      <div className="w-8 h-8 rounded-full bg-emerald-500/10 flex items-center justify-center">
-                        <div className="w-2 h-2 rounded-full bg-emerald-500" />
-                      </div>
-                      <div>
-                        <div className="text-sm font-medium text-zinc-900">{item.trait}</div>
-                        <div className="text-[10px] font-mono text-zinc-400">ID: {item.node}</div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-sm font-mono text-zinc-900">{item.score}</div>
-                      <div className="text-[10px] text-zinc-400">Semantic Weight</div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------------------------
-          3. INTERACTIVE PRODUCT JOURNEY
-      ---------------------------------------------------------------------- */}
-      <section id="engine" className="py-32 bg-[#0f172a] text-slate-400 relative overflow-hidden">
-        {/* Subtle grid line overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none" />
-
-        <div className="max-w-[1440px] mx-auto px-6 sm:px-12 relative z-10">
-          
-          <div className="reveal-on-scroll mb-20">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-white mb-4">
-              Inspect the processing pipeline.
-            </h2>
-            <p className="text-lg max-w-xl text-slate-400">
-              Interact with the simulation below to understand how candidate profiles are dynamically evaluated without relying on cloud APIs.
-            </p>
-          </div>
-
-          <div className="grid lg:grid-cols-12 gap-12 lg:gap-24 items-start">
-            
-            {/* Left: Step Controls */}
-            <div className="lg:col-span-4 space-y-2">
-              {[
-                { title: "Document Intake", desc: "Batch ingest unstructured PDFs." },
-                { title: "Vector Extraction", desc: "Parse semantic traits via local LLM." },
-                { title: "Priority Weights", desc: "Adjust evaluation criteria." },
-                { title: "Decision Matrix", desc: "View the final ranked layout." }
-              ].map((step, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setActiveEngineStep(idx)}
-                  className={`w-full text-left p-6 rounded-2xl transition-all duration-300 ${
-                    activeEngineStep === idx 
-                      ? "bg-zinc-800/50 border border-zinc-700/50 shadow-2xl" 
-                      : "hover:bg-zinc-900 border border-transparent"
-                  }`}
-                >
-                  <div className="text-[10px] font-mono mb-2 uppercase tracking-widest" style={{ color: activeEngineStep === idx ? "#10B981" : "#71717A" }}>
-                    Stage 0{idx + 1}
-                  </div>
-                  <div className={`text-lg font-medium mb-1 ${activeEngineStep === idx ? "text-white" : "text-zinc-500"}`}>
-                    {step.title}
-                  </div>
-                  <div className="text-sm">{step.desc}</div>
-                </button>
-              ))}
-            </div>
-
-            {/* Right: Interactive Sandbox Display */}
-            <div className="lg:col-span-8 bg-slate-900 border border-slate-800/80 rounded-[2rem] p-8 sm:p-12 min-h-[500px] flex flex-col relative shadow-2xl shadow-slate-950/40">
-              
-              <div className="flex justify-between items-center mb-12 border-b border-slate-800/80 pb-6">
-                <span className="text-[11px] font-mono text-slate-500">TERMINAL // SANDBOX_ENV</span>
-                <span className="text-[11px] font-mono px-2 py-1 bg-slate-800 rounded text-slate-350">ACTIVE</span>
-              </div>
-
-              <div className="flex-grow flex flex-col justify-center">
-                
-                {/* Step 1: Intake */}
-                {activeEngineStep === 0 && (
-                  <div className="text-center space-y-6">
-                    <div className="w-32 h-32 mx-auto rounded-2xl border border-dashed border-slate-700 bg-slate-800/20 flex items-center justify-center mb-8">
-                      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#64748b" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
-                    </div>
-                    <div className="font-mono text-sm text-slate-300">Drop engineering_candidates.zip here</div>
-                    <div className="text-xs text-slate-500">Local processing guarantees privacy. Files never leave your machine.</div>
-                  </div>
-                )}
-
-                {/* Step 2: Extraction */}
-                {activeEngineStep === 1 && (
-                  <div className="space-y-4 font-mono text-sm">
-                    <div className="text-slate-500 mb-6">// Parsing: candidate_schen.pdf</div>
-                    <div className="bg-slate-950 p-4 rounded-lg border border-slate-800/80 space-y-2 text-slate-300">
-                      <div className="flex gap-4"><span className="text-slate-500">1</span><span><span className="text-emerald-400">const</span> candidate = {'{'}</span></div>
-                      <div className="flex gap-4"><span className="text-slate-500">2</span><span className="pl-4">name: <span className="text-rose-300">"Sarah Chen"</span>,</span></div>
-                      <div className="flex gap-4"><span className="text-slate-500">3</span><span className="pl-4">skills: [<span className="text-rose-300">"PyTorch"</span>, <span className="text-rose-300">"Distributed Systems"</span>],</span></div>
-                      <div className="flex gap-4"><span className="text-slate-500">4</span><span className="pl-4">vector_embedding: <span className="text-amber-300">[0.042, -0.912, 0.551, ...]</span></span></div>
-                      <div className="flex gap-4"><span className="text-slate-500">5</span><span>{'}'}</span></div>
-                    </div>
-                  </div>
-                )}
-
-                {/* Step 3: Priorities (Interactive) */}
-                {activeEngineStep === 2 && (
-                  <div className="space-y-8 max-w-md mx-auto w-full">
-                    <div className="text-center mb-8">
-                      <div className="text-sm text-zinc-300 font-medium mb-2">Adjust Vector Weights</div>
-                      <div className="text-xs text-zinc-600">Recalculating database dimensions in real-time.</div>
-                    </div>
-                    
-                    <div className="space-y-6">
-                      {[
-                        { label: "Technical Depth", key: "technical" },
-                        { label: "Experience Fit", key: "experience" },
-                        { label: "Academic Baseline", key: "academic" }
-                      ].map((slider) => (
-                        <div key={slider.key} className="space-y-3">
-                          <div className="flex justify-between text-xs font-mono">
-                            <span className="text-zinc-400">{slider.label}</span>
-                            <span className="text-white">{weights[slider.key]}%</span>
-                          </div>
-                          <input
-                            type="range"
-                            min="10"
-                            max="100"
-                            value={weights[slider.key]}
-                            onChange={(e) => setWeights(prev => ({ ...prev, [slider.key]: Number(e.target.value) }))}
-                            className="slider-luxury"
-                          />
+                  <div className="grid gap-3 border-t border-[#E7DED1] pt-5">
+                    {["Distributed Systems", "PyTorch", "Kubernetes"].map(
+                      (skill) => (
+                        <div
+                          key={skill}
+                          className="flex items-center justify-between rounded-2xl bg-white px-4 py-3"
+                        >
+                          <span className="text-sm font-semibold text-[#6F675E]">
+                            {skill}
+                          </span>
+                          <span className="h-2 w-16 rounded-full bg-[#FF5A1F]/70" />
                         </div>
-                      ))}
-                    </div>
+                      )
+                    )}
                   </div>
-                )}
+                </div>
 
-                {/* Step 4: Decision Matrix */}
-                {activeEngineStep === 3 && (
-                  <div className="space-y-4">
-                    <div className="text-xs font-mono text-slate-550 mb-4 pb-2 border-b border-slate-800/80">RANKED RESULTS // BASELINE_ENGINEER_ROLE</div>
-                    
-                    <div className="bg-slate-800/30 border border-emerald-500/20 rounded-xl p-5 flex justify-between items-center transition-all hover:bg-slate-800/50 relative overflow-hidden">
-                      <div className="absolute left-0 top-0 bottom-0 w-1 bg-emerald-500" />
-                      <div>
-                        <div className="text-white font-medium mb-1">Sarah Chen</div>
-                        <div className="text-xs text-slate-400">Lead ML Architect</div>
+                <div className="mt-4 grid grid-cols-3 gap-3">
+                  {mockCandidates.map((candidate) => (
+                    <div
+                      key={candidate.id}
+                      className="rounded-2xl border border-[#E8DFD2] bg-white/70 p-3"
+                    >
+                      <div className="text-xs font-black text-[#0B0B09]">
+                        {candidate.match}%
                       </div>
-                      <div className="text-right">
-                        <div className="text-emerald-400 font-mono text-sm">{calculateDynamicScore()}% Match</div>
-                        <div className="text-[10px] text-slate-500 mt-1">Based on custom weights</div>
+                      <div className="mt-1 truncate text-[11px] font-semibold text-[#8C8378]">
+                        {candidate.name}
                       </div>
                     </div>
-
-                    <div className="bg-slate-900 border border-slate-800/80 rounded-xl p-5 flex justify-between items-center opacity-60">
-                      <div>
-                        <div className="text-white font-medium mb-1">Marcus Aurelius</div>
-                        <div className="text-xs text-slate-500">Product Director</div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-slate-300 font-mono text-sm">74% Match</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+                  ))}
+                </div>
               </div>
             </div>
-
           </div>
         </div>
       </section>
 
-      {/* ----------------------------------------------------------------------
-          4. EDITORIAL FEATURE GRID
-      ---------------------------------------------------------------------- */}
-      <section className="py-32 bg-white relative">
-        <div className="max-w-[1440px] mx-auto px-6 sm:px-12">
-          
-          <div className="reveal-on-scroll mb-20 max-w-2xl">
-            <h2 className="text-3xl sm:text-4xl font-semibold tracking-tight text-zinc-900 mb-4">
-              Enterprise architecture, built for speed.
-            </h2>
+      <section
+        id="platform"
+        className="relative flex flex-col items-center overflow-hidden bg-[#F6F1E8] px-6 py-32 text-center"
+      >
+        <div className="perspective-grid absolute inset-0 opacity-45" />
+
+        <div className="reveal-on-scroll relative z-10 mx-auto max-w-4xl">
+          <div className="mb-9 inline-flex items-center gap-3 rounded-full border border-[#E1D7C8] bg-white px-2 py-1.5 shadow-sm">
+            <span className="rounded-full bg-[#FF5A1F] px-2 py-0.5 text-[10px] font-black uppercase tracking-wide text-white">
+              Smart
+            </span>
+            <span className="pr-2 text-xs font-bold text-[#6F675E]">
+              Context-aware ranking for modern hiring teams
+            </span>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            
-            {/* Card 1 */}
-            <div className="reveal-on-scroll bg-zinc-50 rounded-3xl p-10 border border-zinc-100 hover:shadow-xl transition-shadow duration-500">
-              <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mb-8">
-                <div className="w-4 h-4 rounded-full bg-slate-700" />
-              </div>
-              <h3 className="text-lg font-medium text-zinc-900 mb-3">Local Vector Space</h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                Powered by ChromaDB. Resumes are vectorized directly on your hardware. Zero data sent to external cloud APIs, ensuring strict GDPR compliance.
-              </p>
-            </div>
-
-            {/* Card 2 */}
-            <div className="reveal-on-scroll bg-zinc-50 rounded-3xl p-10 border border-zinc-100 hover:shadow-xl transition-shadow duration-500" style={{ transitionDelay: '100ms' }}>
-              <div className="w-12 h-12 bg-white rounded-2xl shadow-sm border border-zinc-100 flex items-center justify-center mb-8">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0f172a" strokeWidth="2"><path d="M21 12a9 9 0 1 1-9-9c2.52 0 4.93 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg>
-              </div>
-              <h3 className="text-lg font-medium text-zinc-900 mb-3">Dynamic Trait Scoring</h3>
-              <p className="text-sm text-zinc-500 leading-relaxed">
-                Roles aren't static. Shift your priority sliders between "Leadership" and "Technical Depth" and watch the entire database re-rank instantly.
-              </p>
-            </div>
-
-            {/* Card 3 */}
-            <div className="reveal-on-scroll bg-gradient-to-b from-slate-900 to-indigo-950 rounded-3xl p-10 border border-slate-800/80 shadow-2xl hover:shadow-3xl transition-shadow duration-500" style={{ transitionDelay: '200ms' }}>
-              <div className="w-12 h-12 bg-slate-800 rounded-2xl border border-slate-700 flex items-center justify-center mb-8 text-white font-mono text-xs">
-                {'{ }'}
-              </div>
-              <h3 className="text-lg font-medium text-white mb-3">Conversational Query</h3>
-              <p className="text-sm text-zinc-400 leading-relaxed">
-                Chat with your candidate database using Llama 3.2. "Who here has built payment gateways in React Native?" Get immediate, sourced answers.
-              </p>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* ----------------------------------------------------------------------
-          5. MINIMAL CTA
-      ---------------------------------------------------------------------- */}
-      <section className="py-40 bg-[#FAFAFA] relative border-t border-zinc-200/50 text-center">
-        <div className="max-w-2xl mx-auto px-6 relative z-10 reveal-on-scroll">
-          <h2 className="text-4xl sm:text-5xl font-semibold tracking-tight text-zinc-900 mb-6">
-            Ready to upgrade your screening?
+          <h2 className="text-5xl font-black leading-[1.02] tracking-tight text-[#090907] md:text-[4.4rem]">
+            Every candidate pulled
+            <br />
+            into one focused view
           </h2>
-          <p className="text-lg text-zinc-500 mb-10">
-            Deploy the engine locally and parse your first 100 candidates in seconds.
+
+          <p className="mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#6F675E]">
+            Organize pipelines, compare resumes, tune scoring weights, and
+            explain every ranking in one connected workspace.
           </p>
-          <Link to="/signup" className="group relative inline-flex h-14 items-center justify-center overflow-hidden rounded-full border-gradient px-10 font-semibold text-slate-800 shadow-xl transition-transform hover:scale-[1.02]">
-             <span className="relative text-sm tracking-wide">Start Building</span>
+
+          <Link
+            to="/signup"
+            className="mt-9 inline-flex h-14 items-center justify-center rounded-2xl bg-[#0B0B09] px-9 text-sm font-bold text-white shadow-[0_14px_35px_rgba(0,0,0,0.16)] transition hover:bg-[#211D19]"
+          >
+            Get started
           </Link>
         </div>
       </section>
 
+      <section id="workflow" className="relative overflow-hidden bg-[#F6F1E8]">
+        <div className="horizon-arch relative z-10 flex flex-col items-center">
+          <div className="absolute left-1/2 top-12 flex -translate-x-1/2 items-center gap-8 opacity-70 sm:gap-14">
+            {["Parse", "Rank", "Shortlist"].map((label) => (
+              <div
+                key={label}
+                className="flex items-center gap-2 text-sm font-black text-white/80 sm:text-lg"
+              >
+                <span className="h-4 w-4 rounded-full border-2 border-white/45" />
+                {label}
+              </div>
+            ))}
+          </div>
+
+          <div className="reveal-on-scroll mt-48 max-w-3xl px-6 text-center">
+            <h2 className="text-4xl font-black leading-tight tracking-tight text-white md:text-5xl">
+              All the essentials for
+              <br />
+              sharper recruitment
+            </h2>
+            <p className="mt-5 text-lg text-[#A59C92]">
+              Extraction, automation, scoring controls, and team-ready insights
+              in sync from upload to decision.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-[#090907] px-6 pb-32 pt-12">
+        <div className="mx-auto grid max-w-[1200px] grid-cols-1 gap-5 md:grid-cols-12">
+          <div className="reveal-on-scroll flex flex-col justify-between rounded-[28px] border border-white/[0.07] bg-[#11110F] p-6 transition hover:bg-[#151513] sm:p-8 md:col-span-4">
+            <div>
+              <h3 className="mb-6 text-xl font-black text-white">
+                Pipeline Sandbox
+              </h3>
+
+              {[
+                { title: "Intake", desc: "Batch ingest candidate PDFs." },
+                { title: "Extraction", desc: "Parse skills and experience." },
+                { title: "Priorities", desc: "Tune evaluation criteria." },
+                { title: "Decision Matrix", desc: "Review ranked results." },
+              ].map((step, index) => (
+                <button
+                  key={step.title}
+                  onClick={() => setActiveEngineStep(index)}
+                  className={`w-full rounded-2xl border p-5 text-left transition ${
+                    activeEngineStep === index
+                      ? "border-white/[0.08] bg-white/[0.05]"
+                      : "border-transparent bg-transparent hover:bg-white/[0.03]"
+                  }`}
+                >
+                  <div
+                    className={`mb-1 text-base font-bold ${
+                      activeEngineStep === index
+                        ? "text-white"
+                        : "text-white/35"
+                    }`}
+                  >
+                    {step.title}
+                  </div>
+                  <div className="text-xs font-medium text-white/30">
+                    {step.desc}
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="reveal-on-scroll relative overflow-hidden rounded-[28px] border border-white/[0.07] bg-[#11110F] p-8 transition hover:bg-[#151513] sm:p-12 md:col-span-8">
+            <div className="mb-8 flex items-center justify-between border-b border-white/[0.06] pb-4">
+              <span className="font-mono text-[11px] uppercase tracking-widest text-white/35">
+                Interactive Component
+              </span>
+              <span className="rounded bg-[#FF5A1F]/10 px-2 py-1 font-mono text-[11px] text-[#FF6B35]">
+                STAGE_0{activeEngineStep + 1}
+              </span>
+            </div>
+
+            <div className="flex min-h-[320px] flex-col justify-center">
+              {activeEngineStep === 0 && (
+                <div className="space-y-6 text-center">
+                  <div className="mx-auto grid h-24 w-24 place-items-center rounded-full border border-dashed border-white/20 bg-white/[0.04]">
+                    <svg
+                      width="26"
+                      height="26"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      className="text-white/45"
+                    >
+                      <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                      <path d="M17 8l-5-5-5 5" />
+                      <path d="M12 3v12" />
+                    </svg>
+                  </div>
+                  <div className="text-sm font-bold text-white">
+                    Drop engineering_candidates.zip here
+                  </div>
+                  <div className="text-xs font-medium text-white/35">
+                    Local processing keeps candidate data private.
+                  </div>
+                </div>
+              )}
+
+              {activeEngineStep === 1 && (
+                <div className="space-y-4 font-mono text-sm text-white/45">
+                  <div>// Parsing: candidate_schen.pdf</div>
+                  <div className="space-y-2 rounded-2xl border border-white/[0.06] bg-black/35 p-5">
+                    <div>
+                      <span className="text-white/20">1</span>{" "}
+                      <span className="text-[#FF6B35]">const</span> candidate = {"{"}
+                    </div>
+                    <div>
+                      <span className="text-white/20">2</span> &nbsp;name:{" "}
+                      <span className="text-white">"Sarah Chen"</span>,
+                    </div>
+                    <div>
+                      <span className="text-white/20">3</span> &nbsp;skills: [
+                      <span className="text-white">"PyTorch"</span>,{" "}
+                      <span className="text-white">"Distributed Systems"</span>],
+                    </div>
+                    <div>
+                      <span className="text-white/20">4</span>{" "}
+                      &nbsp;vector_embedding:{" "}
+                      <span className="text-[#FF6B35]">
+                        [0.042, -0.912, 0.551]
+                      </span>
+                    </div>
+                    <div>
+                      <span className="text-white/20">5</span> {"}"}
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activeEngineStep === 2 && (
+                <div className="mx-auto w-full max-w-md space-y-8">
+                  <div className="text-center">
+                    <div className="mb-2 text-lg font-black text-white">
+                      Adjust Vector Weights
+                    </div>
+                    <div className="text-sm font-medium text-white/35">
+                      Recalculate ranking signals in real time.
+                    </div>
+                  </div>
+
+                  {[
+                    { label: "Technical Depth", key: "technical" },
+                    { label: "Experience Fit", key: "experience" },
+                    { label: "Academic Baseline", key: "academic" },
+                  ].map((slider) => (
+                    <div key={slider.key} className="space-y-3">
+                      <div className="flex justify-between text-xs font-bold text-white/55">
+                        <span>{slider.label}</span>
+                        <span className="text-white">
+                          {weights[slider.key]}%
+                        </span>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        value={weights[slider.key]}
+                        onChange={(event) =>
+                          setWeights((prev) => ({
+                            ...prev,
+                            [slider.key]: Number(event.target.value),
+                          }))
+                        }
+                        className="resurank-slider"
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {activeEngineStep === 3 && (
+                <div className="space-y-4">
+                  <div className="mb-4 border-b border-white/[0.06] pb-2 font-mono text-xs text-white/30">
+                    RANKED RESULTS
+                  </div>
+
+                  <div className="relative flex items-center justify-between overflow-hidden rounded-2xl border border-[#FF5A1F]/35 bg-white/[0.06] p-5">
+                    <div className="absolute bottom-0 left-0 top-0 w-1 bg-[#FF5A1F]" />
+                    <div>
+                      <div className="mb-1 font-bold text-white">
+                        Sarah Chen
+                      </div>
+                      <div className="text-xs font-medium text-white/35">
+                        Lead ML Architect
+                      </div>
+                    </div>
+                    <div className="text-lg font-black text-[#FF6B35]">
+                      {calculateDynamicScore()}% Match
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-black/30 p-5">
+                    <div>
+                      <div className="mb-1 font-bold text-white/65">
+                        Marcus Aurelius
+                      </div>
+                      <div className="text-xs font-medium text-white/30">
+                        Product Director
+                      </div>
+                    </div>
+                    <div className="text-lg font-black text-white/30">
+                      74% Match
+                    </div>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div
+            id="candidates"
+            className="reveal-on-scroll rounded-[28px] border border-white/[0.07] bg-[#11110F] p-8 text-center transition hover:bg-[#151513] sm:p-12 md:col-span-6"
+          >
+            <h3 className="mb-3 text-2xl font-black text-white">
+              Say hello to ResuRank AI
+            </h3>
+            <p className="mx-auto mb-10 max-w-sm leading-7 text-white/35">
+              Automate repetitive review work, extract exact context, and keep
+              hiring conversations focused on evidence.
+            </p>
+
+            <div className="rounded-2xl border border-white/[0.07] bg-black/35 p-4 text-left">
+              <div className="mb-1 text-sm font-bold text-white">
+                Summarize context instantly
+              </div>
+              <div className="text-xs font-medium text-white/30">
+                Populate fields and evaluate skills automatically through your
+                scoring model.
+              </div>
+            </div>
+          </div>
+
+          <div
+            id="insights"
+            className="reveal-on-scroll relative overflow-hidden rounded-[28px] bg-[#FF5A1F] p-8 sm:p-12 md:col-span-6"
+          >
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_25%_10%,rgba(255,255,255,0.34),transparent_32%),linear-gradient(135deg,rgba(255,255,255,0.15),rgba(0,0,0,0.24))]" />
+
+            <div className="relative z-10 mb-12 flex w-max items-center gap-2 rounded-full border border-white/15 bg-black/20 px-4 py-2 backdrop-blur-md">
+              <span className="grid h-4 w-4 place-items-center rounded-full bg-white">
+                <span className="h-1.5 w-1.5 rounded-full bg-[#FF5A1F]" />
+              </span>
+              <span className="text-xs font-black text-white">
+                Capture data automatically
+              </span>
+            </div>
+
+            <div className="relative z-10 mt-auto">
+              <h3 className="mb-3 text-2xl font-black text-white">
+                Smooth team handoff
+              </h3>
+              <p className="max-w-sm leading-7 text-white/80">
+                Export matrices, share candidate profiles, and bring structured
+                evidence into every hiring decision.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800;900&display=swap');
+
+        .warp-grid-container {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          overflow: hidden;
+          pointer-events: none;
+        }
+
+        .warp-grid {
+          width: 170%;
+          height: 78%;
+          background-image:
+            linear-gradient(to right, rgba(211, 116, 42, 0.2) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(211, 116, 42, 0.2) 1px, transparent 1px);
+          background-size: 58px 58px;
+          transform: perspective(950px) rotateX(56deg) scaleX(1.15);
+          transform-origin: bottom center;
+          mask-image: radial-gradient(ellipse 82% 82% at 50% 100%, black 28%, transparent 100%);
+          -webkit-mask-image: radial-gradient(ellipse 82% 82% at 50% 100%, black 28%, transparent 100%);
+        }
+
+        .spatial-parent {
+          perspective: 2000px;
+        }
+
+        .spatial-child {
+          transform-style: preserve-3d;
+          transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .spatial-hovered {
+          transition: transform 0.12s linear;
+        }
+
+        .layer-1 {
+          transform: translateZ(22px);
+        }
+
+        .layer-2 {
+          transform: translateZ(62px);
+        }
+
+        .specular-overlay {
+          position: absolute;
+          inset: 0;
+          z-index: 10;
+          pointer-events: none;
+          mix-blend-mode: screen;
+          background: radial-gradient(
+            circle 220px at var(--mouse-x, 50%) var(--mouse-y, 50%),
+            rgba(255, 255, 255, 0.18),
+            transparent 78%
+          );
+        }
+
+        .perspective-grid {
+          background-image:
+            linear-gradient(to right, rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+            linear-gradient(to bottom, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+          background-size: 50px 50px;
+          transform: perspective(1000px) rotateX(60deg) scale(1.5);
+          transform-origin: top;
+          pointer-events: none;
+        }
+
+        .horizon-arch {
+          width: 150%;
+          height: 460px;
+          margin-left: -25%;
+          border-top-left-radius: 50% 100%;
+          border-top-right-radius: 50% 100%;
+          background: #090907;
+          box-shadow:
+            0 -5px 85px rgba(255, 90, 31, 0.26),
+            inset 0 1px 0 rgba(255, 255, 255, 0.06);
+          overflow: hidden;
+        }
+
+        .horizon-arch::before {
+          content: "";
+          position: absolute;
+          left: 50%;
+          top: -23%;
+          width: 62%;
+          height: 82%;
+          transform: translateX(-50%);
+          border-radius: 50%;
+          background: radial-gradient(
+            ellipse at 50% 60%,
+            #ff8a00 0%,
+            #ff4b00 26%,
+            #8d1400 55%,
+            #1b0500 78%,
+            transparent 100%
+          );
+          filter: blur(46px);
+          opacity: 0.84;
+        }
+
+        .resurank-slider {
+          -webkit-appearance: none;
+          width: 100%;
+          height: 4px;
+          border-radius: 999px;
+          background: rgba(255, 255, 255, 0.12);
+          outline: none;
+        }
+
+        .resurank-slider::-webkit-slider-thumb {
+          -webkit-appearance: none;
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+          border-radius: 999px;
+          border: 3px solid #171714;
+          background: #ff5a1f;
+          transition: transform 0.12s ease;
+        }
+
+        .resurank-slider::-webkit-slider-thumb:hover {
+          transform: scale(1.18);
+        }
+
+        .resurank-slider::-moz-range-thumb {
+          width: 18px;
+          height: 18px;
+          cursor: pointer;
+          border-radius: 999px;
+          border: 3px solid #171714;
+          background: #ff5a1f;
+        }
+
+        .reveal-on-scroll {
+          opacity: 0;
+          transform: translateY(28px);
+          transition:
+            opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+            transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal-on-scroll.is-visible {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        @media (max-width: 768px) {
+          .horizon-arch {
+            width: 180%;
+            margin-left: -40%;
+          }
+
+          .warp-grid {
+            width: 220%;
+            background-size: 46px 46px;
+          }
+        }
+      `}</style>
     </div>
   );
 }
