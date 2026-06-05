@@ -14,9 +14,14 @@ from io import BytesIO
 import pandas as pd
 import PyPDF2
 import requests
-from langchain_chroma import Chroma
-from langchain_core.documents import Document
-from langchain_ollama import OllamaEmbeddings
+
+try:
+    from langchain_chroma import Chroma
+    from langchain_core.documents import Document
+    from langchain_ollama import OllamaEmbeddings
+    has_langchain = True
+except ImportError:
+    has_langchain = False
 
 # Try to import gdown, install if not available
 try:
@@ -391,69 +396,127 @@ def process_resumes(df, column_map, job_category, job_role):
 
 
 # Setup Chroma vector store with Ollama and robust local fallback
-from langchain_core.embeddings import Embeddings
-import hashlib
+if has_langchain:
+    from langchain_core.embeddings import Embeddings
+    import hashlib
 
-class SmartEmbeddings(Embeddings):
-    def __init__(self, model_name="mxbai-embed-large"):
-        self.model_name = model_name
-        self.ollama_embeddings = OllamaEmbeddings(model=model_name)
-        self.fallback_active = False
+    class SmartEmbeddings(Embeddings):
+        def __init__(self, model_name="mxbai-embed-large"):
+            self.model_name = model_name
+            self.ollama_embeddings = OllamaEmbeddings(model=model_name)
+            self.fallback_active = False
 
-    def _get_fallback_vector(self, text):
-        # Generates a deterministic normalized 384-dimension vector from sha256 hash of the text
-        h = hashlib.sha256(text.encode('utf-8')).digest()
-        vector = []
-        for i in range(384):
-            val = (h[i % len(h)] + i * 7) % 256
-            vector.append(val / 255.0)
-        return vector
+        def _get_fallback_vector(self, text):
+            h = hashlib.sha256(text.encode('utf-8')).digest()
+            vector = []
+            for i in range(384):
+                val = (h[i % len(h)] + i * 7) % 256
+                vector.append(val / 255.0)
+            return vector
 
-    def embed_documents(self, texts):
-        if self.fallback_active:
-            return [self._get_fallback_vector(t) for t in texts]
-        try:
-            return self.ollama_embeddings.embed_documents(texts)
-        except Exception as e:
-            print(f"Warning: Ollama embedding failed ({e}). Falling back to local deterministic embeddings.")
-            self.fallback_active = True
-            return [self._get_fallback_vector(t) for t in texts]
+        def embed_documents(self, texts):
+            if self.fallback_active:
+                return [self._get_fallback_vector(t) for t in texts]
+            try:
+                return self.ollama_embeddings.embed_documents(texts)
+            except Exception as e:
+                print(f"Warning: Ollama embedding failed ({e}). Falling back to local deterministic embeddings.")
+                self.fallback_active = True
+                return [self._get_fallback_vector(t) for t in texts]
 
-    def embed_query(self, text):
-        if self.fallback_active:
-            return self._get_fallback_vector(text)
-        try:
-            return self.ollama_embeddings.embed_query(text)
-        except Exception as e:
-            print(f"Warning: Ollama query embedding failed ({e}). Falling back to local query embedding.")
-            self.fallback_active = True
-            return self._get_fallback_vector(text)
+        def embed_query(self, text):
+            if self.fallback_active:
+                return self._get_fallback_vector(text)
+            try:
+                return self.ollama_embeddings.embed_query(text)
+            except Exception as e:
+                print(f"Warning: Ollama query embedding failed ({e}). Falling back to local query embedding.")
+                self.fallback_active = True
+                return self._get_fallback_vector(text)
 
-embeddings = SmartEmbeddings(model_name="mxbai-embed-large")
-db_location = "/tmp/chrome_langchain_db" if is_serverless else "./chrome_langchain_db"
+    embeddings = SmartEmbeddings(model_name="mxbai-embed-large")
+    db_location = "/tmp/chrome_langchain_db" if is_serverless else "./chrome_langchain_db"
 
-def setup_vector_store(df, column_map, job_category, job_role):
-    sanitized_category = re.sub(r"[^a-zA-Z0-9_-]", "_", job_category)
-    sanitized_role = re.sub(r"[^a-zA-Z0-9_-]", "_", job_role)
-    persist_dir = f"{db_location}_{sanitized_category}_{sanitized_role}"
+    def setup_vector_store(df, column_map, job_category, job_role):
+        sanitized_category = re.sub(r"[^a-zA-Z0-9_-]", "_", job_category)
+        sanitized_role = re.sub(r"[^a-zA-Z0-9_-]", "_", job_role)
+        persist_dir = f"{db_location}_{sanitized_category}_{sanitized_role}"
 
-    vector_store = Chroma(
-        collection_name=f"resume_rankings_{sanitized_category}_{sanitized_role}",
-        persist_directory=persist_dir,
-        embedding_function=embeddings,
-    )
+        vector_store = Chroma(
+            collection_name=f"resume_rankings_{sanitized_category}_{sanitized_role}",
+            persist_directory=persist_dir,
+            embedding_function=embeddings,
+        )
 
-    # Check if the database already contains data for this specific role
-    existing_data = vector_store.get()
-    if not existing_data["ids"]:
-        print(f"--- Indexing resumes for {job_role} (first time setup) ---")
-        documents, ids = process_resumes(df, column_map, job_category, job_role)
-        if documents:
-            vector_store.add_documents(documents=documents, ids=ids)
-    else:
-        print(f"--- Loading existing index for {job_role} ---")
+        # Check if the database already contains data for this specific role
+        existing_data = vector_store.get()
+        if not existing_data["ids"]:
+            print(f"--- Indexing resumes for {job_role} (first time setup) ---")
+            documents, ids = process_resumes(df, column_map, job_category, job_role)
+            if documents:
+                vector_store.add_documents(documents=documents, ids=ids)
+        else:
+            print(f"--- Loading existing index for {job_role} ---")
 
-    return vector_store
+        return vector_store
+else:
+    # Setup mock / in-memory vector store when running on Vercel serverless without langchain dependencies
+    class Document:
+        def __init__(self, page_content, metadata, id=None):
+            self.page_content = page_content
+            self.metadata = metadata
+            self.id = id
+
+    class MockRetriever:
+        def __init__(self, documents):
+            self.documents = documents
+
+        def invoke(self, query):
+            return self.documents[:5]
+
+    class InMemoryVectorStore:
+        def __init__(self):
+            self.documents = []
+            self.ids = []
+            self.metadatas = []
+            self.texts = []
+
+        def add_documents(self, documents, ids):
+            for doc, doc_id in zip(documents, ids):
+                if doc_id not in self.ids:
+                    self.ids.append(doc_id)
+                    self.documents.append(doc)
+                    self.metadatas.append(doc.metadata)
+                    self.texts.append(doc.page_content)
+
+        def get(self):
+            return {
+                "ids": self.ids,
+                "documents": self.texts,
+                "metadatas": self.metadatas
+            }
+
+        def as_retriever(self, search_kwargs=None):
+            return MockRetriever(self.documents)
+
+    in_memory_databases = {}
+
+    def setup_vector_store(df, column_map, job_category, job_role):
+        db_key = f"{job_category}_{job_role}"
+        if db_key not in in_memory_databases:
+            in_memory_databases[db_key] = InMemoryVectorStore()
+        
+        vector_store = in_memory_databases[db_key]
+        existing_data = vector_store.get()
+        if not existing_data["ids"]:
+            print(f"--- Indexing resumes for {job_role} (in-memory setup) ---")
+            documents, ids = process_resumes(df, column_map, job_category, job_role)
+            if documents:
+                vector_store.add_documents(documents=documents, ids=ids)
+        else:
+            print(f"--- Loading existing in-memory index for {job_role} ---")
+
+        return vector_store
 
 
 # Store the current dataframe and column mapping
