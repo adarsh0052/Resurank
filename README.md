@@ -101,4 +101,3 @@ We have pre-configured [vercel.json](file:///c:/Users/adars/OneDrive/Desktop/_/R
 1. **relative Routing**: API calls switch from `localhost:8000` to same-origin relative endpoints automatically in production.
 2. **Stateless Processing**: On Vercel, the database and uploads redirect to `/tmp` paths, enabling full-featured spreadsheet grading sessions on serverless containers.
 
-To deploy, push your code to a GitHub repository, connect it on Vercel, and click **Deploy**. Vercel will automatically compile both the Vite client assets and the Python Serverless functions.
