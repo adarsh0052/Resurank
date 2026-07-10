@@ -1,5 +1,5 @@
 # RESURANK SYSTEM // VERSION 2.1
-An enterprise-grade local resume intelligence engine and candidate match scoring terminal built on FastAPI, React Vite, and LangChain vector pipelines.
+A local resume intelligence engine and candidate match scoring terminal built on FastAPI, React Vite, and LangChain vector pipelines.
 
 ---
 
